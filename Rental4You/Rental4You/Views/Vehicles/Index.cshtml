@@ -32,12 +32,17 @@
     </a>
     <ul class="dropdown-menu">
 
+        <li>
+            <a class="dropdown-item" asp-action="Index">Remover filtros</a>
+        </li>
+
+        <li><hr class="dropdown-divider"></li>
+
         @foreach (var group in Model.GroupBy(i => i.Type))
         {
-            <h1>@group.Key</h1>
-            @foreach (var item in group){
-                <p>@item.Name</p>
-            }
+            <li>
+                <a class="dropdown-item" asp-action="Index" asp-route-type=@group.Key>@group.Key</a>
+            </li>
         }   
 
     </ul>
@@ -49,14 +54,19 @@
         Filter by company
     </a>
     <ul class="dropdown-menu">
+
+        <li>
+            <a class="dropdown-item" asp-action="Index">Remover filtros</a>
+        </li>
+
+        <li><hr class="dropdown-divider"></li>
         
-        @foreach (var item in Model)
+        @foreach (var group in Model.GroupBy(i => i.Company))
         {
             <li>
-                <a class="dropdown-item" asp-controller="Agendamentos"
-               asp-action="OsMeusAgendamentos">@Html.DisplayFor(modelItem => item.Company)</a>
+                <a class="dropdown-item" asp-action="Index" asp-route-type=@group.Key>@group.Key</a>
             </li>
-        }
+        } 
 
     </ul>
 </li>

@@ -21,9 +21,24 @@ namespace Rental4You.Controllers
         }
 
         // GET: Vehicles
-        public async Task<IActionResult> Index()
+        /*public async Task<IActionResult> Index()
         {
-              return View(await _context.Vehicle.ToListAsync());
+            return View(await _context.Vehicle.ToListAsync());
+        }*/
+
+        public async Task<IActionResult> Index(string? typeFilter)
+        {
+
+            if(string.IsNullOrEmpty(typeFilter))
+                return View(await _context.Vehicle.ToListAsync());
+            else
+            {
+                var result = from c in _context.Vehicle
+                             where c.Type.Contains(typeFilter)
+                             select c;
+
+                return View(result);
+            }
         }
 
         // GET: Vehicles/Details/5
