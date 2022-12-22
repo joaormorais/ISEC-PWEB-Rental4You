@@ -26,15 +26,15 @@ namespace Rental4You.Controllers
             return View(await _context.Vehicle.ToListAsync());
         }*/
 
-        public async Task<IActionResult> Index(string? typeFilter)
+        public async Task<IActionResult> Index(string? tipofiltragemteste)
         {
 
-            if(string.IsNullOrEmpty(typeFilter))
+            if (string.IsNullOrWhiteSpace(tipofiltragemteste))
                 return View(await _context.Vehicle.ToListAsync());
             else
             {
                 var result = from c in _context.Vehicle
-                             where c.Type.Contains(typeFilter)
+                             where c.Type.Contains(tipofiltragemteste)
                              select c;
 
                 return View(result);
