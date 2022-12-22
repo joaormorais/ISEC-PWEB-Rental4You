@@ -159,16 +159,20 @@ namespace Rental4You.Controllers
           return _context.Vehicle.Any(e => e.Id == id);
         }
 
-        public async Task<IActionResult> Search(string? TextToSearch)
+        public async Task<IActionResult> Search(string? TextToSearchName, string? TextToSearchLocation, string? TextToSearchType)
         {
+
             SearchVehicleViewModel searchVM = new SearchVehicleViewModel();
 
-            if (string.IsNullOrWhiteSpace(TextToSearch))
+            // if the user let's every textbox empty, it's shown every vehicle
+            if(string.IsNullOrWhiteSpace(TextToSearchName)&& string.IsNullOrWhiteSpace(TextToSearchLocation)&& string.IsNullOrWhiteSpace(TextToSearchType))
                 searchVM.VehiclesList = await _context.Vehicle.ToListAsync();
             else
             {
-                searchVM.VehiclesList = await _context.Vehicle.Where(c => c.Name.Contains(TextToSearch) || c.Location.Contains(TextToSearch) || c.Type.Contains(TextToSearch)).ToListAsync();
-                searchVM.TextToSearch = TextToSearch;
+                searchVM.VehiclesList = await _context.Vehicle.Where(c => c.Name.Contains(TextToSearchName) || c.Location.Contains(TextToSearchLocation) || c.Type.Contains(TextToSearchType)).ToListAsync();
+                searchVM.TextToSearchName = TextToSearchName;
+                searchVM.TextToSearchLocation = TextToSearchLocation;
+                searchVM.TextToSearchType = TextToSearchType;
             }
 
             searchVM.NumberOfResults = searchVM.VehiclesList.Count();
@@ -184,14 +188,17 @@ namespace Rental4You.Controllers
             )
         {
 
-            if (string.IsNullOrEmpty(searchVehicle.TextToSearch))
+            // if the user let's every textbox empty, it's shown every vehicle
+            if (string.IsNullOrEmpty(searchVehicle.TextToSearchName) && string.IsNullOrWhiteSpace(searchVehicle.TextToSearchLocation) && string.IsNullOrWhiteSpace(searchVehicle.TextToSearchType))
             {
                 searchVehicle.VehiclesList = await _context.Vehicle.ToListAsync();
             }
             else
             {
-                searchVehicle.VehiclesList = await _context.Vehicle.Where(c => c.Name.Contains(searchVehicle.TextToSearch) || c.Location.Contains(searchVehicle.TextToSearch) || c.Type.Contains(searchVehicle.TextToSearch)).ToListAsync();
-                searchVehicle.TextToSearch = searchVehicle.TextToSearch;
+                searchVehicle.VehiclesList = await _context.Vehicle.Where(c => c.Name.Contains(searchVehicle.TextToSearchName) || c.Location.Contains(searchVehicle.TextToSearchLocation) || c.Type.Contains(searchVehicle.TextToSearchType)).ToListAsync();
+                searchVehicle.TextToSearchName = searchVehicle.TextToSearchName;
+                searchVehicle.TextToSearchLocation = searchVehicle.TextToSearchLocation;
+                searchVehicle.TextToSearchType = searchVehicle.TextToSearchType;
             }
 
             searchVehicle.NumberOfResults = searchVehicle.VehiclesList.Count();
@@ -200,16 +207,18 @@ namespace Rental4You.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index(string TextToSearch)
+        public async Task<IActionResult> Index(string TextToSearchName, string TextToSearchLocation, string TextToSearchType)
         {
-            if (string.IsNullOrWhiteSpace(TextToSearch))
+
+            // if the user let's every textbox empty, it's shown every vehicle
+            if (string.IsNullOrWhiteSpace(TextToSearchName) && string.IsNullOrWhiteSpace(TextToSearchLocation) && string.IsNullOrWhiteSpace(TextToSearchType))
             {
                 return View(await _context.Vehicle.ToListAsync());
             }
             else
             {
                 var result = from c in _context.Vehicle
-                                where c.Name.Contains(TextToSearch) || c.Location.Contains(TextToSearch) || c.Type.Contains(TextToSearch)
+                                where c.Name.Contains(TextToSearchName) || c.Location.Contains(TextToSearchLocation) || c.Type.Contains(TextToSearchType)
                              select c;
                 return View(result);
             }

@@ -4,22 +4,62 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>List of cars:</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
 
-<a asp-action="Index" asp-controller="Cursos" asp-route-disponivel="">Todos</a> |
+<!--<a asp-action="Index" asp-controller="Cursos" asp-route-disponivel="">Todos</a> |
 <a asp-action="Index" asp-route-disponivel="true">Ativos</a> |
-<a asp-action="Index" asp-route-disponivel="false">Inativos</a> |
+<a asp-action="Index" asp-route-disponivel="false">Inativos</a> |-->
 
-<div class="col-10">
+
+
+<div>
     <form method="post">
-        <input type="text" name="TextToSearch" placeholder="Details from a car">
+        <input type="text" name="TextToSearchName" placeholder="Name of the car">
+        <input type="text" name="TextToSearchLocation" placeholder="Location of the car">
+        <input type="text" name="TextToSearchType" placeholder="Company renting">
         <input type="submit" value="Search" />
     </form>
 </div>
+
+<li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#"
+       role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Filter by type
+    </a>
+    <ul class="dropdown-menu">
+
+        @foreach (var group in Model.GroupBy(i => i.Type))
+        {
+            <h1>@group.Key</h1>
+            @foreach (var item in group){
+                <p>@item.Name</p>
+            }
+        }   
+
+    </ul>
+</li>
+
+<li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#"
+       role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Filter by company
+    </a>
+    <ul class="dropdown-menu">
+        
+        @foreach (var item in Model)
+        {
+            <li>
+                <a class="dropdown-item" asp-controller="Agendamentos"
+               asp-action="OsMeusAgendamentos">@Html.DisplayFor(modelItem => item.Company)</a>
+            </li>
+        }
+
+    </ul>
+</li>
 
 <table class="table">
     <thead>

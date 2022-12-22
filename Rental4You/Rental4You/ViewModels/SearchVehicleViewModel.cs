@@ -9,6 +9,8 @@ namespace Rental4You.ViewModels
         public List<Vehicle>? VehiclesList { get; set; }
         public int NumberOfResults { get; set; }
         [Display(Name = "VEHICLES SEARCH ...", Prompt = "introduce the text to search")]
-        public string? TextToSearch { get; set; }
+        public string? TextToSearchName { get; set; }
+        public string? TextToSearchLocation { get; set; }
+        public string? TextToSearchType { get; set; }
     }
 }
