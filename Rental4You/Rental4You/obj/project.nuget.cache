@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Jfei2u18zOUOXPMvMeMp+c6HLoj/UGlLtb+B53iwNdgKrYC9qUCIftf+TGMcB/XBNgWCY9R77amVFHQALBb3HQ==",
+  "dgSpecHash": "VnMPJdzyUdDz17H3R1Ofl/JOq0GFvqvy/04BxqYpAg2patXoiQ6NYwUozxZuLn6VxlTzSuFxYu5gRf8sqguY2A==",
   "success": true,
-  "projectFilePath": "C:\\Users\\joaom\\Desktop\\Morais\\Universidade\\3ano\\1semestre\\TrabalhosPraticos\\PWEB\\ISEC-PWEB-Rental4You\\Rental4YouProject\\Rental4You\\Rental4You\\Rental4You.csproj",
+  "projectFilePath": "C:\\Users\\joaom\\Desktop\\Morais\\Universidade\\3ano\\1semestre\\TrabalhosPraticos\\PWEB\\ISEC-PWEB-Rental4You\\Rental4You\\Rental4You\\Rental4You.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\joaom\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\joaom\\.nuget\\packages\\messagepack\\2.1.152\\messagepack.2.1.152.nupkg.sha512",

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Rental4You.Data;
 using Rental4You.Models;
+using Rental4You.ViewModels;
 
 namespace Rental4You.Controllers
 {
@@ -54,7 +55,7 @@ namespace Rental4You.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Type,Location,Price,Company,CompanyAcronym")] Vehicle vehicle)
+        public async Task<IActionResult> Create([Bind("Id,Name,Type,Location,Price,Company,CompanyAcronym")] Vehicle vehicle)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +87,7 @@ namespace Rental4You.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Type,Location,Price,Company,CompanyAcronym")] Vehicle vehicle)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Type,Location,Price,Company,CompanyAcronym")] Vehicle vehicle)
         {
             if (id != vehicle.Id)
             {
@@ -157,5 +158,65 @@ namespace Rental4You.Controllers
         {
           return _context.Vehicle.Any(e => e.Id == id);
         }
+
+        public async Task<IActionResult> Search(string? TextToSearch)
+        {
+            SearchVehicleViewModel searchVM = new SearchVehicleViewModel();
+
+            if (string.IsNullOrWhiteSpace(TextToSearch))
+                searchVM.VehiclesList = await _context.Vehicle.ToListAsync();
+            else
+            {
+                searchVM.VehiclesList = await _context.Vehicle.Where(c => c.Name.Contains(TextToSearch)).ToListAsync();
+                searchVM.TextToSearch = TextToSearch;
+            }
+
+            searchVM.NumberOfResults = searchVM.VehiclesList.Count();
+            return View(searchVM);
+
+        }
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> Search(
+            [Bind("TextToSearch")]
+            SearchVehicleViewModel searchVehicle
+            )
+        {
+
+            if (string.IsNullOrEmpty(searchVehicle.TextToSearch))
+            {
+                searchVehicle.VehiclesList = await _context.Vehicle.ToListAsync();
+                //searchVehicle.NumberOfResults = searchVehicle.VehiclesList.Count();
+            }
+            else
+            {
+                searchVehicle.VehiclesList = await _context.Vehicle.Where(c => c.Name.Contains(searchVehicle.TextToSearch)).ToListAsync();
+                //searchVehicle.NumberOfResults = searchVehicle.VehiclesList.Count();
+                searchVehicle.TextToSearch = searchVehicle.TextToSearch;
+            }
+
+            searchVehicle.NumberOfResults = searchVehicle.VehiclesList.Count();
+            return View(searchVehicle);
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Index(string TextToSearch)
+        {
+            if (string.IsNullOrWhiteSpace(TextToSearch))
+            {
+                return View(await _context.Vehicle.ToListAsync());
+            }
+            else
+            {
+                var result = from c in _context.Vehicle
+                                where c.Name.Contains(TextToSearch)
+                                select c;
+                return View(result);
+            }
+        }
+
+
     }
 }
