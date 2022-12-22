@@ -10,6 +10,10 @@
     <a asp-action="Create">Create New</a>
 </p>
 
+<a asp-action="Index" asp-controller="Cursos" asp-route-disponivel="">Todos</a> |
+<a asp-action="Index" asp-route-disponivel="true">Ativos</a> |
+<a asp-action="Index" asp-route-disponivel="false">Inativos</a> |
+
 <div class="col-10">
     <form method="post">
         <input type="text" name="TextToSearch" placeholder="Details from a car">

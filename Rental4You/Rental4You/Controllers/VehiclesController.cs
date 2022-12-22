@@ -167,7 +167,7 @@ namespace Rental4You.Controllers
                 searchVM.VehiclesList = await _context.Vehicle.ToListAsync();
             else
             {
-                searchVM.VehiclesList = await _context.Vehicle.Where(c => c.Name.Contains(TextToSearch)).ToListAsync();
+                searchVM.VehiclesList = await _context.Vehicle.Where(c => c.Name.Contains(TextToSearch) || c.Location.Contains(TextToSearch) || c.Type.Contains(TextToSearch)).ToListAsync();
                 searchVM.TextToSearch = TextToSearch;
             }
 
@@ -187,12 +187,10 @@ namespace Rental4You.Controllers
             if (string.IsNullOrEmpty(searchVehicle.TextToSearch))
             {
                 searchVehicle.VehiclesList = await _context.Vehicle.ToListAsync();
-                //searchVehicle.NumberOfResults = searchVehicle.VehiclesList.Count();
             }
             else
             {
-                searchVehicle.VehiclesList = await _context.Vehicle.Where(c => c.Name.Contains(searchVehicle.TextToSearch)).ToListAsync();
-                //searchVehicle.NumberOfResults = searchVehicle.VehiclesList.Count();
+                searchVehicle.VehiclesList = await _context.Vehicle.Where(c => c.Name.Contains(searchVehicle.TextToSearch) || c.Location.Contains(searchVehicle.TextToSearch) || c.Type.Contains(searchVehicle.TextToSearch)).ToListAsync();
                 searchVehicle.TextToSearch = searchVehicle.TextToSearch;
             }
 
@@ -211,12 +209,11 @@ namespace Rental4You.Controllers
             else
             {
                 var result = from c in _context.Vehicle
-                                where c.Name.Contains(TextToSearch)
-                                select c;
+                                where c.Name.Contains(TextToSearch) || c.Location.Contains(TextToSearch) || c.Type.Contains(TextToSearch)
+                             select c;
                 return View(result);
             }
         }
-
 
     }
 }
