@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 using Rental4You.Data;
 using Rental4You.Models;
 using Rental4You.ViewModels;
@@ -26,11 +27,89 @@ namespace Rental4You.Controllers
             return View(await _context.Vehicle.ToListAsync());
         }*/
 
-        // index method for the filtering
-        public async Task<IActionResult> Index(string? filterbytype, string? fylterbycompany)
+        //[HttpGet("filhadaputa")]
+        [HttpPost]
+        public async Task<IActionResult> Index(string? TextToSearchName, string? TextToSearchLocation, string? TextToSearchCompany)
         {
 
-            /*if (!string.IsNullOrWhiteSpace(sortOrder))
+            // if the user let's every textbox empty, it's shown every vehicle
+            if (string.IsNullOrWhiteSpace(TextToSearchName) && string.IsNullOrWhiteSpace(TextToSearchLocation) && string.IsNullOrWhiteSpace(TextToSearchCompany))
+            {
+                return View(await _context.Vehicle.ToListAsync());
+            }
+            else if (!string.IsNullOrWhiteSpace(TextToSearchName) && string.IsNullOrWhiteSpace(TextToSearchLocation) && string.IsNullOrWhiteSpace(TextToSearchCompany))
+            {
+                var result = from c in _context.Vehicle
+                             where c.Name.Contains(TextToSearchName)
+                             select c;
+
+                return View(result);
+            }
+            else if (!string.IsNullOrWhiteSpace(TextToSearchName) && !string.IsNullOrWhiteSpace(TextToSearchLocation) && string.IsNullOrWhiteSpace(TextToSearchCompany))
+            {
+                var result = from c in _context.Vehicle
+                             where c.Name.Contains(TextToSearchName) && c.Location.Contains(TextToSearchLocation)
+                             select c;
+
+                return View(result);
+            }
+            else if (!string.IsNullOrWhiteSpace(TextToSearchName) && string.IsNullOrWhiteSpace(TextToSearchLocation) && !string.IsNullOrWhiteSpace(TextToSearchCompany))
+            {
+                var result = from c in _context.Vehicle
+                             where c.Name.Contains(TextToSearchName) && c.Company.Contains(TextToSearchCompany)
+                             select c;
+
+                return View(result);
+            }
+            else if (string.IsNullOrWhiteSpace(TextToSearchName) && !string.IsNullOrWhiteSpace(TextToSearchLocation) && string.IsNullOrWhiteSpace(TextToSearchCompany))
+            {
+                var result = from c in _context.Vehicle
+                             where c.Location.Contains(TextToSearchLocation)
+                             select c;
+
+                return View(result);
+            }
+            else if (string.IsNullOrWhiteSpace(TextToSearchName) && !string.IsNullOrWhiteSpace(TextToSearchLocation) && !string.IsNullOrWhiteSpace(TextToSearchCompany))
+            {
+                var result = from c in _context.Vehicle
+                             where c.Location.Contains(TextToSearchLocation) && c.Company.Contains(TextToSearchCompany)
+                             select c;
+
+                return View(result);
+            }
+            else if (string.IsNullOrWhiteSpace(TextToSearchName) && string.IsNullOrWhiteSpace(TextToSearchLocation) && !string.IsNullOrWhiteSpace(TextToSearchCompany))
+            {
+                var result = from c in _context.Vehicle
+                             where c.Company.Contains(TextToSearchCompany)
+                             select c;
+
+                return View(result);
+            }
+            else if (!string.IsNullOrWhiteSpace(TextToSearchName) && !string.IsNullOrWhiteSpace(TextToSearchLocation) && !string.IsNullOrWhiteSpace(TextToSearchCompany))
+            {
+                var result = from c in _context.Vehicle
+                             where c.Name.Contains(TextToSearchName) && c.Location.Contains(TextToSearchLocation) && c.Company.Contains(TextToSearchCompany)
+                             select c;
+
+                return View(result);
+            }
+
+            return View(await _context.Vehicle.ToListAsync());
+
+        }
+
+        public async Task<IActionResult> Index(string? filter, string? sortOrder)
+        {
+
+            if (!string.IsNullOrWhiteSpace(filter))
+            {
+                var result = from c in _context.Vehicle
+                             where c.Type.Contains(filter) || c.Company.Contains(filter)
+                             select c;
+
+                return View(result.ToList());
+            }
+            else if(!string.IsNullOrEmpty(sortOrder))
             {
 
                 var vehiclesList = from C in _context.Vehicle
@@ -51,9 +130,16 @@ namespace Rental4You.Controllers
 
                 return View(vehiclesList.ToList());
 
-            }*/
+            }
+            else 
+                return View(await _context.Vehicle.ToListAsync());
 
-                if (string.IsNullOrWhiteSpace(filterbytype) && string.IsNullOrWhiteSpace(fylterbycompany))
+        }
+
+        /*// index method for the filtering
+        public async Task<IActionResult> Index(string filterbytype, string fylterbycompany)
+        {
+            if (string.IsNullOrWhiteSpace(filterbytype) && string.IsNullOrWhiteSpace(fylterbycompany))
                 return View(await _context.Vehicle.ToListAsync());
             else
             {
@@ -66,7 +152,6 @@ namespace Rental4You.Controllers
         }
 
         // index method for the sortering
-        [HttpPost]
         public async Task<IActionResult> Index(string? sortOrder)
         {
 
@@ -93,7 +178,7 @@ namespace Rental4You.Controllers
 
             return View(vehiclesList.ToList());
 
-        }
+        }*/
 
         // GET: Vehicles/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -273,24 +358,6 @@ namespace Rental4You.Controllers
             searchVehicle.NumberOfResults = searchVehicle.VehiclesList.Count();
             return View(searchVehicle);
 
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Index(string TextToSearchName, string TextToSearchLocation, string TextToSearchType)
-        {
-
-            // if the user let's every textbox empty, it's shown every vehicle
-            if (string.IsNullOrWhiteSpace(TextToSearchName) && string.IsNullOrWhiteSpace(TextToSearchLocation) && string.IsNullOrWhiteSpace(TextToSearchType))
-            {
-                return View(await _context.Vehicle.ToListAsync());
-            }
-            else
-            {
-                var result = from c in _context.Vehicle
-                                where c.Name.Contains(TextToSearchName) || c.Location.Contains(TextToSearchLocation) || c.Type.Contains(TextToSearchType)
-                             select c;
-                return View(result);
-            }
         }
 
     }

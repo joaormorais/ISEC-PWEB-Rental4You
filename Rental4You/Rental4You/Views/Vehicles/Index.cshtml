@@ -10,17 +10,11 @@
     <a asp-action="Create">Create New</a>
 </p>
 
-<!--<a asp-action="Index" asp-controller="Cursos" asp-route-disponivel="">Todos</a> |
-<a asp-action="Index" asp-route-disponivel="true">Ativos</a> |
-<a asp-action="Index" asp-route-disponivel="false">Inativos</a> |-->
-
-
-
 <div>
-    <form method="post">
+    <form method="post" >
         <input type="text" name="TextToSearchName" placeholder="Name of the car">
         <input type="text" name="TextToSearchLocation" placeholder="Location of the car">
-        <input type="text" name="TextToSearchType" placeholder="Company renting">
+        <input type="text" name="TextToSearchCompany" placeholder="Company renting">
         <input type="submit" value="Search" />
     </form>
 </div>
@@ -32,12 +26,12 @@
     </a>
     <ul class="dropdown-menu">
 
-        @foreach (var group in Model.GroupBy(i => i.Type))
-        {
+            @foreach (var group in Model.GroupBy(i => i.Type))
+            {
             <li>
-                <a class="dropdown-item" asp-action="Index" asp-route-filterbytype=@group.Key>@group.Key</a>
+                <a class="dropdown-item" asp-action="Index" asp-route-filter=@group.Key>@group.Key</a>
             </li>
-        }   
+            }
 
     </ul>
 </li>
@@ -49,12 +43,12 @@
     </a>
     <ul class="dropdown-menu">
 
-        @foreach (var group in Model.GroupBy(i => i.Company))
-        {
-            <li>
-                <a class="dropdown-item" asp-action="Index" asp-route-fylterbycompany=@group.Key>@group.Key</a>
-            </li>
-        } 
+            @foreach (var group in Model.GroupBy(i => i.Company))
+            {
+        <li>
+                <a class="dropdown-item" asp-action="Index" asp-route-filter=@group.Key>@group.Key</a>
+        </li>
+        }  
 
     </ul>
 </li>
@@ -70,13 +64,13 @@
     </a>
     <ul class="dropdown-menu">
 
-        <li>
-            <a class="dropdown-item" asp-action="Index" asp-route-sortOrder="price_up">Price (up)</a>
-        </li>
+            <li>
+                <a class="dropdown-item" asp-action="Index" asp-route-sortOrder="price_up">Price (up)</a>
+            </li>
 
-        <li>
-            <a class="dropdown-item" asp-action="Index" asp-route-sortOrder="price_down">Price (down)</a>
-        </li>
+            <li>
+                <a class="dropdown-item" asp-action="Index" asp-route-sortOrder="price_down">Price (down)</a>
+            </li>
 
     </ul>
 </li>
@@ -108,9 +102,9 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-                <td>
+            <td>
                     @Html.DisplayFor(modelItem => item.Name)
-                </td>
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Type)
             </td>
