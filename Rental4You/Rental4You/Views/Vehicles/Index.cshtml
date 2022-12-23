@@ -41,7 +41,7 @@
         @foreach (var group in Model.GroupBy(i => i.Type))
         {
             <li>
-                <a class="dropdown-item" asp-action="Index" asp-route-tipofiltragemteste=@group.Key>@group.Key</a>
+                <a class="dropdown-item" asp-action="Index" asp-route-filterbytype=@group.Key>@group.Key</a>
             </li>
         }   
 
@@ -64,7 +64,7 @@
         @foreach (var group in Model.GroupBy(i => i.Company))
         {
             <li>
-                <a class="dropdown-item" asp-action="Index" asp-route-typefilter=@group.Key>@group.Key</a>
+                <a class="dropdown-item" asp-action="Index" asp-route-fylterbycompany=@group.Key>@group.Key</a>
             </li>
         } 
 
