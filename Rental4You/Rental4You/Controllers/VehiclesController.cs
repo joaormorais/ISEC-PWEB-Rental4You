@@ -26,10 +26,34 @@ namespace Rental4You.Controllers
             return View(await _context.Vehicle.ToListAsync());
         }*/
 
+        // index method for the filtering
         public async Task<IActionResult> Index(string? filterbytype, string? fylterbycompany)
         {
 
-            if (string.IsNullOrWhiteSpace(filterbytype) && string.IsNullOrWhiteSpace(fylterbycompany))
+            /*if (!string.IsNullOrWhiteSpace(sortOrder))
+            {
+
+                var vehiclesList = from C in _context.Vehicle
+                                   select C;
+
+                switch (sortOrder)
+                {
+
+                    case "price_down":
+                        vehiclesList = vehiclesList.OrderByDescending(s => s.Price);
+                        break;
+
+                    case "price_up":
+                        vehiclesList = vehiclesList.OrderBy(s => s.Price);
+                        break;
+
+                }
+
+                return View(vehiclesList.ToList());
+
+            }*/
+
+                if (string.IsNullOrWhiteSpace(filterbytype) && string.IsNullOrWhiteSpace(fylterbycompany))
                 return View(await _context.Vehicle.ToListAsync());
             else
             {
@@ -39,6 +63,36 @@ namespace Rental4You.Controllers
 
                 return View(result);
             }
+        }
+
+        // index method for the sortering
+        [HttpPost]
+        public async Task<IActionResult> Index(string? sortOrder)
+        {
+
+            var vehiclesList = from C in _context.Vehicle
+                           select C;
+
+            if (string.IsNullOrWhiteSpace(sortOrder))
+                return View(await _context.Vehicle.ToListAsync());
+            else
+            {
+                switch (sortOrder)
+                {
+                    
+                    case "price_down":
+                        vehiclesList = vehiclesList.OrderByDescending(s => s.Price);
+                        break;
+
+                    case "price_up":
+                        vehiclesList = vehiclesList.OrderBy(s => s.Price);
+                        break;
+
+                }
+            }
+
+            return View(vehiclesList.ToList());
+
         }
 
         // GET: Vehicles/Details/5
