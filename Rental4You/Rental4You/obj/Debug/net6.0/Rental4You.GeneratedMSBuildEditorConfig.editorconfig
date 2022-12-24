@@ -16,6 +16,38 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\joaom\Desktop\Morais\Universidade\3ano\1semestre\TrabalhosPraticos\PWEB\ISEC-PWEB-Rental4You\Rental4You\Rental4You
 build_property._RazorSourceGeneratorDebug = 
 
+[C:/Users/joaom/Desktop/Morais/Universidade/3ano/1semestre/TrabalhosPraticos/PWEB/ISEC-PWEB-Rental4You/Rental4You/Rental4You/Areas/Identity/Pages/Account/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxMb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/joaom/Desktop/Morais/Universidade/3ano/1semestre/TrabalhosPraticos/PWEB/ISEC-PWEB-Rental4You/Rental4You/Rental4You/Areas/Identity/Pages/Account/Manage/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxNYW5hZ2VcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/joaom/Desktop/Morais/Universidade/3ano/1semestre/TrabalhosPraticos/PWEB/ISEC-PWEB-Rental4You/Rental4You/Rental4You/Areas/Identity/Pages/Account/Manage/_ManageNav.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxNYW5hZ2VcX01hbmFnZU5hdi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/joaom/Desktop/Morais/Universidade/3ano/1semestre/TrabalhosPraticos/PWEB/ISEC-PWEB-Rental4You/Rental4You/Rental4You/Areas/Identity/Pages/Account/Manage/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxNYW5hZ2VcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/joaom/Desktop/Morais/Universidade/3ano/1semestre/TrabalhosPraticos/PWEB/ISEC-PWEB-Rental4You/Rental4You/Rental4You/Areas/Identity/Pages/Account/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/joaom/Desktop/Morais/Universidade/3ano/1semestre/TrabalhosPraticos/PWEB/ISEC-PWEB-Rental4You/Rental4You/Rental4You/Areas/Identity/Pages/Account/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxfVmlld0ltcG9ydHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/joaom/Desktop/Morais/Universidade/3ano/1semestre/TrabalhosPraticos/PWEB/ISEC-PWEB-Rental4You/Rental4You/Rental4You/Areas/Identity/Pages/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcX1ZhbGlkYXRpb25TY3JpcHRzUGFydGlhbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/joaom/Desktop/Morais/Universidade/3ano/1semestre/TrabalhosPraticos/PWEB/ISEC-PWEB-Rental4You/Rental4You/Rental4You/Areas/Identity/Pages/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/joaom/Desktop/Morais/Universidade/3ano/1semestre/TrabalhosPraticos/PWEB/ISEC-PWEB-Rental4You/Rental4You/Rental4You/Areas/Identity/Pages/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -28,26 +60,6 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/joaom/Desktop/Morais/Universidade/3ano/1semestre/TrabalhosPraticos/PWEB/ISEC-PWEB-Rental4You/Rental4You/Rental4You/Views/Reservations/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVzZXJ2YXRpb25zXENyZWF0ZS5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/joaom/Desktop/Morais/Universidade/3ano/1semestre/TrabalhosPraticos/PWEB/ISEC-PWEB-Rental4You/Rental4You/Rental4You/Views/Reservations/Delete.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVzZXJ2YXRpb25zXERlbGV0ZS5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/joaom/Desktop/Morais/Universidade/3ano/1semestre/TrabalhosPraticos/PWEB/ISEC-PWEB-Rental4You/Rental4You/Rental4You/Views/Reservations/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVzZXJ2YXRpb25zXERldGFpbHMuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/joaom/Desktop/Morais/Universidade/3ano/1semestre/TrabalhosPraticos/PWEB/ISEC-PWEB-Rental4You/Rental4You/Rental4You/Views/Reservations/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVzZXJ2YXRpb25zXEVkaXQuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/joaom/Desktop/Morais/Universidade/3ano/1semestre/TrabalhosPraticos/PWEB/ISEC-PWEB-Rental4You/Rental4You/Rental4You/Views/Reservations/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVzZXJ2YXRpb25zXEluZGV4LmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/Users/joaom/Desktop/Morais/Universidade/3ano/1semestre/TrabalhosPraticos/PWEB/ISEC-PWEB-Rental4You/Rental4You/Rental4You/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -58,30 +70,6 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/joaom/Desktop/Morais/Universidade/3ano/1semestre/TrabalhosPraticos/PWEB/ISEC-PWEB-Rental4You/Rental4You/Rental4You/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/joaom/Desktop/Morais/Universidade/3ano/1semestre/TrabalhosPraticos/PWEB/ISEC-PWEB-Rental4You/Rental4You/Rental4You/Views/Vehicles/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVoaWNsZXNcQ3JlYXRlLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/joaom/Desktop/Morais/Universidade/3ano/1semestre/TrabalhosPraticos/PWEB/ISEC-PWEB-Rental4You/Rental4You/Rental4You/Views/Vehicles/Delete.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVoaWNsZXNcRGVsZXRlLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/joaom/Desktop/Morais/Universidade/3ano/1semestre/TrabalhosPraticos/PWEB/ISEC-PWEB-Rental4You/Rental4You/Rental4You/Views/Vehicles/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVoaWNsZXNcRGV0YWlscy5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/joaom/Desktop/Morais/Universidade/3ano/1semestre/TrabalhosPraticos/PWEB/ISEC-PWEB-Rental4You/Rental4You/Rental4You/Views/Vehicles/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVoaWNsZXNcRWRpdC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/joaom/Desktop/Morais/Universidade/3ano/1semestre/TrabalhosPraticos/PWEB/ISEC-PWEB-Rental4You/Rental4You/Rental4You/Views/Vehicles/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVoaWNsZXNcSW5kZXguY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/joaom/Desktop/Morais/Universidade/3ano/1semestre/TrabalhosPraticos/PWEB/ISEC-PWEB-Rental4You/Rental4You/Rental4You/Views/Vehicles/Search.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVoaWNsZXNcU2VhcmNoLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/joaom/Desktop/Morais/Universidade/3ano/1semestre/TrabalhosPraticos/PWEB/ISEC-PWEB-Rental4You/Rental4You/Rental4You/Views/_ViewImports.cshtml]

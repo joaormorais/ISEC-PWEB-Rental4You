@@ -4,7 +4,7 @@ using Rental4You.Models;
 
 namespace Rental4You.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext <ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -12,5 +12,6 @@ namespace Rental4You.Data
         }
         public DbSet<Rental4You.Models.Vehicle> Vehicle { get; set; }
         public DbSet<Rental4You.Models.Reservation> Reservation { get; set; }
+        public DbSet<Rental4You.Models.Company> Company { get; set; }
     }
 }
