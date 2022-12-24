@@ -6,9 +6,8 @@
         public string? Name { get; set; }
         public string? Acronym { get; set; }
         public ICollection<Vehicle>? Reservations { get; set; }
-        // coleção de funcionarios
-        //public ICollection<AspNetUsers>? Users { get; set; }
-        // coleção de gestores
+        // coleção de funcionarios e gestores
+        public ICollection<ApplicationUser>? Users { get; set; }
         public bool Available { get; set; }
     }
 }

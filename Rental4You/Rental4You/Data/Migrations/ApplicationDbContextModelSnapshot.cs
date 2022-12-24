@@ -22,6 +22,36 @@ namespace Rental4You.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("ApplicationUserCompany", b =>
+                {
+                    b.Property<int>("CompaniesId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UsersId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("CompaniesId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("ApplicationUserCompany");
+                });
+
+            modelBuilder.Entity("ApplicationUserReservation", b =>
+                {
+                    b.Property<int>("ReservationsId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UsersId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ReservationsId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("ApplicationUserReservation");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -263,14 +293,15 @@ namespace Rental4You.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<bool>("Confirmed")
                         .HasColumnType("bit");
 
                     b.Property<bool>("DamageEnd")
                         .HasColumnType("bit");
+
+                    b.Property<byte[]>("DamageImages")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<bool>("DamageStart")
                         .HasColumnType("bit");
@@ -297,8 +328,6 @@ namespace Rental4You.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("VehicleId");
 
@@ -336,6 +365,36 @@ namespace Rental4You.Data.Migrations
                     b.HasIndex("CompanyId");
 
                     b.ToTable("Vehicle");
+                });
+
+            modelBuilder.Entity("ApplicationUserCompany", b =>
+                {
+                    b.HasOne("Rental4You.Models.Company", null)
+                        .WithMany()
+                        .HasForeignKey("CompaniesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Rental4You.Models.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ApplicationUserReservation", b =>
+                {
+                    b.HasOne("Rental4You.Models.Reservation", null)
+                        .WithMany()
+                        .HasForeignKey("ReservationsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Rental4You.Models.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -391,10 +450,6 @@ namespace Rental4You.Data.Migrations
 
             modelBuilder.Entity("Rental4You.Models.Reservation", b =>
                 {
-                    b.HasOne("Rental4You.Models.ApplicationUser", null)
-                        .WithMany("Reservations")
-                        .HasForeignKey("ApplicationUserId");
-
                     b.HasOne("Rental4You.Models.Vehicle", "Vehicle")
                         .WithMany("Reservations")
                         .HasForeignKey("VehicleId");
@@ -409,11 +464,6 @@ namespace Rental4You.Data.Migrations
                         .HasForeignKey("CompanyId");
 
                     b.Navigation("Company");
-                });
-
-            modelBuilder.Entity("Rental4You.Models.ApplicationUser", b =>
-                {
-                    b.Navigation("Reservations");
                 });
 
             modelBuilder.Entity("Rental4You.Models.Company", b =>

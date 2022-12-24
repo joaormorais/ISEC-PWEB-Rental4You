@@ -1,0 +1,89 @@
+﻿@model IEnumerable<Rental4You.Models.Reservation>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Confirmed)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.KmsStart)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DamageStart)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ObservationsStart)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.KmsEnd)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DamageEnd)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ObservationsEnd)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DamageImages)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Confirmed)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.KmsStart)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DamageStart)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ObservationsStart)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.KmsEnd)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DamageEnd)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ObservationsEnd)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DamageImages)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
