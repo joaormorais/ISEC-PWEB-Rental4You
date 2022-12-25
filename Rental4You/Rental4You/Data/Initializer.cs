@@ -1,15 +1,16 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Rental4You.Models;
+using System;
 
 namespace Rental4You.Data
 {
 
     public enum Roles
     {
-        Client,
-        Employee,
+        Admin,
         Manager,
-        Admin
+        Employee,
+        Client
     }
 
     public static class Initializer
