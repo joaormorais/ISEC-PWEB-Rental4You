@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Rental4You.Data;
 using Rental4You.Models;
-using Rental4You.ViewModels;
+//using Rental4You.ViewModels;
 
 namespace Rental4You.Controllers
 {
@@ -21,12 +21,7 @@ namespace Rental4You.Controllers
         }
 
         // GET: Vehicles
-        /*public async Task<IActionResult> Index()
-        {
-              return View(await _context.Vehicle.ToListAsync());
-        }*/
 
-        //[HttpGet("filhadaputa")]
         [HttpPost]
         public async Task<IActionResult> Index(string? TextToSearchName, string? TextToSearchLocation, string? TextToSearchCompany)
         {
@@ -267,53 +262,6 @@ namespace Rental4You.Controllers
         {
           return _context.Vehicle.Any(e => e.Id == id);
         }
-
-        /*public async Task<IActionResult> Search(string? TextToSearchName, string? TextToSearchLocation, string? TextToSearchType)
-        {
-
-            SearchVehicleViewModel searchVM = new SearchVehicleViewModel();
-
-            // if the user let's every textbox empty, it's shown every vehicle
-            if (string.IsNullOrWhiteSpace(TextToSearchName) && string.IsNullOrWhiteSpace(TextToSearchLocation) && string.IsNullOrWhiteSpace(TextToSearchType))
-                searchVM.VehiclesList = await _context.Vehicle.ToListAsync();
-            else
-            {
-                searchVM.VehiclesList = await _context.Vehicle.Where(c => c.Name.Contains(TextToSearchName) || c.Location.Contains(TextToSearchLocation) || c.Type.Contains(TextToSearchType)).ToListAsync();
-                searchVM.TextToSearchName = TextToSearchName;
-                searchVM.TextToSearchLocation = TextToSearchLocation;
-                searchVM.TextToSearchType = TextToSearchType;
-            }
-
-            searchVM.NumberOfResults = searchVM.VehiclesList.Count();
-            return View(searchVM);
-
-        }
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> Search(
-            [Bind("TextToSearch")]
-            SearchVehicleViewModel searchVehicle
-            )
-        {
-
-            // if the user let's every textbox empty, it's shown every vehicle
-            if (string.IsNullOrEmpty(searchVehicle.TextToSearchName) && string.IsNullOrWhiteSpace(searchVehicle.TextToSearchLocation) && string.IsNullOrWhiteSpace(searchVehicle.TextToSearchType))
-            {
-                searchVehicle.VehiclesList = await _context.Vehicle.ToListAsync();
-            }
-            else
-            {
-                searchVehicle.VehiclesList = await _context.Vehicle.Where(c => c.Name.Contains(searchVehicle.TextToSearchName) || c.Location.Contains(searchVehicle.TextToSearchLocation) || c.Type.Contains(searchVehicle.TextToSearchType)).ToListAsync();
-                searchVehicle.TextToSearchName = searchVehicle.TextToSearchName;
-                searchVehicle.TextToSearchLocation = searchVehicle.TextToSearchLocation;
-                searchVehicle.TextToSearchType = searchVehicle.TextToSearchType;
-            }
-
-            searchVehicle.NumberOfResults = searchVehicle.VehiclesList.Count();
-            return View(searchVehicle);
-
-        }*/
 
     }
 }

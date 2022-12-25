@@ -6,14 +6,6 @@ using Rental4You.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-/*var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
-builder.Services.AddControllersWithViews();*/
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -29,6 +21,23 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+
+// Need to add for data seeding Start
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+        await Initializer.CreateFirstData(userManager, roleManager);
+    }
+    catch (Exception)
+    {
+        throw;
+    }
+}
+// Need to add for data seeding End
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
