@@ -22,25 +22,7 @@
                 @Html.DisplayNameFor(model => model.Confirmed)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.KmsStart)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DamageStart)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ObservationsStart)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.KmsEnd)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DamageEnd)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ObservationsEnd)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DamageImages)
+                @Html.DisplayNameFor(model => model.Vehicle.Name)
             </th>
             <th></th>
         </tr>
@@ -58,25 +40,7 @@
                 @Html.DisplayFor(modelItem => item.Confirmed)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.KmsStart)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DamageStart)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ObservationsStart)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.KmsEnd)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DamageEnd)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ObservationsEnd)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DamageImages)
+                @Html.DisplayFor(modelItem => item.Vehicle.Name)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

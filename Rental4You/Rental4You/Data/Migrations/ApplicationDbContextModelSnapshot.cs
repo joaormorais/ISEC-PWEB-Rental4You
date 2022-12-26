@@ -305,7 +305,7 @@ namespace Rental4You.Data.Migrations
                     b.Property<bool?>("DamageStart")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime>("EndDate")
+                    b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
 
                     b.Property<decimal?>("KmsEnd")
@@ -320,7 +320,7 @@ namespace Rental4You.Data.Migrations
                     b.Property<string>("ObservationsStart")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("StartDate")
+                    b.Property<DateTime?>("StartDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("VehicleId")

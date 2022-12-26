@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -15,29 +16,39 @@ namespace Rental4You.Controllers
     public class ReservationsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public ReservationsController(ApplicationDbContext context)
+        public ReservationsController(
+            ApplicationDbContext context,
+            UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Reservations
         [Authorize(Roles = "Client, Employee")]
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Reservation.ToListAsync());
+            ViewData["ListOfVehicles"] = new SelectList(_context.Vehicle.ToList(), "Id", "Name");
+            return View(await _context.Reservation.ToListAsync());
         }
 
         // GET: Reservations/Details/5
         [Authorize(Roles = "Client, Employee")]
         public async Task<IActionResult> Details(int? id)
         {
+
+            
+
             if (id == null || _context.Reservation == null)
             {
                 return NotFound();
             }
 
             var reservation = await _context.Reservation
+                .Include(a => a.Vehicle)
+                .Include(a => a.Users)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (reservation == null)
             {
@@ -51,6 +62,7 @@ namespace Rental4You.Controllers
         [Authorize(Roles = "Client")]
         public IActionResult Create()
         {
+            ViewData["ListOfVehicles"] = new SelectList(_context.Vehicle.ToList(), "Id", "Name");
             return View();
         }
 
@@ -60,8 +72,13 @@ namespace Rental4You.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Client")]
-        public async Task<IActionResult> Create([Bind("Id,StartDate,EndDate")] Reservation reservation)
+        public async Task<IActionResult> Create([Bind("Id,StartDate,EndDate,VehicleId")] Reservation reservation)
         {
+
+            ViewData["ListaOfVehicles"] =
+       new SelectList(_context.Vehicle.ToList(), "Id", "Name");
+            ModelState.Remove(nameof(reservation.Vehicle));
+
             if (ModelState.IsValid)
             {
                 _context.Add(reservation);
@@ -75,6 +92,7 @@ namespace Rental4You.Controllers
         [Authorize(Roles = "Employee")]
         public async Task<IActionResult> Edit(int? id)
         {
+
             if (id == null || _context.Reservation == null)
             {
                 return NotFound();
@@ -85,6 +103,8 @@ namespace Rental4You.Controllers
             {
                 return NotFound();
             }
+
+            ViewData["ListOfVehicles"] = new SelectList(_context.Vehicle.ToList(), "Id", "Name", reservation.VehicleId);
             return View(reservation);
         }
 
@@ -94,8 +114,9 @@ namespace Rental4You.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Employee")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,StartDate,EndDate,Confirmed,KmsStart,DamageStart,ObservationsStart,KmsEnd,DamageEnd,ObservationsEnd,DamageImages")] Reservation reservation)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,VehicleId,StartDate,EndDate,Confirmed,KmsStart,DamageStart,ObservationsStart,KmsEnd,DamageEnd,ObservationsEnd,DamageImages")] Reservation reservation)
         {
+
             if (id != reservation.Id)
             {
                 return NotFound();
@@ -121,6 +142,8 @@ namespace Rental4You.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewData["ListOfVehicles"] = new SelectList(_context.Vehicle.ToList(), "Id", "Name", reservation.VehicleId);
             return View(reservation);
         }
 
