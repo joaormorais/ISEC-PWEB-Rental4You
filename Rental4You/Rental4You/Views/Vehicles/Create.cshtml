@@ -33,19 +33,14 @@
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#"
-                       role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <label asp-for="Company" class="control-label"></label>
 
-                        Choose a company
+                <select asp-for="Company"
+                        asp-items="ViewBag.ListOfCompanies"
+                        class="form-control">
+                </select>
 
-                    </a>
-                    <ul class="dropdown-menu">
-
-                        <li>Em desenvolvimento...</li>
-
-                    </ul>
-                </li>
+                <span asp-validation-for="Company" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">

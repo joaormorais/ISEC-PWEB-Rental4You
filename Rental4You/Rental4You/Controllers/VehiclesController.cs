@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -151,14 +146,36 @@ namespace Rental4You.Controllers
             return View(vehicle);
         }
 
-        // GET: Vehicles/Create
+        //GET: Vehicles/Create
         [Authorize(Roles = "Employee")]
-        public IActionResult Create()
+            public IActionResult Create()
         {
+            ViewData["ListOfCompanies"] = new SelectList(_context.Company.ToList(), "Id", "Name");
             return View();
         }
 
         // POST: Vehicles/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Employee")]
+        public async Task<IActionResult> Create([Bind("Id,Name,Type,Location,Price,Name,Available")] Vehicle vehicle)
+        {
+            ViewData["ListaOfCompanies"] =
+       new SelectList(_context.Company.ToList(), "Id", "Name");
+            ModelState.Remove(nameof(vehicle.Company));
+
+            if (ModelState.IsValid)
+            {
+                _context.Add(vehicle);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(vehicle);
+        }
+
+        /*// POST: Vehicles/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -173,7 +190,7 @@ namespace Rental4You.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(vehicle);
-        }
+        }*/
 
         // GET: Vehicles/Edit/5
         [Authorize(Roles = "Employee")]
