@@ -293,26 +293,25 @@ namespace Rental4You.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<bool>("Confirmed")
+                    b.Property<bool?>("Confirmed")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("DamageEnd")
+                    b.Property<bool?>("DamageEnd")
                         .HasColumnType("bit");
 
                     b.Property<byte[]>("DamageImages")
-                        .IsRequired()
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<bool>("DamageStart")
+                    b.Property<bool?>("DamageStart")
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("KmsEnd")
+                    b.Property<decimal?>("KmsEnd")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("KmsStart")
+                    b.Property<decimal?>("KmsStart")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("ObservationsEnd")

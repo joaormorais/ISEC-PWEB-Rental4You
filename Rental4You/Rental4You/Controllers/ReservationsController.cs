@@ -60,7 +60,7 @@ namespace Rental4You.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Client")]
-        public async Task<IActionResult> Create([Bind("Id,StartDate,EndDate,Confirmed,KmsStart,DamageStart,ObservationsStart,KmsEnd,DamageEnd,ObservationsEnd,DamageImages")] Reservation reservation)
+        public async Task<IActionResult> Create([Bind("Id,StartDate,EndDate")] Reservation reservation)
         {
             if (ModelState.IsValid)
             {
