@@ -26,7 +26,7 @@ namespace Rental4You.Data
             await roleManager.CreateAsync(new IdentityRole(Roles.Manager.ToString()));
 
             // Create the Admin
-            var admin = new ApplicationUser
+            var defaultUser = new ApplicationUser
             {
                 UserName = "admin@localhost.com",
                 Email = "admin@localhost.com",
@@ -35,16 +35,14 @@ namespace Rental4You.Data
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true
             };
-
-            if (userManager.Users.All(u => u.Id != admin.Id))
+            
+            var user = await userManager.FindByEmailAsync(defaultUser.Email);
+            if (user == null)
             {
-                var user = await userManager.FindByEmailAsync(admin.Email);
-                if (user == null)
-                {
-                    await userManager.CreateAsync(admin, "Is3C..00");
-                    await userManager.AddToRoleAsync(admin, Roles.Admin.ToString());
-                }
+                await userManager.CreateAsync(defaultUser, "Is3C..00");
+                await userManager.AddToRoleAsync(defaultUser, Roles.Admin.ToString());
             }
+            
         }
     }
 }

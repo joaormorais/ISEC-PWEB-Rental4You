@@ -2,15 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Rental4You.Data;
 using Rental4You.Models;
-//using Rental4You.ViewModels;
+using Rental4You.ViewModels;
 
 namespace Rental4You.Controllers
 {
+
     public class VehiclesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -149,6 +152,7 @@ namespace Rental4You.Controllers
         }
 
         // GET: Vehicles/Create
+        [Authorize(Roles = "Employee")]
         public IActionResult Create()
         {
             return View();
@@ -159,6 +163,7 @@ namespace Rental4You.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Employee")]
         public async Task<IActionResult> Create([Bind("Id,Name,Type,Location,Price,Available")] Vehicle vehicle)
         {
             if (ModelState.IsValid)
@@ -171,6 +176,7 @@ namespace Rental4You.Controllers
         }
 
         // GET: Vehicles/Edit/5
+        [Authorize(Roles = "Employee")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Vehicle == null)
@@ -191,6 +197,7 @@ namespace Rental4You.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Employee")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Type,Location,Price,Available")] Vehicle vehicle)
         {
             if (id != vehicle.Id)
@@ -222,6 +229,7 @@ namespace Rental4You.Controllers
         }
 
         // GET: Vehicles/Delete/5
+        [Authorize(Roles = "Employee")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Vehicle == null)
@@ -236,12 +244,19 @@ namespace Rental4You.Controllers
                 return NotFound();
             }
 
+            // verify if the vehicle has a reservation
+            if(vehicle.Reservations!=null)
+            {
+                return NotFound();
+            }
+
             return View(vehicle);
         }
 
         // POST: Vehicles/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Employee")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Vehicle == null)
