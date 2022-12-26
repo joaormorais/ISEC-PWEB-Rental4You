@@ -24,6 +24,8 @@ namespace Rental4You.Controllers
         public async Task<IActionResult> Index(string? TextToSearchName, string? TextToSearchLocation, string? TextToSearchCompany)
         {
 
+            ViewData["ListOfCompanies"] = new SelectList(_context.Company.ToList(), "Id", "Name");
+
             // if the user let's every textbox empty, it's shown every vehicle
             if (string.IsNullOrWhiteSpace(TextToSearchName) && string.IsNullOrWhiteSpace(TextToSearchLocation) && string.IsNullOrWhiteSpace(TextToSearchCompany))
             {
@@ -93,6 +95,8 @@ namespace Rental4You.Controllers
         public async Task<IActionResult> Index(string? filter, string? sortOrder)
         {
 
+            ViewData["ListOfCompanies"] = new SelectList(_context.Company.ToList(), "Id", "Name");
+
             if (!string.IsNullOrWhiteSpace(filter))
             {
                 var result = from c in _context.Vehicle
@@ -160,7 +164,7 @@ namespace Rental4You.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Employee")]
-        public async Task<IActionResult> Create([Bind("Id,Name,Type,Location,Price,Name,Available")] Vehicle vehicle)
+        public async Task<IActionResult> Create([Bind("Id,Name,Type,Location,Price,Available,CompanyId")] Vehicle vehicle)
         {
             ViewData["ListaOfCompanies"] =
        new SelectList(_context.Company.ToList(), "Id", "Name");
