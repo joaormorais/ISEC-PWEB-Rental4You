@@ -1,4 +1,7 @@
-﻿namespace Rental4You.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.Xml.Linq;
+
+namespace Rental4You.Models
 {
     public class Reservation
     {
@@ -17,6 +20,10 @@
         // possiveis fotos do estrago
         public byte[]? DamageImages { get; set; }
         // de acordo com as posicoes --> 0: cliente 1: funcionario de levantamento 2: funcionario de entrega
+        [Display(Name = "~Clienteeeeeeeeeeeee", Prompt = "Select the name of the user")]
+        public int? ClientId { get; set; }
+        public int? DelieverEmployeeId { get; set; }
+        public int? RecieverEmployeeId { get; set; }
         public ICollection<ApplicationUser>? Users { get; set; }
         /*public int? ClientId { get; set; }
         public ApplicationUser? Client { get; set; }

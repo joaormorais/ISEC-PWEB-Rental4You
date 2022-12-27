@@ -105,8 +105,9 @@ namespace Rental4You.Controllers
             }
 
             ViewData["ListOfVehicles"] = new SelectList(_context.Vehicle.ToList(), "Id", "Name", reservation.VehicleId);
-            //ViewData["ListOfUsers"] = new SelectList(_userManager.Users.ToList(), "Id", "Name", reservation.Users);
-            ViewData["ListOfUsers"] = new SelectList(_userManager.Users.ToList(), "Id", "FirstName", reservation.Users);
+            ViewData["ListOfUsers1"] = new SelectList(_userManager.Users.ToList(), "Id", "FirstName", reservation.ClientId);
+            ViewData["ListOfUsers2"] = new SelectList(_userManager.Users.ToList(), "Id", "FirstName", reservation.DelieverEmployeeId);
+            ViewData["ListOfUsers3"] = new SelectList(_userManager.Users.ToList(), "Id", "FirstName", reservation.RecieverEmployeeId);
             return View(reservation);
         }
 
@@ -116,11 +117,8 @@ namespace Rental4You.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Employee")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,VehicleId,StartDate,EndDate,Confirmed,KmsStart,DamageStart,ObservationsStart,KmsEnd,DamageEnd,ObservationsEnd,DamageImages,Users")] Reservation reservation)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,ClientId,VehicleId,StartDate,EndDate,DelieverEmployeeId,Confirmed,KmsStart,DamageStart,ObservationsStart,RecieverEmployeeId,KmsEnd,DamageEnd,ObservationsEnd,DamageImages,Users")] Reservation reservation)
         {
-
-            ViewData["ListOfUsers"] = new SelectList(_userManager.Users.ToList(), "Id", "FirstName", reservation.Users);
-
             if (id != reservation.Id)
             {
                 return NotFound();
@@ -148,7 +146,9 @@ namespace Rental4You.Controllers
             }
 
             ViewData["ListOfVehicles"] = new SelectList(_context.Vehicle.ToList(), "Id", "Name", reservation.VehicleId);
-            //ViewData["ListOfUsers"] = new SelectList(_userManager.Users.ToList(), "Id", "Name", reservation.Users);
+            ViewData["ListOfUsers1"] = new SelectList(_userManager.Users.ToList(), "Id", "FirstName", reservation.ClientId);
+            ViewData["ListOfUsers2"] = new SelectList(_userManager.Users.ToList(), "Id", "FirstName", reservation.DelieverEmployeeId);
+            ViewData["ListOfUsers3"] = new SelectList(_userManager.Users.ToList(), "Id", "FirstName", reservation.RecieverEmployeeId);
             return View(reservation);
         }
 
