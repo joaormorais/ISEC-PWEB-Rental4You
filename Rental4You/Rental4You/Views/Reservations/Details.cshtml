@@ -77,8 +77,7 @@
             @Html.DisplayFor(model => model.DamageImages)
         </dd>
 
-        
-
+        @* 0 - cliente / 1 - funcionário de levantamento / 2 - funcionário de entrega *@
         @foreach (var item in Model.Users)
         {
             <dt class="col-sm-2">
@@ -88,6 +87,7 @@
                 @Html.DisplayFor(model => item.FirstName)
             </dd>
         }
+
     </dl>
 </div>
 <div>

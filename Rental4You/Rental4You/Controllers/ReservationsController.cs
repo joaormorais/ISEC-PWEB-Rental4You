@@ -105,6 +105,8 @@ namespace Rental4You.Controllers
             }
 
             ViewData["ListOfVehicles"] = new SelectList(_context.Vehicle.ToList(), "Id", "Name", reservation.VehicleId);
+            //ViewData["ListOfUsers"] = new SelectList(_userManager.Users.ToList(), "Id", "Name", reservation.Users);
+            ViewData["ListOfUsers"] = new SelectList(_userManager.Users.ToList(), "Id", "FirstName", reservation.Users);
             return View(reservation);
         }
 
@@ -114,8 +116,10 @@ namespace Rental4You.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Employee")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,VehicleId,StartDate,EndDate,Confirmed,KmsStart,DamageStart,ObservationsStart,KmsEnd,DamageEnd,ObservationsEnd,DamageImages")] Reservation reservation)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,VehicleId,StartDate,EndDate,Confirmed,KmsStart,DamageStart,ObservationsStart,KmsEnd,DamageEnd,ObservationsEnd,DamageImages,Users")] Reservation reservation)
         {
+
+            ViewData["ListOfUsers"] = new SelectList(_userManager.Users.ToList(), "Id", "FirstName", reservation.Users);
 
             if (id != reservation.Id)
             {
@@ -144,6 +148,7 @@ namespace Rental4You.Controllers
             }
 
             ViewData["ListOfVehicles"] = new SelectList(_context.Vehicle.ToList(), "Id", "Name", reservation.VehicleId);
+            //ViewData["ListOfUsers"] = new SelectList(_userManager.Users.ToList(), "Id", "Name", reservation.Users);
             return View(reservation);
         }
 
