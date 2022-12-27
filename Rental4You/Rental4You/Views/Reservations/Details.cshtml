@@ -77,8 +77,31 @@
             @Html.DisplayFor(model => model.DamageImages)
         </dd>
 
+        <dt class="col-sm-2">
+            <span class="badge bg-dark text-white">Client</span>
+        </dt>
+        <dd class="col-sm-10">
+            <span class="badge bg-dark text-white">@ViewBag.clientteste</span>
+        </dd>
+
+        <dt class="col-sm-2">
+            <span class="badge bg-dark text-white">Deliever Employee</span>
+        </dt>
+        <dd class="col-sm-10">
+            <span class="badge bg-dark text-white">@ViewBag.func1</span>
+        </dd>
+
+        <dt class="col-sm-2">
+            <span class="badge bg-dark text-white">Receiver Employee</span>
+        </dt>
+        <dd class="col-sm-10">
+            <span class="badge bg-dark text-white">@ViewBag.func2</span>
+        </dd>
+
+        
+
         @* 0 - cliente / 1 - funcionário de levantamento / 2 - funcionário de entrega *@
-        @foreach (var item in Model.Users)
+        @*@foreach (var item in Model.Users)
         {
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => item.FirstName)
@@ -86,7 +109,20 @@
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => item.FirstName)
             </dd>
-        }
+        }*@
+
+        @*<dt class="col-sm-2">
+            @foreach (var item in Model.Users)
+            {
+                @Html.DisplayNameFor(model => item.FirstName)
+            }
+        </dt>
+        <dd class="col-sm-10">
+            @foreach (var item in Model.Users)
+            {
+                @Html.DisplayFor(model => item.FirstName)
+            }
+        </dd>*@
 
     </dl>
 </div>

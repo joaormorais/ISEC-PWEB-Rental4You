@@ -27,19 +27,39 @@ namespace Rental4You.Controllers
         }
 
         // GET: Reservations
-        [Authorize(Roles = "Client, Employee")]
+        [Authorize(Roles = "Client,Employee")]
         public async Task<IActionResult> Index()
         {
             ViewData["ListOfVehicles"] = new SelectList(_context.Vehicle.ToList(), "Id", "Name");
-            return View(await _context.Reservation.ToListAsync());
+
+            var currentUser = await _userManager.GetUserAsync(User);
+            //System.Diagnostics.Trace.WriteLine("This is a log message -----------------------------------------------------------------------------------");
+            //System.Diagnostics.Trace.WriteLine(currentUser.UserName);
+            //System.Diagnostics.Trace.WriteLine("This is a log message -----------------------------------------------------------------------------------");
+
+            if (await _userManager.IsInRoleAsync(currentUser,"Employee"))
+            {
+                var applicationDbContext = _context.Reservation.Include(a => a.Vehicle).Include(a => a.Users);
+                return View(await applicationDbContext.ToListAsync());
+            }
+            else
+            {
+                var reservationsFiltered = _context.Reservation.
+                Include(a => a.Vehicle).
+                Include(a => a.Users).
+                Where(a => a.ClientId == _userManager.GetUserId(User)).
+                Where(a => a.Ended == false);
+
+                return View(await reservationsFiltered.ToListAsync());
+            }
+
         }
+
 
         // GET: Reservations/Details/5
         [Authorize(Roles = "Client, Employee")]
         public async Task<IActionResult> Details(int? id)
         {
-
-            
 
             if (id == null || _context.Reservation == null)
             {
@@ -54,6 +74,17 @@ namespace Rental4You.Controllers
             {
                 return NotFound();
             }
+
+            ViewBag.clientteste = reservation.Users.ElementAt(0);
+            if(reservation.Users.Count >= 2)
+            ViewBag.func1 = reservation.Users.ElementAt(1);
+            if(reservation.Users.Count == 3)
+            ViewBag.func2 = reservation.Users.ElementAt(2);
+
+
+            System.Diagnostics.Trace.WriteLine("This is a log message -----------------------------------------------------------------------------------");
+            System.Diagnostics.Trace.WriteLine(reservation.Users.Count);
+            System.Diagnostics.Trace.WriteLine("This is a log message -----------------------------------------------------------------------------------");
 
             return View(reservation);
         }
@@ -72,12 +103,27 @@ namespace Rental4You.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Client")]
-        public async Task<IActionResult> Create([Bind("Id,StartDate,EndDate,VehicleId")] Reservation reservation)
+        public async Task<IActionResult> Create([Bind("Id,VehicleId,StartDate,EndDate")] Reservation reservation)
         {
 
-            ViewData["ListaOfVehicles"] =
-       new SelectList(_context.Vehicle.ToList(), "Id", "Name");
             ModelState.Remove(nameof(reservation.Vehicle));
+            ModelState.Remove(nameof(reservation.VehicleId));
+
+            // remove from the ModelState the propreties about the ApplicationUser
+            ModelState.Remove(nameof(reservation.Users));
+            ModelState.Remove(nameof(reservation.ClientId));
+            ModelState.Remove(nameof(reservation.DelieverEmployeeId));
+            ModelState.Remove(nameof(reservation.RecieverEmployeeId));
+
+            // the ApplicationUserId is the Id of the current user
+            reservation.ClientId = _userManager.GetUserId(User);
+            var currentUser = await _userManager.GetUserAsync(User);
+            reservation.Users = new List<ApplicationUser>() { };
+            reservation.Users.Add(currentUser);
+            reservation.Ended = false;
+            reservation.Confirmed = false;
+
+            // the rest of the attributes of the class Reservation go empty because they are suppose to be changed in the edit settings
 
             if (ModelState.IsValid)
             {
@@ -85,6 +131,9 @@ namespace Rental4You.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewData["ListOfVehicles"] = new SelectList(_context.Vehicle.ToList(), "Id", "Name");
+            
             return View(reservation);
         }
 
@@ -145,10 +194,22 @@ namespace Rental4You.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
+            /*
+            var currentUser = await _userManager.GetUserAsync(User);
+            reservation.Users = new List<ApplicationUser>() { };
+            reservation.Users.Add(currentUser);
+             */
+
+            // sabber como alterar por ID   pos 0 1 e 2!!!!!!!!!!!!!
+
+           
+
+
             ViewData["ListOfVehicles"] = new SelectList(_context.Vehicle.ToList(), "Id", "Name", reservation.VehicleId);
             ViewData["ListOfUsers1"] = new SelectList(_userManager.Users.ToList(), "Id", "FirstName", reservation.ClientId);
             ViewData["ListOfUsers2"] = new SelectList(_userManager.Users.ToList(), "Id", "FirstName", reservation.DelieverEmployeeId);
             ViewData["ListOfUsers3"] = new SelectList(_userManager.Users.ToList(), "Id", "FirstName", reservation.RecieverEmployeeId);
+            
             return View(reservation);
         }
 

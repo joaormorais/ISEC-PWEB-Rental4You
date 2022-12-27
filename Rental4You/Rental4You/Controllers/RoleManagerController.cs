@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Rental4You.Controllers
 {
-    public class RoleManagerController : Controller
+    public class RoleManagerController : Controller // adicionar uma view para este controller e colocar na nav bar para o admin
     {
         private readonly RoleManager<IdentityRole> _roleManager;
         public RoleManagerController(RoleManager<IdentityRole> roleManager)

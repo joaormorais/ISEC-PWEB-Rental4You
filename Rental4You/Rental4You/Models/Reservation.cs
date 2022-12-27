@@ -20,17 +20,14 @@ namespace Rental4You.Models
         // possiveis fotos do estrago
         public byte[]? DamageImages { get; set; }
         // de acordo com as posicoes --> 0: cliente 1: funcionario de levantamento 2: funcionario de entrega
-        [Display(Name = "~Clienteeeeeeeeeeeee", Prompt = "Select the name of the user")]
-        public int? ClientId { get; set; }
-        public int? DelieverEmployeeId { get; set; }
-        public int? RecieverEmployeeId { get; set; }
+        [Display(Name = "Client", Prompt = "Name of the client")]
+        public string? ClientId { get; set; }
+        [Display(Name = "Deliever Employee", Prompt = "Name of the deliever employee")]
+        public string? DelieverEmployeeId { get; set; }
+        [Display(Name = "Reciever Employee", Prompt = "Name of the reciever employee")]
+        public string? RecieverEmployeeId { get; set; }
         public ICollection<ApplicationUser>? Users { get; set; }
-        /*public int? ClientId { get; set; }
-        public ApplicationUser? Client { get; set; }
-        public int? DelieverEmployeeId { get; set; }
-        public ApplicationUser? DelieverEmployee { get; set; }
-        public int? RecieverEmployeeId { get; set; }
-        public ApplicationUser? RecieverEmployee { get; set; }*/
+        public bool? Ended { get; set; }
 
     }
 }

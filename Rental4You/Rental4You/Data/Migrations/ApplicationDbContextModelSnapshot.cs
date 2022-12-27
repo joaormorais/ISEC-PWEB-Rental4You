@@ -293,8 +293,8 @@ namespace Rental4You.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("ClientId")
-                        .HasColumnType("int");
+                    b.Property<string>("ClientId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool?>("Confirmed")
                         .HasColumnType("bit");
@@ -308,11 +308,14 @@ namespace Rental4You.Data.Migrations
                     b.Property<bool?>("DamageStart")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("DelieverEmployeeId")
-                        .HasColumnType("int");
+                    b.Property<string>("DelieverEmployeeId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool?>("Ended")
+                        .HasColumnType("bit");
 
                     b.Property<decimal?>("KmsEnd")
                         .HasColumnType("decimal(18,2)");
@@ -326,8 +329,8 @@ namespace Rental4You.Data.Migrations
                     b.Property<string>("ObservationsStart")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("RecieverEmployeeId")
-                        .HasColumnType("int");
+                    b.Property<string>("RecieverEmployeeId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("StartDate")
                         .HasColumnType("datetime2");

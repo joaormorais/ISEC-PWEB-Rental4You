@@ -141,6 +141,7 @@ namespace Rental4You.Controllers
             }
 
             var vehicle = await _context.Vehicle
+                .Include(a => a.Company)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (vehicle == null)
             {
@@ -164,11 +165,11 @@ namespace Rental4You.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Employee")]
-        public async Task<IActionResult> Create([Bind("Id,Name,Type,Location,Price,Available,CompanyId")] Vehicle vehicle)
+        public async Task<IActionResult> Create([Bind("Id,Name,Type,Location,Price,CompanyId,Available")] Vehicle vehicle)
         {
-            ViewData["ListaOfCompanies"] =
-       new SelectList(_context.Company.ToList(), "Id", "Name");
+            
             ModelState.Remove(nameof(vehicle.Company));
+            ModelState.Remove(nameof(vehicle.CompanyId));
 
             if (ModelState.IsValid)
             {
@@ -176,6 +177,9 @@ namespace Rental4You.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewData["ListOfCompanies"] = new SelectList(_context.Company.ToList(), "Id", "Name");
+
             return View(vehicle);
         }
 
@@ -193,6 +197,9 @@ namespace Rental4You.Controllers
             {
                 return NotFound();
             }
+
+            ViewData["ListOfCompanies"] = new SelectList(_context.Company.ToList(), "Id", "Name");
+
             return View(vehicle);
         }
 
@@ -202,7 +209,7 @@ namespace Rental4You.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Employee")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Type,Location,Price,Available")] Vehicle vehicle)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Type,Location,Price,CompanyId,Available")] Vehicle vehicle)
         {
             if (id != vehicle.Id)
             {
@@ -229,6 +236,9 @@ namespace Rental4You.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewData["ListOfCompanies"] = new SelectList(_context.Company.ToList(), "Id", "Name");
+
             return View(vehicle);
         }
 
