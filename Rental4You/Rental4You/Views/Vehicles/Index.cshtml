@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Rental4You.Models.Vehicle>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Início";
 }
 
 <h1>Lista de veículos:</h1>
@@ -65,11 +65,11 @@
     <ul class="dropdown-menu">
 
         <li>
-            <a class="dropdown-item" asp-action="Index" asp-route-sortOrder="price_up">Price (up)</a>
+            <a class="dropdown-item" asp-action="Index" asp-route-sortOrder="price_up">Preço ascendente</a>
         </li>
 
         <li>
-            <a class="dropdown-item" asp-action="Index" asp-route-sortOrder="price_down">Price (down)</a>
+            <a class="dropdown-item" asp-action="Index" asp-route-sortOrder="price_down">Preço descendente</a>
         </li>
 
     </ul>
@@ -121,9 +121,9 @@
                 @Html.DisplayFor(modelItem => item.Company.Name)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Detalhes</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Apagar</a>
             </td>
         </tr>
 }

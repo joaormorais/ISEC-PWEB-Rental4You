@@ -1,13 +1,13 @@
 ﻿@model Rental4You.Models.Company
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalhes";
 }
 
-<h1>Details</h1>
+<h1>A visualizar detalhes de uma empresa...</h1>
 
 <div>
-    <h4>Company</h4>
+    <h4>Empresa:</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -31,13 +31,13 @@
 
         <!-- meter aqui uma linha divisoria -->
 
-        @foreach (Vehicle vehicle in ViewBag.ListOfCarsCompany)
+        @foreach (Vehicle item in ViewBag.ListOfCarsCompany)
         {
             <dt class = "col-sm-2">
-                @Html.DisplayNameFor(vehicle => vehicle.Name)
+                Veículo associado:
             </dt>
             <dd class = "col-sm-10">
-                @Html.DisplayFor(vehicle => vehicle.Name)
+                <a>@item.Name</a>
             </dd>
         }
 
@@ -46,6 +46,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Editar</a> |
+    <a asp-action="Index">Voltar</a>
 </div>

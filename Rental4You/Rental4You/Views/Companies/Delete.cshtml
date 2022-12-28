@@ -1,14 +1,14 @@
 ﻿@model Rental4You.Models.Company
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Apagar";
 }
 
-<h1>Delete</h1>
+<h1>A apagar uma empresa...</h1>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Tem a certeza que quer apagar esta empresa?</h3>
 <div>
-    <h4>Company</h4>
+    <h4>Empresa:</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -34,6 +34,6 @@
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <a asp-action="Index">Voltar</a>
     </form>
 </div>

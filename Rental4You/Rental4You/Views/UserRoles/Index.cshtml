@@ -7,11 +7,11 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
+            <th>Primeiro nome</th>
+            <th>Último nome</th>
             <th>Email</th>
-            <th>Roles</th>
-            <th>Action</th>
+            <th>Permissões</th>
+            <th>Ação</th>
         </tr>
     </thead>
     <tbody>
@@ -26,7 +26,7 @@
                     <a class="btn btn-primary"
                    asp-controller="UserRoles"
                    asp-action="Details"
-                   asp-route-userId="@user.UserId">Manage Roles</a>
+                   asp-route-userId="@user.UserId">Atribuir permissões</a>
                 </td>
             </tr>
         }
