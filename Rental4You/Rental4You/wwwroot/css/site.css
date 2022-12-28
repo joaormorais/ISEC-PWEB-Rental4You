@@ -13,11 +13,57 @@ html {
   min-height: 100%;
 }
 
-body {
-  margin-bottom: 60px;
-}
 
+body {
+    margin-bottom: 60px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+}
+.nav-item:hover{
+    background-color:rgb(128, 128, 128, 0.5);
+}
+.navbar {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    margin-top:10px;
+    margin-bottom:10px;
+}
 li {
     display: inline-block;
     list-style-type: none;
+}
+
+.banner_01 {
+    background-image: url('/img/Tesla.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+}
+.banner_06 {
+    background-image: url('/img/jaguar.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+}
+.banner_02 {
+    background-image: url('/img/porshe1.jpg');
+    background-size: cover;
+    width:1550px;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+}
+
+.col-md-4 {
+    background-color: white;
+    position: relative;
+    left: 34%;
+    margin-top:20px;
+    height:560px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
 }

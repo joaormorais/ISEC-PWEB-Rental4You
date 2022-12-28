@@ -5,12 +5,44 @@
       "PackagePath": "staticwebassets\\Rental4You.bundle.scp.css"
     },
     {
+      "Id": "C:\\Users\\joaom\\Desktop\\Morais\\Universidade\\3ano\\1semestre\\TrabalhosPraticos\\PWEB\\ISEC-PWEB-Rental4You\\Rental4You\\Rental4You\\wwwroot\\css\\carousel.css",
+      "PackagePath": "staticwebassets\\css\\carousel.css"
+    },
+    {
       "Id": "C:\\Users\\joaom\\Desktop\\Morais\\Universidade\\3ano\\1semestre\\TrabalhosPraticos\\PWEB\\ISEC-PWEB-Rental4You\\Rental4You\\Rental4You\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },
     {
       "Id": "C:\\Users\\joaom\\Desktop\\Morais\\Universidade\\3ano\\1semestre\\TrabalhosPraticos\\PWEB\\ISEC-PWEB-Rental4You\\Rental4You\\Rental4You\\wwwroot\\favicon.ico",
       "PackagePath": "staticwebassets\\favicon.ico"
+    },
+    {
+      "Id": "C:\\Users\\joaom\\Desktop\\Morais\\Universidade\\3ano\\1semestre\\TrabalhosPraticos\\PWEB\\ISEC-PWEB-Rental4You\\Rental4You\\Rental4You\\wwwroot\\img\\Tesla.jpg",
+      "PackagePath": "staticwebassets\\img\\Tesla.jpg"
+    },
+    {
+      "Id": "C:\\Users\\joaom\\Desktop\\Morais\\Universidade\\3ano\\1semestre\\TrabalhosPraticos\\PWEB\\ISEC-PWEB-Rental4You\\Rental4You\\Rental4You\\wwwroot\\img\\backgroundlogin.jpg",
+      "PackagePath": "staticwebassets\\img\\backgroundlogin.jpg"
+    },
+    {
+      "Id": "C:\\Users\\joaom\\Desktop\\Morais\\Universidade\\3ano\\1semestre\\TrabalhosPraticos\\PWEB\\ISEC-PWEB-Rental4You\\Rental4You\\Rental4You\\wwwroot\\img\\homeback.jpg",
+      "PackagePath": "staticwebassets\\img\\homeback.jpg"
+    },
+    {
+      "Id": "C:\\Users\\joaom\\Desktop\\Morais\\Universidade\\3ano\\1semestre\\TrabalhosPraticos\\PWEB\\ISEC-PWEB-Rental4You\\Rental4You\\Rental4You\\wwwroot\\img\\jaguar.png",
+      "PackagePath": "staticwebassets\\img\\jaguar.png"
+    },
+    {
+      "Id": "C:\\Users\\joaom\\Desktop\\Morais\\Universidade\\3ano\\1semestre\\TrabalhosPraticos\\PWEB\\ISEC-PWEB-Rental4You\\Rental4You\\Rental4You\\wwwroot\\img\\porshe1.jpg",
+      "PackagePath": "staticwebassets\\img\\porshe1.jpg"
+    },
+    {
+      "Id": "C:\\Users\\joaom\\Desktop\\Morais\\Universidade\\3ano\\1semestre\\TrabalhosPraticos\\PWEB\\ISEC-PWEB-Rental4You\\Rental4You\\Rental4You\\wwwroot\\img\\register.jpg",
+      "PackagePath": "staticwebassets\\img\\register.jpg"
+    },
+    {
+      "Id": "C:\\Users\\joaom\\Desktop\\Morais\\Universidade\\3ano\\1semestre\\TrabalhosPraticos\\PWEB\\ISEC-PWEB-Rental4You\\Rental4You\\Rental4You\\wwwroot\\img\\tesla2.png",
+      "PackagePath": "staticwebassets\\img\\tesla2.png"
     },
     {
       "Id": "C:\\Users\\joaom\\Desktop\\Morais\\Universidade\\3ano\\1semestre\\TrabalhosPraticos\\PWEB\\ISEC-PWEB-Rental4You\\Rental4You\\Rental4You\\wwwroot\\js\\site.js",
