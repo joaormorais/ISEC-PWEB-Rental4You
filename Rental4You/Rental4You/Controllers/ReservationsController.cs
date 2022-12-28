@@ -119,6 +119,8 @@ namespace Rental4You.Controllers
             reservation.ClientId = _userManager.GetUserId(User);
             reservation.Ended = false;
             reservation.Confirmed = false;
+            reservation.DamageStart = false;
+            reservation.DamageEnd = false;
 
             // the rest of the attributes of the class Reservation go empty because they are suppose to be changed in the edit settings
 
@@ -150,10 +152,33 @@ namespace Rental4You.Controllers
                 return NotFound();
             }
 
+            // find only clients
+            var listOfClients = new List<ApplicationUser>();
+
+            foreach (var client in _context.Users.ToList())
+            {
+                if (await _userManager.IsInRoleAsync(client, "Client"))
+                {
+                    listOfClients.Add(client);
+                }
+            }
+
+            // find only employees 
+            var listOfEmployees = new List<ApplicationUser>();
+
+            foreach(var employee in _context.Users.ToList())
+            {
+                if(await _userManager.IsInRoleAsync(employee, "Employee"))
+                {
+                    listOfEmployees.Add(employee);
+                }
+            }
+            
+
             ViewData["ListOfVehicles"] = new SelectList(_context.Vehicle.ToList(), "Id", "Name", reservation.VehicleId);
-            ViewData["ListOfUsers1"] = new SelectList(_userManager.Users.ToList(), "Id", "FirstName", reservation.ClientId);
-            ViewData["ListOfUsers2"] = new SelectList(_userManager.Users.ToList(), "Id", "FirstName", reservation.DelieverEmployeeId);
-            ViewData["ListOfUsers3"] = new SelectList(_userManager.Users.ToList(), "Id", "FirstName", reservation.RecieverEmployeeId);
+            ViewData["ListOfUsers1"] = new SelectList(listOfClients, "Id", "FirstName", reservation.ClientId);
+            ViewData["ListOfUsers2"] = new SelectList(listOfEmployees, "Id", "FirstName", reservation.DelieverEmployeeId);
+            ViewData["ListOfUsers3"] = new SelectList(listOfEmployees, "Id", "FirstName", reservation.RecieverEmployeeId);
 
             return View(reservation);
         }

@@ -296,16 +296,16 @@ namespace Rental4You.Data.Migrations
                     b.Property<string>("ClientId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool?>("Confirmed")
+                    b.Property<bool>("Confirmed")
                         .HasColumnType("bit");
 
-                    b.Property<bool?>("DamageEnd")
+                    b.Property<bool>("DamageEnd")
                         .HasColumnType("bit");
 
                     b.Property<byte[]>("DamageImages")
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<bool?>("DamageStart")
+                    b.Property<bool>("DamageStart")
                         .HasColumnType("bit");
 
                     b.Property<string>("DelieverEmployeeId")
@@ -314,7 +314,7 @@ namespace Rental4You.Data.Migrations
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool?>("Ended")
+                    b.Property<bool>("Ended")
                         .HasColumnType("bit");
 
                     b.Property<decimal?>("KmsEnd")

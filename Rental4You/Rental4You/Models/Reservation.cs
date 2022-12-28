@@ -10,12 +10,12 @@ namespace Rental4You.Models
         public Vehicle? Vehicle { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
-        public bool? Confirmed { get; set; }
+        public bool Confirmed { get; set; }
         public Decimal? KmsStart { get; set; }
-        public bool? DamageStart { get; set; }
+        public bool DamageStart { get; set; }
         public string? ObservationsStart { get; set; }
         public Decimal? KmsEnd { get; set; }
-        public bool? DamageEnd { get; set; }
+        public bool DamageEnd { get; set; }
         public string? ObservationsEnd { get; set; }
         // possiveis fotos do estrago
         public byte[]? DamageImages { get; set; }
@@ -27,7 +27,7 @@ namespace Rental4You.Models
         [Display(Name = "Reciever Employee", Prompt = "Name of the reciever employee")]
         public string? RecieverEmployeeId { get; set; }
         public ICollection<ApplicationUser>? Users { get; set; }
-        public bool? Ended { get; set; }
+        public bool Ended { get; set; }
 
     }
 }
