@@ -28,6 +28,21 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Available)
         </dd>
+
+        <!-- meter aqui uma linha divisoria -->
+
+        @foreach (Vehicle vehicle in ViewBag.ListOfCarsCompany)
+        {
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(vehicle => vehicle.Name)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(vehicle => vehicle.Name)
+            </dd>
+        }
+
+        <!-- meter aqui uma linha divisoria -->
+
     </dl>
 </div>
 <div>

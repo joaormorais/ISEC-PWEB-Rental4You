@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Rental4You.Data;
 using Rental4You.Models;
-using Rental4You.ViewModels;
 
 namespace Rental4You.Controllers
 {
@@ -12,16 +12,21 @@ namespace Rental4You.Controllers
     public class VehiclesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public VehiclesController(ApplicationDbContext context)
+        public VehiclesController(
+            ApplicationDbContext context,
+            UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Vehicles
 
-        [HttpPost]
-        public async Task<IActionResult> Index(string? TextToSearchName, string? TextToSearchLocation, string? TextToSearchCompany)
+        /*[HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Search(string? TextToSearchName, string? TextToSearchLocation, string? TextToSearchCompany)
         {
 
             ViewData["ListOfCompanies"] = new SelectList(_context.Company.ToList(), "Id", "Name");
@@ -90,18 +95,80 @@ namespace Rental4You.Controllers
 
             return View(await _context.Vehicle.ToListAsync());
 
+        }*/
+
+        public IActionResult Search()
+        {
+            return View();
         }
 
         public async Task<IActionResult> Index(string? filter, string? sortOrder)
         {
 
+            // fazer uma condição caso o utilizador seja cliente e assim só vê o que é available (manter o que já está caso seja outra role qualquer)
+
+            var currentUser = await _userManager.GetUserAsync(User);
+
+            if (currentUser != null)
+            {
+                if (await _userManager.IsInRoleAsync(currentUser, "Client"))
+                {
+
+                    var listOfAvailableCars = new List<Vehicle>();
+
+                    foreach (var item in _context.Vehicle.ToList())
+                    {
+                        if (item.Available)
+                            listOfAvailableCars.Add(item);
+
+                    }
+
+                    ViewData["ListOfCompanies"] = new SelectList(listOfAvailableCars, "Id", "Name");
+
+                    if (!string.IsNullOrWhiteSpace(filter))
+                    {
+                        var result = from c in _context.Vehicle
+                                     where (c.Type.Contains(filter) || c.Company.Name.Contains(filter)) && c.Available == true
+                                     select c;
+
+                        return View(result.ToList());
+                    }
+                    else if (!string.IsNullOrEmpty(sortOrder))
+                    {
+
+                        var vehiclesList = from C in _context.Vehicle
+                                           where C.Available == true
+                                           select C;
+
+                        switch (sortOrder)
+                        {
+
+                            case "price_down":
+                                vehiclesList = vehiclesList.OrderByDescending(s => s.Price);
+                                break;
+
+                            case "price_up":
+                                vehiclesList = vehiclesList.OrderBy(s => s.Price);
+                                break;
+
+                        }
+
+                        return View(vehiclesList.ToList());
+
+                    }
+                    else
+                        return View(listOfAvailableCars.ToList());
+
+                }
+            }
+            
             ViewData["ListOfCompanies"] = new SelectList(_context.Company.ToList(), "Id", "Name");
 
             if (!string.IsNullOrWhiteSpace(filter))
             {
                 var result = from c in _context.Vehicle
-                             where c.Type.Contains(filter) || c.Company.Name.Contains(filter)
-                             select c;
+                                where c.Type.Contains(filter) || c.Company.Name.Contains(filter)
+                                select c;
 
                 return View(result.ToList());
             }
@@ -109,7 +176,7 @@ namespace Rental4You.Controllers
             {
 
                 var vehiclesList = from C in _context.Vehicle
-                                   select C;
+                                    select C;
 
                 switch (sortOrder)
                 {
@@ -129,6 +196,7 @@ namespace Rental4You.Controllers
             }
             else
                 return View(await _context.Vehicle.ToListAsync());
+            
 
         }
 

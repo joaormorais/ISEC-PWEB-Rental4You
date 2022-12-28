@@ -93,7 +93,16 @@ namespace Rental4You.Controllers
         [Authorize(Roles = "Client")]
         public IActionResult Create()
         {
-            ViewData["ListOfVehicles"] = new SelectList(_context.Vehicle.ToList(), "Id", "Name");
+            var listOfAvailableCars = new List<Vehicle>();
+
+            foreach (var item in _context.Vehicle.ToList())
+            {
+                if (item.Available)
+                    listOfAvailableCars.Add(item);
+
+            }
+
+            ViewData["ListOfVehicles"] = new SelectList(listOfAvailableCars, "Id", "Name");
             return View();
         }
 
@@ -106,7 +115,31 @@ namespace Rental4You.Controllers
         public async Task<IActionResult> Create([Bind("Id,VehicleId,StartDate,EndDate")] Reservation reservation)
         {
 
-            ModelState.Remove(nameof(reservation.Vehicle));
+            // Verify if the dates are correct
+            if(reservation.StartDate > reservation.EndDate)
+                ModelState.AddModelError("StartDate", "A data de inicio não pode ser maior que a data de fim");
+
+            // Verify if the user can make a reservation on those dates 
+            foreach(var item in _context.Reservation.ToList())
+            {
+                if (item.VehicleId == reservation.VehicleId)
+                {
+                    // example: reservation1(r1) and reservation2(r2)
+                    // a reservation doesn't go above each other
+                    // r2.StartDate > r1.EndDate || r2.EndDate < r1.StartDate
+                    // in this condition we want the opposite
+                    if(!(reservation.StartDate>item.EndDate || reservation.EndDate < item.StartDate))
+                    {
+                        ModelState.AddModelError("StartDate", "Já existe uma reserva para esse carro nessa altura");
+                    }
+                }
+            }
+
+            if (ModelState.IsValid)
+            {
+
+                // remove from the ModelState the propreties about the Vehicle
+                ModelState.Remove(nameof(reservation.Vehicle));
             ModelState.Remove(nameof(reservation.VehicleId));
 
             // remove from the ModelState the propreties about the ApplicationUser
@@ -124,15 +157,26 @@ namespace Rental4You.Controllers
 
             // the rest of the attributes of the class Reservation go empty because they are suppose to be changed in the edit settings
 
-            if (ModelState.IsValid)
-            {
+            
                 _context.Add(reservation);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["ListOfVehicles"] = new SelectList(_context.Vehicle.ToList(), "Id", "Name");
-            
+            // Adding cars to the ViewData
+            var listOfAvailableCars = new List<Vehicle>();
+
+            foreach (var item in _context.Vehicle.ToList())
+            {
+                if (item.Available)
+                    listOfAvailableCars.Add(item);
+
+            }
+
+            // View Data with the cars marked as available by their company
+            ViewData["ListOfVehicles"] = new SelectList(listOfAvailableCars, "Id", "Name");
+
+
             return View(reservation);
         }
 

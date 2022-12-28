@@ -10,7 +10,8 @@ namespace Rental4You.Models
         public string? Name { get; set; }
         public string? Acronym { get; set; }
         public ICollection<Vehicle>? Reservations { get; set; }
-        // coleção de funcionarios e gestores
+        // Collection of clients and managers
+        //public List<int> UsersId { get; set; }
         public ICollection<ApplicationUser>? Users { get; set; }
         public bool Available { get; set; }
     }

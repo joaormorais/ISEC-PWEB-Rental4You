@@ -4,25 +4,25 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>List of cars:</h1>
+<h1>Lista de veículos:</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Criar um novo veículo</a>
 </p>
 
 <div>
-    <form method="post" >
-        <input type="text" name="TextToSearchName" placeholder="Name of the car">
-        <input type="text" name="TextToSearchLocation" placeholder="Location of the car">
-        <input type="text" name="TextToSearchCompany" placeholder="Company renting">
-        <input type="submit" value="Search" />
+    <form action="/Vehicles/Search" method="post">
+        <input type="text" name="TextToSearchName" placeholder="Nome do veículo">
+        <input type="text" name="TextToSearchLocation" placeholder="Localização do veículo">
+        <input type="text" name="TextToSearchCompany" placeholder="Empresa a alugar">
+        <input type="submit" value="Procurar" asp-action="Search"/>
     </form>
 </div>
 
 <li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle" href="#"
        role="button" data-bs-toggle="dropdown" aria-expanded="false">
-        Filter by type
+        Filtrar por tipo
     </a>
     <ul class="dropdown-menu">
 
@@ -39,7 +39,7 @@
 <li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle" href="#"
        role="button" data-bs-toggle="dropdown" aria-expanded="false">
-        Filter by company
+        Filrar por empresa a alugar
     </a>
     <ul class="dropdown-menu">
 
@@ -60,7 +60,7 @@
 <li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle" href="#"
        role="button" data-bs-toggle="dropdown" aria-expanded="false">
-        Order by
+        Ordenar por
     </a>
     <ul class="dropdown-menu">
 
@@ -117,9 +117,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Available)
             </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Company.Name)
-                </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Company.Name)
+            </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |

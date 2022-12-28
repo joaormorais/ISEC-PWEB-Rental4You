@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,16 +14,28 @@ namespace Rental4You.Controllers
     public class CompaniesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public CompaniesController(ApplicationDbContext context)
+        public CompaniesController(
+            ApplicationDbContext context,
+            UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Companies
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Company.ToListAsync());
+            /*var currentUser = await _userManager.GetUserAsync(User);
+
+            if (await _userManager.IsInRoleAsync(currentUser, "Manager"))
+            {
+                var companiesFiltered = _context.Company.
+                    Where(a => )
+            }*/
+
+                return View(await _context.Company.ToListAsync());
         }
 
         // GET: Companies/Details/5
@@ -39,6 +52,16 @@ namespace Rental4You.Controllers
             {
                 return NotFound();
             }
+
+            var listOfVehiclesCompany = new List<Vehicle>();
+
+            foreach (var item in _context.Vehicle.ToList())
+            {
+                if (item.CompanyId == company.Id)
+                    listOfVehiclesCompany.Add(item);
+            }
+
+            ViewBag.ListOfCarsCompany = listOfVehiclesCompany;
 
             return View(company);
         }
