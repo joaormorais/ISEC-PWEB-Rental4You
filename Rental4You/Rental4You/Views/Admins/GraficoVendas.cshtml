@@ -1,0 +1,44 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+<h1>Grafico Dados</h1>
+<div>
+    <canvas id="chartGraficoVendas"></canvas>
+</div>
+@section Scripts {
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+             $.ajax({
+             type: "POST",
+            url: "/Admins/GetDadosVendas",
+             contentType: "application/json; charset=utf-8",
+             dataType: "json",
+             success: function (data) {
+             let Labels = data[0];
+             let Datasets1 = data[1];
+             let dataT = {
+             labels: Labels,
+            datasets: [{
+             label: "Dados",
+            data: Datasets1,
+            fill: false,
+            borderWidth: 1,
+             backgroundColor: ["green", "yellow", "red", "cyan", "blue"]
+
+             }]
+             };
+             let ctx = $("#chartGraficoVendas").get(0).getContext("2d");
+             let myNewChart = new Chart(ctx, {
+             type: 'bar',
+             data: dataT,
+            options: {
+             responsive: true,
+            title: { display: true, text: 'Reservas Existentes ' },
+             legend: { position: 'bottom' },
+
+             }
+             });
+             }
+             });
+        </script>
+ }

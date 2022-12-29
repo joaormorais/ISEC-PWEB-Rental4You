@@ -37,6 +37,7 @@ namespace Rental4You.Models
         public string? RecieverEmployeeId { get; set; }
         public ICollection<ApplicationUser>? Users { get; set; }
         public bool Ended { get; set; }
+        public DateTime? ActualDate { get; set; }
 
     }
 }

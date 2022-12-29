@@ -189,6 +189,24 @@ namespace Rental4You.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Rental4You.Models.Admin", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("ReservationId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReservationId");
+
+                    b.ToTable("Admin");
+                });
+
             modelBuilder.Entity("Rental4You.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -196,6 +214,9 @@ namespace Rental4You.Data.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
+
+                    b.Property<DateTime?>("ActualTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -292,6 +313,9 @@ namespace Rental4You.Data.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime?>("ActualDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("ClientId")
                         .HasColumnType("nvarchar(max)");
@@ -457,6 +481,15 @@ namespace Rental4You.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Rental4You.Models.Admin", b =>
+                {
+                    b.HasOne("Rental4You.Models.Reservation", "Reservation")
+                        .WithMany()
+                        .HasForeignKey("ReservationId");
+
+                    b.Navigation("Reservation");
                 });
 
             modelBuilder.Entity("Rental4You.Models.Reservation", b =>

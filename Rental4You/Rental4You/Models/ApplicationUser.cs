@@ -16,5 +16,6 @@ namespace Rental4You.Models
         //public byte[] Avatar { get; set; }
         public ICollection<Reservation>? Reservations { get; set; }
         public ICollection<Company>? Companies { get; set; }
+        public DateTime? ActualTime { get; set; } = DateTime.Now;
     }
 }

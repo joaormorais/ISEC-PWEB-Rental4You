@@ -154,6 +154,7 @@ namespace Rental4You.Controllers
             reservation.Confirmed = false;
             reservation.DamageStart = false;
             reservation.DamageEnd = false;
+            reservation.ActualDate = DateTime.Now;
 
             // the rest of the attributes of the class Reservation go empty because they are suppose to be changed in the edit settings
 
