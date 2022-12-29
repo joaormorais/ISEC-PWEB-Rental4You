@@ -104,6 +104,15 @@ namespace Rental4You.Controllers
 
         public async Task<IActionResult> Index(string? filter, string? sortOrder)
         {
+            // send every company to the view so it is shown the correct one for any vehicle 
+            var listOfCompaniessida = new List<Company>();
+
+            foreach (var item in _context.Company.ToList())
+            {
+                listOfCompaniessida.Add(item);
+            }
+
+            ViewBag.ListOfCompaniesNovoCaralho = listOfCompaniessida;
 
             // fazer uma condição caso o utilizador seja cliente e assim só vê o que é available (manter o que já está caso seja outra role qualquer)
 

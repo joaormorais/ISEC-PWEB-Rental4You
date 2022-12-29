@@ -138,8 +138,8 @@ namespace Rental4You.Controllers
             if (ModelState.IsValid)
             {
 
-                // remove from the ModelState the propreties about the Vehicle
-                ModelState.Remove(nameof(reservation.Vehicle));
+            // remove from the ModelState the propreties about the Vehicle
+            ModelState.Remove(nameof(reservation.Vehicle));
             ModelState.Remove(nameof(reservation.VehicleId));
 
             // remove from the ModelState the propreties about the ApplicationUser

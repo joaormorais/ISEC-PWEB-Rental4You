@@ -4,6 +4,10 @@
     ViewData["Title"] = "Início";
 }
 
+@foreach(Company sida in ViewBag.ListOfCompaniesNovoCaralho){
+    @sida.Name
+}
+
 <h1>Lista de veículos:</h1>
 
 <p>
@@ -118,7 +122,11 @@
                 @Html.DisplayFor(modelItem => item.Available)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Company.Name)
+                    @*@foreach (Company item2 in ViewBag.ListOfCompanies)
+                    {
+                        if(item2.Id==item.CompanyId)
+                            @item2.Name
+                }*@
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |

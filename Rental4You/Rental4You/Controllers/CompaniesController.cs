@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -25,6 +27,7 @@ namespace Rental4You.Controllers
         }
 
         // GET: Companies
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Index()
         {
             /*var currentUser = await _userManager.GetUserAsync(User);
@@ -39,6 +42,7 @@ namespace Rental4You.Controllers
         }
 
         // GET: Companies/Details/5
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Company == null)
@@ -53,20 +57,21 @@ namespace Rental4You.Controllers
                 return NotFound();
             }
 
-            var listOfVehiclesCompany = new List<Vehicle>();
+            var listOfVehiclesCompaies = new List<Vehicle>();
 
             foreach (var item in _context.Vehicle.ToList())
             {
                 if (item.CompanyId == company.Id)
-                    listOfVehiclesCompany.Add(item);
+                    listOfVehiclesCompaies.Add(item);
             }
 
-            ViewBag.ListOfCarsCompany = listOfVehiclesCompany;
+            ViewBag.ListOfCarsCompany = listOfVehiclesCompaies;
 
             return View(company);
         }
 
         // GET: Companies/Create
+        [Authorize(Roles = "Manager")]
         public IActionResult Create()
         {
             return View();
@@ -77,6 +82,7 @@ namespace Rental4You.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Create([Bind("Id,Name,Acronym,Available")] Company company)
         {
             if (ModelState.IsValid)
@@ -89,6 +95,7 @@ namespace Rental4You.Controllers
         }
 
         // GET: Companies/Edit/5
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Company == null)
@@ -109,6 +116,7 @@ namespace Rental4You.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Acronym,Available")] Company company)
         {
             if (id != company.Id)
@@ -140,6 +148,7 @@ namespace Rental4You.Controllers
         }
 
         // GET: Companies/Delete/5
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Company == null)
@@ -160,6 +169,7 @@ namespace Rental4You.Controllers
         // POST: Companies/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Company == null)

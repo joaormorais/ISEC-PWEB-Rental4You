@@ -1,10 +1,13 @@
 ﻿
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Rental4You.Data;
 
 namespace Rental4You.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class RoleManagerController : Controller // adicionar uma view para este controller e colocar na nav bar para o admin
     {
         private readonly RoleManager<IdentityRole> _roleManager;
