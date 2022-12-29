@@ -26,7 +26,7 @@ namespace Rental4You.Controllers
         // GET: Vehicles
         public async Task<IActionResult> Index(string? filter, string? sortOrder)
         {
-            // send every company to the view so it is shown the correct one for any vehicle 
+            // send every company to the view so it is shown the correct one for any vehicle + helps the filtering
             var listOfAllCompanies = new List<Company>();
 
             foreach (var item in _context.Company.ToList())
@@ -35,6 +35,17 @@ namespace Rental4You.Controllers
             }
 
             ViewBag.ListOfAllCompanies = listOfAllCompanies;
+
+            // send every category of vehicle to the view to help filtering
+            var listOfAllTypes = new List<String>();
+
+            foreach (var item in _context.Vehicle.ToList())
+            {
+                if(!listOfAllTypes.Contains(item.Type))
+                    listOfAllTypes.Add(item.Type);  
+            }
+
+            ViewBag.ListOfAllTypes = listOfAllTypes;
 
             // fazer uma condição caso o utilizador seja cliente e assim só vê o que é available (manter o que já está caso seja outra role qualquer)
 

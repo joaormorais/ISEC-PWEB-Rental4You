@@ -36,10 +36,11 @@
     </a>
     <ul class="dropdown-menu">
 
-        @foreach (var group in Model.GroupBy(i => i.Type))
+        @*@foreach (var group in Model.GroupBy(i => i.Type))*@
+        @foreach (String s in ViewBag.ListOfAllTypes)
         {
             <li>
-                <a class="dropdown-item" asp-action="Index" asp-route-filter=@group.Key>@group.Key</a>
+                <a class="dropdown-item" asp-action="Index" asp-route-filter=@s>@s</a>
             </li>
         }
 
@@ -53,10 +54,11 @@
     </a>
     <ul class="dropdown-menu">
 
-        @foreach (var group in Model.GroupBy(i => i.Company))
+        @*@foreach (var group in Model.GroupBy(i => i.Company))*@
+        @foreach (Company c in ViewBag.ListOfAllCompanies)
         {
             <li>
-                <a class="dropdown-item" asp-action="Index" asp-route-filter=@group.Key>@group.Key</a>
+                <a class="dropdown-item" asp-action="Index" asp-route-filter=@c.Name>@c.Name</a>
             </li>
         }
 
