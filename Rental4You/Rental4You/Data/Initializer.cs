@@ -39,7 +39,7 @@ namespace Rental4You.Data
             var user = await userManager.FindByEmailAsync(defaultUser.Email);
             if (user == null)
             {
-                await userManager.CreateAsync(defaultUser, "Is3C..00");
+                await userManager.CreateAsync(defaultUser, "Facil.123");
                 await userManager.AddToRoleAsync(defaultUser, Roles.Admin.ToString());
             }
             

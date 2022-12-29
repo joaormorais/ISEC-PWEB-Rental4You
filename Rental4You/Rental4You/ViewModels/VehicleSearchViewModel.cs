@@ -8,6 +8,6 @@ namespace Rental4You.ViewModels
         public int NumResults { get; set; }
         public string TextToSearchName { get; set; }
         public string TextToSearchLocation { get; set; }
-        public string TextToSearchCompany { get; set; }
+        public int? TextToSearchCompany { get; set; }
     }
 }

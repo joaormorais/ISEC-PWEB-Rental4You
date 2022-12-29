@@ -4,22 +4,28 @@
     ViewData["Title"] = "Início";
 }
 
-@foreach(Company sida in ViewBag.ListOfCompaniesNovoCaralho){
-    @sida.Name
-}
-
 <h1>Lista de veículos:</h1>
 
-<p>
-    <a asp-action="Create">Criar um novo veículo</a>
-</p>
+@if (User.IsInRole("Employee"))
+{
+    <p>
+        <a asp-action="Create">Criar um novo veículo</a>
+    </p>
+}
 
 <div>
-    <form action="/Vehicles/Search" method="post">
+    <form method="post">
         <input type="text" name="TextToSearchName" placeholder="Nome do veículo">
         <input type="text" name="TextToSearchLocation" placeholder="Localização do veículo">
-        <input type="text" name="TextToSearchCompany" placeholder="Empresa a alugar">
-        <input type="submit" value="Procurar" asp-action="Search"/>
+        @*<input type="text" name="TextToSearchCompany" placeholder="Empresa a alugar">*@
+        <select name="TextToSearchCompany">
+            <option>Empresa a alugar</option>
+            @foreach (Company c in ViewBag.ListOfAllCompanies)
+            {
+                <option value="@c.Id">@c.Name</option>
+            }
+        </select>
+        <input type="submit" value="Procurar" asp-action="Search" asp-route-TextToSearchName=TextToSearchName asp-route-TextToSearchLocation=TextToSearchLocation asp-route-TextToSearchCompany=TextToSearchCompany />
     </form>
 </div>
 
@@ -122,16 +128,21 @@
                 @Html.DisplayFor(modelItem => item.Available)
             </td>
             <td>
-                    @*@foreach (Company item2 in ViewBag.ListOfCompanies)
-                    {
-                        if(item2.Id==item.CompanyId)
-                            @item2.Name
-                }*@
+                @foreach (Company c in ViewBag.ListOfAllCompanies)
+                {
+                    if(c.Id == item.CompanyId)
+                        @c.Name
+                }
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Detalhes</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Apagar</a>
+                @if (User.IsInRole("Employee"))
+                {
+                    <a asp-action="Edit" asp-route-id="@item.Id">Editar</a>
+
+                    <a asp-action="Delete" asp-route-id="@item.Id">Apagar</a>
+                        
+                }
+                <a asp-action="Details" asp-route-id="@item.Id">Detalhes</a>
             </td>
         </tr>
 }

@@ -6,9 +6,13 @@
 
 <h1>Lista de reservas:</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+@if (User.IsInRole("Client"))
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
+
 <table class="table">
     <thead>
         <tr>
@@ -43,9 +47,17 @@
                 @Html.DisplayFor(modelItem => item.Vehicle.Name)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Detalhes</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Apagar</a>
+
+                    @if (User.IsInRole("Employee"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id">Editar</a>
+
+                        <a asp-action="Delete" asp-route-id="@item.Id">Apagar</a>
+
+                    }
+
+                <a asp-action="Details" asp-route-id="@item.Id">Detalhes</a> 
+                
             </td>
         </tr>
 }

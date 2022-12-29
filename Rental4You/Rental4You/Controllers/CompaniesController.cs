@@ -13,6 +13,7 @@ using Rental4You.Models;
 
 namespace Rental4You.Controllers
 {
+    [Authorize(Roles = "Manager")]
     public class CompaniesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -27,7 +28,6 @@ namespace Rental4You.Controllers
         }
 
         // GET: Companies
-        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Index()
         {
             /*var currentUser = await _userManager.GetUserAsync(User);
@@ -42,7 +42,6 @@ namespace Rental4You.Controllers
         }
 
         // GET: Companies/Details/5
-        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Company == null)
@@ -71,7 +70,6 @@ namespace Rental4You.Controllers
         }
 
         // GET: Companies/Create
-        [Authorize(Roles = "Manager")]
         public IActionResult Create()
         {
             return View();
@@ -82,7 +80,6 @@ namespace Rental4You.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Create([Bind("Id,Name,Acronym,Available")] Company company)
         {
             if (ModelState.IsValid)
@@ -95,7 +92,6 @@ namespace Rental4You.Controllers
         }
 
         // GET: Companies/Edit/5
-        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Company == null)
@@ -116,7 +112,6 @@ namespace Rental4You.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Acronym,Available")] Company company)
         {
             if (id != company.Id)
@@ -148,7 +143,6 @@ namespace Rental4You.Controllers
         }
 
         // GET: Companies/Delete/5
-        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Company == null)
@@ -169,7 +163,6 @@ namespace Rental4You.Controllers
         // POST: Companies/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Company == null)
