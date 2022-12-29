@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Rental4You.Data;
 using Rental4You.Models;
+using Rental4You.ViewModels;
 
 namespace Rental4You.Controllers
 {
@@ -28,17 +29,38 @@ namespace Rental4You.Controllers
         }
 
         // GET: Companies
-        public async Task<IActionResult> Index()
+        /*public async Task<IActionResult> Index()
         {
-            /*var currentUser = await _userManager.GetUserAsync(User);
-
-            if (await _userManager.IsInRoleAsync(currentUser, "Manager"))
-            {
-                var companiesFiltered = _context.Company.
-                    Where(a => )
-            }*/
-
                 return View(await _context.Company.ToListAsync());
+        }*/
+
+        public async Task<IActionResult> Index(bool? filter, string? sortOrder)
+        {
+
+            if(filter != null)
+            {
+
+                var result = from c in _context.Company
+                             where (c.Available == filter)
+                             select c;
+
+                return View(result.ToList());
+
+            }else if (!string.IsNullOrEmpty(sortOrder))
+            {
+
+                switch(sortOrder)
+                {
+                    case "foward":
+                        return View(_context.Company.OrderBy(s => s.Name).ToList());
+
+                    case "back":
+                        return View(_context.Company.OrderByDescending(s => s.Name).ToList());
+                }
+
+            }
+
+            return View(await _context.Company.ToListAsync());
         }
 
         // GET: Companies/Details/5
@@ -182,6 +204,24 @@ namespace Rental4You.Controllers
         private bool CompanyExists(int id)
         {
           return _context.Company.Any(e => e.Id == id);
+        }
+
+        public async Task<IActionResult> Search(string? TextToSearchName)
+        {
+
+            CompaniesSearchViewModel searchVM = new CompaniesSearchViewModel();
+
+            if(string.IsNullOrWhiteSpace(TextToSearchName))
+                searchVM.ListOfCompanies = await _context.Company.ToListAsync();
+            else
+            {
+                searchVM.ListOfCompanies = await _context.Company.Where(c => c.Name.Contains(TextToSearchName)).ToListAsync();
+                searchVM.TextToSearchName = TextToSearchName;
+            }
+
+            searchVM.NumResults = searchVM.ListOfCompanies.Count();
+            return View(searchVM);
+
         }
     }
 }

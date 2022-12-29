@@ -26,7 +26,7 @@ namespace Rental4You.Controllers
         // GET: Vehicles
         public async Task<IActionResult> Index(string? filter, string? sortOrder)
         {
-            // send every company to the view so it is shown the correct one for any vehicle + helps the filtering
+            // send to the view a list of every company
             var listOfAllCompanies = new List<Company>();
 
             foreach (var item in _context.Company.ToList())

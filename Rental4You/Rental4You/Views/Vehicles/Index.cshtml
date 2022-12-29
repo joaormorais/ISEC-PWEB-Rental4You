@@ -57,9 +57,12 @@
         @*@foreach (var group in Model.GroupBy(i => i.Company))*@
         @foreach (Company c in ViewBag.ListOfAllCompanies)
         {
-            <li>
-                <a class="dropdown-item" asp-action="Index" asp-route-filter=@c.Name>@c.Name</a>
-            </li>
+            if (c.Available)
+            {
+                <li>
+                    <a class="dropdown-item" asp-action="Index" asp-route-filter=@c.Name>@c.Name</a>
+                </li>
+            }
         }
 
     </ul>
@@ -113,40 +116,44 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Type)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Location)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Available)
-            </td>
-            <td>
-                @foreach (Company c in ViewBag.ListOfAllCompanies)
-                {
-                    if(c.Id == item.CompanyId)
-                        @c.Name
-                }
-            </td>
-            <td>
-                @if (User.IsInRole("Employee"))
-                {
-                    <a asp-action="Edit" asp-route-id="@item.Id">Editar</a>
 
-                    <a asp-action="Delete" asp-route-id="@item.Id">Apagar</a>
-                        
-                }
-                <a asp-action="Details" asp-route-id="@item.Id">Detalhes</a>
-            </td>
-        </tr>
+            @foreach (Company c in ViewBag.ListOfAllCompanies)
+            {
+                if (c.Id == item.CompanyId)
+                    if (c.Available)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Type)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Location)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Price)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Available)
+                            </td>
+                            <td>
+                                @c.Name
+                            </td>
+                            <td>
+                                @if (User.IsInRole("Employee"))
+                                {
+                                    <a asp-action="Edit" asp-route-id="@item.Id">Editar</a>
+
+                                    <a asp-action="Delete" asp-route-id="@item.Id">Apagar</a>
+
+                                }
+                                <a asp-action="Details" asp-route-id="@item.Id">Detalhes</a>
+                            </td>
+                        </tr>
+                    }
+            }
 }
     </tbody>
 </table>
