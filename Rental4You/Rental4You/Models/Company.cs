@@ -11,9 +11,7 @@ namespace Rental4You.Models
         [Display(Name = "Sigla da empresa", Prompt = "Sigla da empresa")]
         public string? Acronym { get; set; }
         public ICollection<Vehicle>? Reservations { get; set; }
-        // Collection of clients and managers
-        //public List<int> UsersId { get; set; }
-        public ICollection<ApplicationUser>? Users { get; set; }
+        public ICollection<CompanyApplicationUser>? CompanyApplicationUsers { get; set; } 
         [Display(Name = "Disponível", Prompt = "Disponibilidade da empresa")]
         public bool Available { get; set; }
     }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.EntityFrameworkCore;
 using Rental4You.Data;
 using Rental4You.Models;
@@ -126,6 +127,30 @@ namespace Rental4You.Controllers
             {
                 return NotFound();
             }
+
+            // nós temos de criar um companyapplicationuser, nao temos de editá-lo
+
+            CompanyApplicationUser companyApplicationUser = new CompanyApplicationUser();
+            companyApplicationUser.CompanyId = company.Id;
+            _context.Add(companyApplicationUser);
+            await _context.SaveChangesAsync(); // isto funciona para adicionar um novo, mas antes de adicionar um novo temos de ver se ele existe primeiro
+
+            // fazer uma condição para ele não estar sempre associado
+            // fazer código para o desassociar
+
+            // find only employees
+            var listOfEmployees = new List<ApplicationUser>();
+
+            foreach (var employee in _context.Users.ToList())
+            {
+                if (await _userManager.IsInRoleAsync(employee, "Employee"))
+                {
+                    listOfEmployees.Add(employee);
+                }
+            }
+
+            ViewData["ListOfUsers"] = new SelectList(listOfEmployees, "Id", "FirstName", companyApplicationUser.ApplicationUserId);
+
             return View(company);
         }
 
