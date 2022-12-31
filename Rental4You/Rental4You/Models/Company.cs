@@ -14,5 +14,7 @@ namespace Rental4You.Models
         public ICollection<CompanyApplicationUser>? CompanyApplicationUsers { get; set; } 
         [Display(Name = "Disponível", Prompt = "Disponibilidade da empresa")]
         public bool Available { get; set; }
+        [Display(Name = "Associar um novo funcionário à empresa:", Prompt = "Associe um novo funcionário à empresa")]
+        public string? NewUserId { get; set; }
     }
 }

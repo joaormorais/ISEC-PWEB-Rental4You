@@ -143,8 +143,8 @@ namespace Rental4You.Controllers
 
             CompanyApplicationUser companyApplicationUser = new CompanyApplicationUser();
             companyApplicationUser.CompanyId = company.Id;
-            companyApplicationUser.ApplicationUserId = 999999;
-            ViewData["ListOfUsers"] = new SelectList(listOfEmployees, "Id", "FirstName", companyApplicationUser.ApplicationUserId);
+            companyApplicationUser.ApplicationUserId = "nao alterado!";
+            ViewData["ListOfUsers"] = new SelectList(listOfEmployees, "Id", "FirstName", company.NewUserId);
             _context.Add(companyApplicationUser);
             await _context.SaveChangesAsync(); // isto funciona para adicionar um novo, mas antes de adicionar um novo temos de ver se ele existe primeiro
 
@@ -159,7 +159,7 @@ namespace Rental4You.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Acronym,Available,CompanyApplicationUsers")] Company company)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Acronym,Available,NewUserId")] Company company)
         {
             if (id != company.Id)
             {
@@ -186,12 +186,12 @@ namespace Rental4You.Controllers
             ModelState.Remove(nameof(companyApplicationUserTemp.CompanyId));
             ModelState.Remove(nameof(companyApplicationUserTemp.Company));
             companyApplicationUserTemp.CompanyId = company.Id;
-            ViewData["ListOfUsers"] = new SelectList(listOfEmployees, "Id", "FirstName", companyApplicationUserTemp.ApplicationUserId);
+            ViewData["ListOfUsers"] = new SelectList(listOfEmployees, "Id", "FirstName", company.NewUserId);
 
             foreach (var item in _context.CompanyApplicationUsers.ToList())
             {
                 if(item.CompanyId == company.Id) { // siiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiu!
-                    item.ApplicationUserId = companyApplicationUserTemp.ApplicationUserId;
+                    item.ApplicationUserId = company.NewUserId;
                     _context.Update(item);
                     await _context.SaveChangesAsync();
                 }

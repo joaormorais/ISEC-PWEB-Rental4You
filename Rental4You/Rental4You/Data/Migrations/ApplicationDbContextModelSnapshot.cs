@@ -286,6 +286,9 @@ namespace Rental4You.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("NewUserId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Company");
@@ -299,10 +302,7 @@ namespace Rental4You.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("ApplicationUserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ApplicationUserId1")
+                    b.Property<string>("ApplicationUserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("CompanyId")
@@ -310,7 +310,7 @@ namespace Rental4You.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationUserId1");
+                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("CompanyId");
 
@@ -492,7 +492,7 @@ namespace Rental4You.Data.Migrations
                 {
                     b.HasOne("Rental4You.Models.ApplicationUser", "ApplicationUser")
                         .WithMany("CompanyApplicationUsers")
-                        .HasForeignKey("ApplicationUserId1");
+                        .HasForeignKey("ApplicationUserId");
 
                     b.HasOne("Rental4You.Models.Company", "Company")
                         .WithMany("CompanyApplicationUsers")
