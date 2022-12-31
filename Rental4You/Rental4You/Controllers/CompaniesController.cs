@@ -128,15 +128,45 @@ namespace Rental4You.Controllers
                 return NotFound();
             }
 
+            // find only employees
+            var listOfEmployees = new List<ApplicationUser>();
+
+            foreach (var employee in _context.Users.ToList())
+            {
+                if (await _userManager.IsInRoleAsync(employee, "Employee"))
+                {
+                    listOfEmployees.Add(employee);
+                }
+            }
+
             // nós temos de criar um companyapplicationuser, nao temos de editá-lo
 
             CompanyApplicationUser companyApplicationUser = new CompanyApplicationUser();
             companyApplicationUser.CompanyId = company.Id;
+            companyApplicationUser.ApplicationUserId = 999999;
+            ViewData["ListOfUsers"] = new SelectList(listOfEmployees, "Id", "FirstName", companyApplicationUser.ApplicationUserId);
             _context.Add(companyApplicationUser);
             await _context.SaveChangesAsync(); // isto funciona para adicionar um novo, mas antes de adicionar um novo temos de ver se ele existe primeiro
 
             // fazer uma condição para ele não estar sempre associado
             // fazer código para o desassociar
+
+            return View(company);
+        }
+
+        // POST: Companies/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Acronym,Available,CompanyApplicationUsers")] Company company)
+        {
+            if (id != company.Id)
+            {
+                return NotFound();
+            }
+
+            ModelState.Remove(nameof(company.CompanyApplicationUsers));
 
             // find only employees
             var listOfEmployees = new List<ApplicationUser>();
@@ -149,21 +179,22 @@ namespace Rental4You.Controllers
                 }
             }
 
-            ViewData["ListOfUsers"] = new SelectList(listOfEmployees, "Id", "FirstName", companyApplicationUser.ApplicationUserId);
 
-            return View(company);
-        }
+            CompanyApplicationUser companyApplicationUserTemp = new CompanyApplicationUser();
+            ModelState.Remove(nameof(companyApplicationUserTemp.ApplicationUserId));
+            ModelState.Remove(nameof(companyApplicationUserTemp.ApplicationUser));
+            ModelState.Remove(nameof(companyApplicationUserTemp.CompanyId));
+            ModelState.Remove(nameof(companyApplicationUserTemp.Company));
+            companyApplicationUserTemp.CompanyId = company.Id;
+            ViewData["ListOfUsers"] = new SelectList(listOfEmployees, "Id", "FirstName", companyApplicationUserTemp.ApplicationUserId);
 
-        // POST: Companies/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Acronym,Available")] Company company)
-        {
-            if (id != company.Id)
+            foreach (var item in _context.CompanyApplicationUsers.ToList())
             {
-                return NotFound();
+                if(item.CompanyId == company.Id) { // siiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiu!
+                    item.ApplicationUserId = companyApplicationUserTemp.ApplicationUserId;
+                    _context.Update(item);
+                    await _context.SaveChangesAsync();
+                }
             }
 
             if (ModelState.IsValid)
