@@ -6,9 +6,12 @@
 
 <h1>Lista de empresas:</h1>
 
-<p>
-    <a asp-action="Create">Criar uma nova empresa</a>
-</p>
+@if (User.IsInRole("Admin"))
+{
+    <p>
+        <a asp-action="Create">Criar uma nova empresa</a>
+    </p>
+}
 
 <div>
     <form method="post">
@@ -85,9 +88,12 @@
                 @Html.DisplayFor(modelItem => item.Available)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Detalhes</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Editar</a>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.Id">Apagar</a>
+                    }
+                    <a asp-action="Details" asp-route-id="@item.Id">Detalhes</a>
             </td>
         </tr>
 }

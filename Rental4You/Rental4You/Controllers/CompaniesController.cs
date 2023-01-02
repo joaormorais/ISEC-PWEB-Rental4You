@@ -12,10 +12,11 @@ using Microsoft.EntityFrameworkCore;
 using Rental4You.Data;
 using Rental4You.Models;
 using Rental4You.ViewModels;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace Rental4You.Controllers
 {
-    [Authorize(Roles = "Manager")]
+    
     public class CompaniesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -29,12 +30,7 @@ namespace Rental4You.Controllers
             _userManager = userManager;
         }
 
-        // GET: Companies
-        /*public async Task<IActionResult> Index()
-        {
-                return View(await _context.Company.ToListAsync());
-        }*/
-
+        [Authorize(Roles = "Manager,Admin")]
         public async Task<IActionResult> Index(bool? filter, string? sortOrder)
         {
 
@@ -64,7 +60,7 @@ namespace Rental4You.Controllers
             return View(await _context.Company.ToListAsync());
         }
 
-        // GET: Companies/Details/5
+        [Authorize(Roles = "Manager,Admin")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Company == null)
@@ -106,28 +102,53 @@ namespace Rental4You.Controllers
             return View(company);
         }
 
-        // GET: Companies/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Companies/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([Bind("Id,Name,Acronym,Available")] Company company)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(company);
                 await _context.SaveChangesAsync();
+
+                // Create the Manager
+                var defaultManager = new ApplicationUser
+                {
+                    UserName = "manager" + company.Name,
+                    Email = "manager" + company.Name + "@isec.pt",
+                    FirstName = "Manager of " + company.Name,
+                    LastName = company.Acronym,
+                    EmailConfirmed = true,
+                    PhoneNumberConfirmed = true
+                };
+ 
+                var user = await _userManager.FindByEmailAsync(defaultManager.Email);
+                if (user == null)
+                {
+                    await _userManager.CreateAsync(defaultManager, "Facil.123");
+                    await _userManager.AddToRoleAsync(defaultManager, Roles.Admin.ToString());
+                }
+
+                var manager = await _userManager.FindByEmailAsync(defaultManager.Email);
+                CompanyApplicationUser companyApplicationUser = new CompanyApplicationUser();
+                companyApplicationUser.CompanyId = company.Id;
+                companyApplicationUser.ApplicationUserId = manager.Id;
+                _context.Add(companyApplicationUser);
+                await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
             return View(company);
         }
 
+        [Authorize(Roles = "Manager,Admin")]
         // GET: Companies/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -165,6 +186,7 @@ namespace Rental4You.Controllers
         // POST: Companies/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Manager,Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Acronym,Available,NewUserId")] Company company)
@@ -244,6 +266,7 @@ namespace Rental4You.Controllers
         }
 
         // GET: Companies/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Company == null)
@@ -262,6 +285,7 @@ namespace Rental4You.Controllers
         }
 
         // POST: Companies/Delete/5
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -285,6 +309,7 @@ namespace Rental4You.Controllers
           return _context.Company.Any(e => e.Id == id);
         }
 
+        [Authorize(Roles = "Manager,Admin")]
         public async Task<IActionResult> Search(string? TextToSearchName)
         {
 
