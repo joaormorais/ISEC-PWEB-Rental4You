@@ -30,19 +30,31 @@
         </dd>
 
         <!-- meter aqui uma linha divisoria -->
-
+        <dt class = "col-sm-2">
+                Veículos associados:
+            </dt>
+        <dd class="col-sm-10">
         @foreach (Vehicle item in ViewBag.ListOfCarsCompany)
         {
-            <dt class = "col-sm-2">
-                Veículo associado:
-            </dt>
-            <dd class = "col-sm-10">
-                <a>@item.Name</a>
-            </dd>
+
+
+                <a>@item.Name</a>   <a>|</a>
+            
         }
+        </dd>
 
         <!-- meter aqui uma linha divisoria -->
+        <dt class="col-sm-2">
+            Funcionários associados:
+        </dt>
+        <dd class="col-sm-10">
+        @foreach (var item in ViewBag.listOfEmployeesAssociated)
+        {
 
+                <a>@item</a>   <a>|</a>
+            
+        }
+        </dd>
     </dl>
 </div>
 <div>

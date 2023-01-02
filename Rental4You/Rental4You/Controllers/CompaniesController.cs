@@ -89,6 +89,20 @@ namespace Rental4You.Controllers
 
             ViewBag.ListOfCarsCompany = listOfVehiclesCompaies;
 
+            var listOfEmployeesAssociated = new List<String>();
+
+            foreach (var item in _context.CompanyApplicationUsers.ToList())
+            {
+                if (item.CompanyId == company.Id)
+                    foreach(var item2 in _context.Users.ToList())
+                    {
+                        if (item2.Id == item.ApplicationUserId)
+                            listOfEmployeesAssociated.Add(item2.FirstName);
+                    }
+            }
+
+            ViewBag.listOfEmployeesAssociated = listOfEmployeesAssociated;
+
             return View(company);
         }
 
@@ -139,17 +153,11 @@ namespace Rental4You.Controllers
                 }
             }
 
-            // nós temos de criar um companyapplicationuser, nao temos de editá-lo
-
             CompanyApplicationUser companyApplicationUser = new CompanyApplicationUser();
             companyApplicationUser.CompanyId = company.Id;
-            companyApplicationUser.ApplicationUserId = "nao alterado!";
             ViewData["ListOfUsers"] = new SelectList(listOfEmployees, "Id", "FirstName", company.NewUserId);
             _context.Add(companyApplicationUser);
-            await _context.SaveChangesAsync(); // isto funciona para adicionar um novo, mas antes de adicionar um novo temos de ver se ele existe primeiro
-
-            // fazer uma condição para ele não estar sempre associado
-            // fazer código para o desassociar
+            await _context.SaveChangesAsync(); 
 
             return View(company);
         }
@@ -190,7 +198,22 @@ namespace Rental4You.Controllers
 
             foreach (var item in _context.CompanyApplicationUsers.ToList())
             {
-                if(item.CompanyId == company.Id) { // siiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiu!
+
+                if(item.CompanyId == company.Id && item.ApplicationUserId == company.NewUserId) // it means the this user is already associated
+                {
+                    
+                    foreach(var item2 in _context.CompanyApplicationUsers.ToList())
+                    {
+                        if (item2.CompanyId == company.Id && item2.ApplicationUserId == null)
+                        {
+                            _context.Remove(item2);
+                            await _context.SaveChangesAsync();
+                        }
+                    }
+                    break; // make sure that we don't add him and that we remove the temporary user that was created in the database
+                }
+
+                if (item.CompanyId == company.Id && item.ApplicationUserId == null) { // siiiiiiiiiiiiiiiiiiiiiiiiiiiiiiim!
                     item.ApplicationUserId = company.NewUserId;
                     _context.Update(item);
                     await _context.SaveChangesAsync();
