@@ -23,6 +23,9 @@ body {
 .nav-item:hover{
     background-color:rgb(128, 128, 128, 0.5);
 }
+.dropdown-item:hover {
+    background-color:rgb(128, 128, 128, 0.5);
+}
 .navbar {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
@@ -66,4 +69,8 @@ li {
     border-top-right-radius: 20px;
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
+}
+
+.form-floating {
+    margin-bottom:10px;
 }

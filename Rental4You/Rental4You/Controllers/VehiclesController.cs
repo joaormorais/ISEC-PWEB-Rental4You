@@ -165,7 +165,24 @@ namespace Rental4You.Controllers
         [Authorize(Roles = "Employee")]
             public IActionResult Create()
         {
-            ViewData["ListOfCompanies"] = new SelectList(_context.Company.ToList(), "Id", "Name");
+            var currentUser = _userManager.GetUserAsync(User);
+            var listOfCompaniesAssociatedToEmployee = new List<Company>();
+            
+            foreach(var item in _context.CompanyApplicationUsers.ToList())
+            {
+                if(item.ApplicationUserId.Equals(currentUser.Id))
+                {
+                    foreach(var item2 in _context.Company.ToList())
+                    {
+
+                        if(item2.Id==item.CompanyId)
+                            listOfCompaniesAssociatedToEmployee.Add(item2);
+
+                    }
+                }
+            }
+
+            ViewData["ListOfCompanies"] = new SelectList(listOfCompaniesAssociatedToEmployee, "Id", "Name");
             return View();
         }
 
@@ -181,14 +198,34 @@ namespace Rental4You.Controllers
             ModelState.Remove(nameof(vehicle.Company));
             ModelState.Remove(nameof(vehicle.CompanyId));
 
+            if (vehicle.CompanyId == null)
+                ModelState.AddModelError("CompanyId","Não é possível criar um veículo sem associar uma empresa à qual você pertença!");
+
+            var currentUser = _userManager.GetUserAsync(User);
+            var listOfCompaniesAssociatedToEmployee = new List<Company>();
+
+            foreach (var item in _context.CompanyApplicationUsers.ToList())
+            {
+                if (item.ApplicationUserId.Equals(currentUser.Id))
+                {
+                    foreach (var item2 in _context.Company.ToList())
+                    {
+
+                        if (item2.Id == item.CompanyId)
+                            listOfCompaniesAssociatedToEmployee.Add(item2);
+
+                    }
+                }
+            }
+
+            ViewData["ListOfCompanies"] = new SelectList(listOfCompaniesAssociatedToEmployee, "Id", "Name");
+
             if (ModelState.IsValid)
             {
                 _context.Add(vehicle);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-
-            ViewData["ListOfCompanies"] = new SelectList(_context.Company.ToList(), "Id", "Name");
 
             return View(vehicle);
         }

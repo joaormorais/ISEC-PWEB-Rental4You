@@ -131,6 +131,8 @@ namespace Rental4You.Controllers
                     if(!(reservation.StartDate>item.EndDate || reservation.EndDate < item.StartDate))
                     {
                         ModelState.AddModelError("StartDate", "Já existe uma reserva para esse carro nessa altura");
+                        ModelState.AddModelError("StartDate", "Já existe uma reserva para esse carro nessa altura");
+                        break;
                     }
                 }
             }

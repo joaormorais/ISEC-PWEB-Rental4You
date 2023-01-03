@@ -4,15 +4,15 @@
     ViewData["Title"] = "Início";
 }
 
-<h1>Lista de veículos:</h1>
+<h1 style="color:black;">Lista de veículos:</h1>
 
 @if (User.IsInRole("Employee"))
 {
     <p>
-        <a asp-action="Create">Criar um novo veículo</a>
+        <a asp-action="Create" style="color:darkblue;text-decoration:none;">Criar um novo veículo</a>
     </p>
 }
-
+<body style="background-image:url('/img/veiculos.png');">
 <div>
     <form method="post">
         <input type="text" name="TextToSearchName" placeholder="Nome do veículo">
@@ -31,7 +31,7 @@
 
 <li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle" href="#"
-       role="button" data-bs-toggle="dropdown" aria-expanded="false">
+           role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color:darkblue">
         Filtrar por tipo
     </a>
     <ul class="dropdown-menu">
@@ -49,8 +49,8 @@
 
 <li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle" href="#"
-       role="button" data-bs-toggle="dropdown" aria-expanded="false">
-        Filrar por empresa a alugar
+           role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color:darkblue">
+        Filtrar por empresa a alugar
     </a>
     <ul class="dropdown-menu">
 
@@ -69,12 +69,12 @@
 </li>
 
 <li>
-    <a class="dropdown-item" asp-action="Index">Remover filtros</a>
+        <a class="dropdown-item" asp-action="Index" style="color:darkblue">Remover filtros</a>
 </li>
 
 <li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle" href="#"
-       role="button" data-bs-toggle="dropdown" aria-expanded="false">
+           role="button" data-bs-toggle="dropdown" aria-expanded="false"style="color:darkblue">
         Ordenar por
     </a>
     <ul class="dropdown-menu">
@@ -90,7 +90,7 @@
     </ul>
 </li>
 
-<table class="table">
+    <table class="table table-bordered table-striped table-hover" style="background-color:rgba(255, 255, 255, 0.7)">
     <thead>
         <tr>
             <th>
@@ -157,3 +157,4 @@
 }
     </tbody>
 </table>
+</body>

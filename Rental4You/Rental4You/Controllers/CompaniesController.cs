@@ -20,7 +20,8 @@ namespace Rental4You.Controllers
     public class CompaniesController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private UserManager<ApplicationUser> _userManager;
+        public UserManager<ApplicationUser> UserManager { get; set; }
 
         public CompaniesController(
             ApplicationDbContext context,
@@ -28,11 +29,61 @@ namespace Rental4You.Controllers
         {
             _context = context;
             _userManager = userManager;
+            UserManager = userManager;
         }
 
         [Authorize(Roles = "Manager,Admin")]
         public async Task<IActionResult> Index(bool? filter, string? sortOrder)
         {
+
+            var currentUser = await _userManager.GetUserAsync(User);
+
+            if(currentUser != null)
+            {
+                if(await _userManager.IsInRoleAsync(currentUser, "Manager"))
+                {
+
+                    var listOfCompaniesAssociatedToManager = new List<Company>();
+
+                    foreach (var item in _context.CompanyApplicationUsers.ToList())
+                    {
+                        if (item.ApplicationUserId.Equals(currentUser.Id))
+                        {
+                            foreach (var item2 in _context.Company.ToList())
+                            {
+
+                                if (item2.Id == item.CompanyId)
+                                    listOfCompaniesAssociatedToManager.Add(item2);
+
+                            }
+                        }
+                    }
+
+                    ViewData["ListOfCompanies"] = new SelectList(listOfCompaniesAssociatedToManager, "Id", "Name");
+
+                    if (filter != null)
+                    {
+
+                        return View(listOfCompaniesAssociatedToManager);
+
+                    }
+                    else if (!string.IsNullOrEmpty(sortOrder))
+                    {
+
+                        switch (sortOrder)
+                        {
+                            case "foward":
+                                return View(listOfCompaniesAssociatedToManager.OrderBy(s => s.Name));
+
+                            case "back":
+                                return View(listOfCompaniesAssociatedToManager.OrderByDescending(s => s.Name));
+                        }
+
+                    }
+
+                    return View(await _context.Company.ToListAsync());
+                }
+            }
 
             if(filter != null)
             {
@@ -121,19 +172,24 @@ namespace Rental4You.Controllers
                 // Create the Manager
                 var defaultManager = new ApplicationUser
                 {
-                    UserName = "manager" + company.Name,
+                    UserName = "manager" + company.Name + "@isec.pt",
                     Email = "manager" + company.Name + "@isec.pt",
                     FirstName = "Manager of " + company.Name,
                     LastName = company.Acronym,
                     EmailConfirmed = true,
                     PhoneNumberConfirmed = true
                 };
- 
-                var user = await _userManager.FindByEmailAsync(defaultManager.Email);
-                if (user == null)
+
+                var userRepeated = false;
+
+                foreach (var item in _userManager.Users.ToList())
+                    if (item.FirstName.Equals(defaultManager.FirstName))
+                        userRepeated = true;
+
+                if (!userRepeated)
                 {
-                    await _userManager.CreateAsync(defaultManager, "Facil.123");
-                    await _userManager.AddToRoleAsync(defaultManager, Roles.Admin.ToString());
+                    await UserManager.CreateAsync(defaultManager, "Facil.123");
+                    await UserManager.AddToRoleAsync(defaultManager, Roles.Manager.ToString());
                 }
 
                 var manager = await _userManager.FindByEmailAsync(defaultManager.Email);

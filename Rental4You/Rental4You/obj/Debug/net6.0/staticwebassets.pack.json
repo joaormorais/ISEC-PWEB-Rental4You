@@ -17,6 +17,10 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "C:\\Users\\joaom\\Desktop\\Morais\\Universidade\\3ano\\1semestre\\TrabalhosPraticos\\PWEB\\ISEC-PWEB-Rental4You\\Rental4You\\Rental4You\\wwwroot\\img\\RetroCar.jpg",
+      "PackagePath": "staticwebassets\\img\\RetroCar.jpg"
+    },
+    {
       "Id": "C:\\Users\\joaom\\Desktop\\Morais\\Universidade\\3ano\\1semestre\\TrabalhosPraticos\\PWEB\\ISEC-PWEB-Rental4You\\Rental4You\\Rental4You\\wwwroot\\img\\Tesla.jpg",
       "PackagePath": "staticwebassets\\img\\Tesla.jpg"
     },
@@ -41,8 +45,24 @@
       "PackagePath": "staticwebassets\\img\\register.jpg"
     },
     {
+      "Id": "C:\\Users\\joaom\\Desktop\\Morais\\Universidade\\3ano\\1semestre\\TrabalhosPraticos\\PWEB\\ISEC-PWEB-Rental4You\\Rental4You\\Rental4You\\wwwroot\\img\\reservas.jpg",
+      "PackagePath": "staticwebassets\\img\\reservas.jpg"
+    },
+    {
+      "Id": "C:\\Users\\joaom\\Desktop\\Morais\\Universidade\\3ano\\1semestre\\TrabalhosPraticos\\PWEB\\ISEC-PWEB-Rental4You\\Rental4You\\Rental4You\\wwwroot\\img\\reservas.png",
+      "PackagePath": "staticwebassets\\img\\reservas.png"
+    },
+    {
       "Id": "C:\\Users\\joaom\\Desktop\\Morais\\Universidade\\3ano\\1semestre\\TrabalhosPraticos\\PWEB\\ISEC-PWEB-Rental4You\\Rental4You\\Rental4You\\wwwroot\\img\\tesla2.png",
       "PackagePath": "staticwebassets\\img\\tesla2.png"
+    },
+    {
+      "Id": "C:\\Users\\joaom\\Desktop\\Morais\\Universidade\\3ano\\1semestre\\TrabalhosPraticos\\PWEB\\ISEC-PWEB-Rental4You\\Rental4You\\Rental4You\\wwwroot\\img\\veiculos.jpg",
+      "PackagePath": "staticwebassets\\img\\veiculos.jpg"
+    },
+    {
+      "Id": "C:\\Users\\joaom\\Desktop\\Morais\\Universidade\\3ano\\1semestre\\TrabalhosPraticos\\PWEB\\ISEC-PWEB-Rental4You\\Rental4You\\Rental4You\\wwwroot\\img\\veiculos.png",
+      "PackagePath": "staticwebassets\\img\\veiculos.png"
     },
     {
       "Id": "C:\\Users\\joaom\\Desktop\\Morais\\Universidade\\3ano\\1semestre\\TrabalhosPraticos\\PWEB\\ISEC-PWEB-Rental4You\\Rental4You\\Rental4You\\wwwroot\\js\\site.js",
