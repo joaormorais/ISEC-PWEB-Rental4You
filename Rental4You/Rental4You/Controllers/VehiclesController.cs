@@ -165,14 +165,18 @@ namespace Rental4You.Controllers
         [Authorize(Roles = "Employee")]
             public IActionResult Create()
         {
-            var currentUser = _userManager.GetUserAsync(User);
-            var listOfCompaniesAssociatedToEmployee = new List<Company>();
             
-            foreach(var item in _context.CompanyApplicationUsers.ToList())
+            var listOfCompaniesAssociatedToEmployee = new List<Company>();
+            var listOfAssociations = _context.CompanyApplicationUsers.ToList();
+            var listOfCompanies = _context.Company.ToList();
+            var currentUser = _userManager.GetUserAsync(User).Result;
+
+
+            foreach (var item in listOfAssociations)
             {
                 if(item.ApplicationUserId.Equals(currentUser.Id))
                 {
-                    foreach(var item2 in _context.Company.ToList())
+                    foreach(var item2 in listOfCompanies)
                     {
 
                         if(item2.Id==item.CompanyId)
@@ -198,17 +202,16 @@ namespace Rental4You.Controllers
             ModelState.Remove(nameof(vehicle.Company));
             ModelState.Remove(nameof(vehicle.CompanyId));
 
-            if (vehicle.CompanyId == null)
-                ModelState.AddModelError("CompanyId","Não é possível criar um veículo sem associar uma empresa à qual você pertença!");
-
-            var currentUser = _userManager.GetUserAsync(User);
             var listOfCompaniesAssociatedToEmployee = new List<Company>();
+            var listOfAssociations = _context.CompanyApplicationUsers.ToList();
+            var listOfCompanies = _context.Company.ToList();
+            var currentUser = _userManager.GetUserAsync(User).Result;
 
-            foreach (var item in _context.CompanyApplicationUsers.ToList())
+            foreach (var item in listOfAssociations)
             {
                 if (item.ApplicationUserId.Equals(currentUser.Id))
                 {
-                    foreach (var item2 in _context.Company.ToList())
+                    foreach (var item2 in listOfCompanies)
                     {
 
                         if (item2.Id == item.CompanyId)
@@ -219,6 +222,9 @@ namespace Rental4You.Controllers
             }
 
             ViewData["ListOfCompanies"] = new SelectList(listOfCompaniesAssociatedToEmployee, "Id", "Name");
+
+            if (vehicle.CompanyId == null)
+                ModelState.AddModelError("CompanyId", "Não é possível criar um veículo sem associar uma empresa à qual você pertença!");
 
             if (ModelState.IsValid)
             {
