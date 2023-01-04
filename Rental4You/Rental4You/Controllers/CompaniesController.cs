@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 using Microsoft.EntityFrameworkCore;
 using Rental4You.Data;
 using Rental4You.Models;
@@ -32,9 +34,24 @@ namespace Rental4You.Controllers
             UserManager = userManager;
         }
 
+        public async Task clearNulls()
+        {
+            foreach(var item in _context.CompanyApplicationUsers.ToList())
+            {
+                if(item.ApplicationUserId == null)
+                {
+                    _context.Remove(item);
+                    await _context.SaveChangesAsync();
+                }
+            }
+        }
+
         [Authorize(Roles = "Manager,Admin")]
         public async Task<IActionResult> Index(bool? filter, string? sortOrder)
         {
+
+            Task myTask = clearNulls();
+            myTask.Wait();
 
             var currentUser = await _userManager.GetUserAsync(User);
 
@@ -64,7 +81,11 @@ namespace Rental4You.Controllers
                     if (filter != null)
                     {
 
-                        return View(listOfCompaniesAssociatedToManager);
+                        var result = from c in listOfCompaniesAssociatedToManager
+                                     where (c.Available == filter)
+                                     select c;
+
+                        return View(result.ToList());
 
                     }
                     else if (!string.IsNullOrEmpty(sortOrder))
@@ -81,7 +102,7 @@ namespace Rental4You.Controllers
 
                     }
 
-                    return View(await _context.Company.ToListAsync());
+                    return View(listOfCompaniesAssociatedToManager);
                 }
             }
 
@@ -164,6 +185,15 @@ namespace Rental4You.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([Bind("Id,Name,Acronym,Available")] Company company)
         {
+
+            foreach (var item in _context.Company.ToList())
+            {
+                if (item.Name.Equals(company.Name))
+                    ModelState.AddModelError("Name", "Já existe uma empresa com esse nome.");
+                else if (item.Acronym.Equals(company.Acronym))
+                    ModelState.AddModelError("Acronym", "Já existe uma empresa com esse acrónimo.");
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(company);
@@ -219,6 +249,22 @@ namespace Rental4You.Controllers
                 return NotFound();
             }
 
+            var currentUser = await _userManager.GetUserAsync(User);
+            var foundAssociation = false;
+
+            foreach(var item in _context.CompanyApplicationUsers.ToList())
+            {
+                if (currentUser.Id.Equals(item.ApplicationUserId))
+                    if (company.Id == item.CompanyId)
+                    {
+                        foundAssociation = true;
+                        break;
+                    }
+            }
+
+            if (!foundAssociation)
+                return NotFound();
+
             // find only employees
             var listOfEmployees = new List<ApplicationUser>();
 
@@ -251,6 +297,22 @@ namespace Rental4You.Controllers
             {
                 return NotFound();
             }
+
+            var currentUser = await _userManager.GetUserAsync(User);
+            var foundAssociation = false;
+
+            foreach (var item in _context.CompanyApplicationUsers.ToList())
+            {
+                if (currentUser.Id.Equals(item.ApplicationUserId))
+                    if (company.Id == item.CompanyId)
+                    {
+                        foundAssociation = true;
+                        break;
+                    }
+            }
+
+            if (!foundAssociation)
+                return NotFound();
 
             ModelState.Remove(nameof(company.CompanyApplicationUsers));
 
@@ -368,6 +430,8 @@ namespace Rental4You.Controllers
         [Authorize(Roles = "Manager,Admin")]
         public async Task<IActionResult> Search(string? TextToSearchName)
         {
+            Task myTask = clearNulls();
+            myTask.Wait();
 
             CompaniesSearchViewModel searchVM = new CompaniesSearchViewModel();
 
