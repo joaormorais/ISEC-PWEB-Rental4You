@@ -49,6 +49,15 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Editar</a> |
+    @if (User.IsInRole("Employee"))
+    {
+       @foreach (var item in ViewBag.ListOfCompaniesAssociatedToEmployee)
+        {
+            if (item.Id == @Model?.CompanyId)
+            {
+                <a asp-action="Edit" asp-route-id="@Model?.Id">Editar</a>
+            }
+        } 
+    }
     <a asp-action="Index">Voltar</a>
 </div>

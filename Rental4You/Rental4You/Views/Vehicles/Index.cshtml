@@ -144,9 +144,15 @@
                             <td>
                                 @if (User.IsInRole("Employee"))
                                 {
-                                    <a asp-action="Edit" asp-route-id="@item.Id">Editar</a>
+                                        @foreach (var item2 in ViewBag.ListOfCompaniesAssociatedToEmployee)
+                                        {
+                                            if (item2.Id == item.CompanyId)
+                                            {
+                                                <a asp-action="Edit" asp-route-id="@item.Id">Editar</a>
 
-                                    <a asp-action="Delete" asp-route-id="@item.Id">Apagar</a>
+                                                <a asp-action="Delete" asp-route-id="@item.Id">Apagar</a>
+                                            }
+                                        }
 
                                 }
                                 <a asp-action="Details" asp-route-id="@item.Id">Detalhes</a>

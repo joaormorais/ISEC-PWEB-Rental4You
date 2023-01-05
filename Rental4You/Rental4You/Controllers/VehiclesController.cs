@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Rental4You.Data;
 using Rental4You.Models;
 using Rental4You.ViewModels;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Rental4You.Controllers
 {
@@ -23,9 +24,11 @@ namespace Rental4You.Controllers
             _userManager = userManager;
         }
 
-        // GET: Vehicles
         public async Task<IActionResult> Index(string? filter, string? sortOrder)
         {
+            if(_userManager.GetUserAsync(User).Result!=null)
+                ViewBag.ListOfCompaniesAssociatedToEmployee = getListOfCompaniesAssociatedToEmployee();
+            
             // send to the view a list of every company
             var listOfAllCompanies = new List<Company>();
 
@@ -142,7 +145,6 @@ namespace Rental4You.Controllers
 
         }
 
-        // GET: Vehicles/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Vehicle == null)
@@ -158,51 +160,43 @@ namespace Rental4You.Controllers
                 return NotFound();
             }
 
+            if (_userManager.GetUserAsync(User).Result != null)
+                ViewBag.ListOfCompaniesAssociatedToEmployee = getListOfCompaniesAssociatedToEmployee();
+
             return View(vehicle);
         }
 
-        //GET: Vehicles/Create
         [Authorize(Roles = "Employee")]
             public IActionResult Create()
         {
-            
-            var listOfCompaniesAssociatedToEmployee = new List<Company>();
-            var listOfAssociations = _context.CompanyApplicationUsers.ToList();
-            var listOfCompanies = _context.Company.ToList();
-            var currentUser = _userManager.GetUserAsync(User).Result;
-
-
-            foreach (var item in listOfAssociations)
-            {
-                if(item.ApplicationUserId.Equals(currentUser.Id))
-                {
-                    foreach(var item2 in listOfCompanies)
-                    {
-
-                        if(item2.Id==item.CompanyId)
-                            listOfCompaniesAssociatedToEmployee.Add(item2);
-
-                    }
-                }
-            }
-
-            ViewData["ListOfCompanies"] = new SelectList(listOfCompaniesAssociatedToEmployee, "Id", "Name");
+            ViewData["ListOfCompanies"] = new SelectList(getListOfCompaniesAssociatedToEmployee(), "Id", "Name");
             return View();
         }
 
-        // POST: Vehicles/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Employee")]
         public async Task<IActionResult> Create([Bind("Id,Name,Type,Location,Price,CompanyId,Available")] Vehicle vehicle)
         {
-            
+
+            if (vehicle.Name == null)
+                ModelState.AddModelError("Name", "Não é possível criar um veículo sem definir um nome!");
+
+            if (vehicle.Name == null)
+                ModelState.AddModelError("Type", "Não é possível criar um veículo sem definir um/uma tipo/categoria!");
+
+            if (vehicle.Name == null)
+                ModelState.AddModelError("Location", "Não é possível criar um veículo sem definir uma localização!");
+
+            if (vehicle.Name == null)
+                ModelState.AddModelError("Price", "Não é possível criar um veículo sem definir um preço!");
+
             ModelState.Remove(nameof(vehicle.Company));
             ModelState.Remove(nameof(vehicle.CompanyId));
 
-            var listOfCompaniesAssociatedToEmployee = new List<Company>();
+            var ListOfCompaniesAssociatedToEmployee = getListOfCompaniesAssociatedToEmployee();
+
+            /*var listOfCompaniesAssociatedToEmployee = new List<Company>();
             var listOfAssociations = _context.CompanyApplicationUsers.ToList();
             var listOfCompanies = _context.Company.ToList();
             var currentUser = _userManager.GetUserAsync(User).Result;
@@ -219,9 +213,9 @@ namespace Rental4You.Controllers
 
                     }
                 }
-            }
+            }*/
 
-            ViewData["ListOfCompanies"] = new SelectList(listOfCompaniesAssociatedToEmployee, "Id", "Name");
+            ViewData["ListOfCompanies"] = new SelectList(ListOfCompaniesAssociatedToEmployee, "Id", "Name");
 
             if (vehicle.CompanyId == null)
                 ModelState.AddModelError("CompanyId", "Não é possível criar um veículo sem associar uma empresa à qual você pertença!");
@@ -236,7 +230,6 @@ namespace Rental4You.Controllers
             return View(vehicle);
         }
 
-        // GET: Vehicles/Edit/5
         [Authorize(Roles = "Employee")]
         public async Task<IActionResult> Edit(int? id)
         {
@@ -251,14 +244,14 @@ namespace Rental4You.Controllers
                 return NotFound();
             }
 
+            if (!getListOfCompaniesAssociatedToEmployeeIds().Contains(vehicle.CompanyId))
+                return NotFound();
+
             ViewData["ListOfCompanies"] = new SelectList(_context.Company.ToList(), "Id", "Name");
 
             return View(vehicle);
         }
 
-        // POST: Vehicles/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Employee")]
@@ -268,6 +261,9 @@ namespace Rental4You.Controllers
             {
                 return NotFound();
             }
+
+            if (!getListOfCompaniesAssociatedToEmployeeIds().Contains(vehicle.CompanyId))
+                return NotFound();
 
             if (ModelState.IsValid)
             {
@@ -295,7 +291,6 @@ namespace Rental4You.Controllers
             return View(vehicle);
         }
 
-        // GET: Vehicles/Delete/5
         [Authorize(Roles = "Employee")]
         public async Task<IActionResult> Delete(int? id)
         {
@@ -311,8 +306,11 @@ namespace Rental4You.Controllers
                 return NotFound();
             }
 
+            if (!getListOfCompaniesAssociatedToEmployeeIds().Contains(vehicle.CompanyId))
+                return NotFound();
+
             // verify if the vehicle has a reservation
-            if(vehicle.Reservations!=null)
+            if (vehicle.Reservations!=null)
             {
                 return NotFound();
             }
@@ -320,7 +318,6 @@ namespace Rental4You.Controllers
             return View(vehicle);
         }
 
-        // POST: Vehicles/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Employee")]
@@ -335,14 +332,12 @@ namespace Rental4You.Controllers
             {
                 _context.Vehicle.Remove(vehicle);
             }
-            
+
+            if (!getListOfCompaniesAssociatedToEmployeeIds().Contains(vehicle.CompanyId))
+                return NotFound();
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool VehicleExists(int id)
-        {
-          return _context.Vehicle.Any(e => e.Id == id);
         }
 
         public async Task<IActionResult> Search(string? TextToSearchName, string? TextToSearchLocation, int? TextToSearchCompany)
@@ -398,6 +393,72 @@ namespace Rental4You.Controllers
 
             searchVM.NumResults = searchVM.ListOfVehicles.Count();
             return View(searchVM);
+
+        }
+
+        private bool VehicleExists(int id)
+        {
+            return _context.Vehicle.Any(e => e.Id == id);
+        }
+
+        public List<Company> getListOfCompaniesAssociatedToEmployee()
+        {
+
+            var listOfCompaniesAssociatedToEmployee = new List<Company>();
+            var listOfAssociations = _context.CompanyApplicationUsers.ToList();
+            var listOfCompanies = _context.Company.ToList();
+            var currentUser = _userManager.GetUserAsync(User).Result;
+
+
+            foreach (var item in listOfAssociations)
+            {
+                if (item.ApplicationUserId.Equals(currentUser.Id))
+                {
+                    foreach (var item2 in listOfCompanies)
+                    {
+
+                        if (item2.Id == item.CompanyId)
+                            listOfCompaniesAssociatedToEmployee.Add(item2);
+
+                    }
+                }
+            }
+
+            return listOfCompaniesAssociatedToEmployee;
+
+        }
+
+        public List<int?> getListOfCompaniesAssociatedToEmployeeIds()
+        {
+
+            var listOfCompaniesAssociatedToEmployee = new List<Company>();
+            var listOfAssociations = _context.CompanyApplicationUsers.ToList();
+            var listOfCompanies = _context.Company.ToList();
+            var currentUser = _userManager.GetUserAsync(User).Result;
+
+
+            foreach (var item in listOfAssociations)
+            {
+                if (item.ApplicationUserId.Equals(currentUser.Id))
+                {
+                    foreach (var item2 in listOfCompanies)
+                    {
+
+                        if (item2.Id == item.CompanyId)
+                            listOfCompaniesAssociatedToEmployee.Add(item2);
+
+                    }
+                }
+            }
+
+            var listOfCompaniesAssociatedToEmployeeIds = new List<int?>();
+
+            foreach (var item in listOfCompaniesAssociatedToEmployee)
+            {
+                listOfCompaniesAssociatedToEmployeeIds.Add(item.Id);
+            }
+
+            return listOfCompaniesAssociatedToEmployeeIds;
 
         }
 

@@ -16,5 +16,7 @@ namespace Rental4You.Models
         public bool Available { get; set; }
         [Display(Name = "Associar um novo funcionário à empresa:", Prompt = "Associe um novo funcionário à empresa")]
         public string? NewUserId { get; set; }
+        [Display(Name = "Remover um funcionário da empresa:", Prompt = "Remover um funcionário da empresa")]
+        public string? DeleteUserId { get; set; }
     }
 }

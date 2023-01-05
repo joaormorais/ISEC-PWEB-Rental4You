@@ -15,6 +15,7 @@ using Rental4You.Data;
 using Rental4You.Models;
 using Rental4You.ViewModels;
 using static System.Formats.Asn1.AsnWriter;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Rental4You.Controllers
 {
@@ -32,18 +33,6 @@ namespace Rental4You.Controllers
             _context = context;
             _userManager = userManager;
             UserManager = userManager;
-        }
-
-        public async Task clearNulls()
-        {
-            foreach(var item in _context.CompanyApplicationUsers.ToList())
-            {
-                if(item.ApplicationUserId == null)
-                {
-                    _context.Remove(item);
-                    await _context.SaveChangesAsync();
-                }
-            }
         }
 
         [Authorize(Roles = "Manager,Admin")]
@@ -157,7 +146,7 @@ namespace Rental4You.Controllers
 
             ViewBag.ListOfCarsCompany = listOfVehiclesCompaies;
 
-            var listOfEmployeesAssociated = new List<String>();
+            var listOfEmployeesAssociatedName = new List<String>();
 
             foreach (var item in _context.CompanyApplicationUsers.ToList())
             {
@@ -165,11 +154,11 @@ namespace Rental4You.Controllers
                     foreach(var item2 in _context.Users.ToList())
                     {
                         if (item2.Id == item.ApplicationUserId)
-                            listOfEmployeesAssociated.Add(item2.FirstName);
+                            listOfEmployeesAssociatedName.Add(item2.FirstName);
                     }
             }
 
-            ViewBag.listOfEmployeesAssociated = listOfEmployeesAssociated;
+            ViewBag.listOfEmployeesAssociatedName = listOfEmployeesAssociatedName;
 
             return View(company);
         }
@@ -185,6 +174,17 @@ namespace Rental4You.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([Bind("Id,Name,Acronym,Available")] Company company)
         {
+
+            if(company.Name==null)
+                ModelState.AddModelError("Name", "Escolha um nome!");
+            else
+            {
+                if (company.Name.Contains(" "))
+                    ModelState.AddModelError("Name", "O nome da empresa não pode ter espaços :)");
+            }
+
+            if (company.Acronym == null)
+                ModelState.AddModelError("Acronym", "Escolha uma sigla!");
 
             foreach (var item in _context.Company.ToList())
             {
@@ -210,16 +210,17 @@ namespace Rental4You.Controllers
                     PhoneNumberConfirmed = true
                 };
 
-                var userRepeated = false;
+               //await UserManager.CreateAsync(defaultManager, "Facil.123");
+               //await UserManager.AddToRoleAsync(defaultManager, Roles.Manager.ToString());
 
-                foreach (var item in _userManager.Users.ToList())
-                    if (item.FirstName.Equals(defaultManager.FirstName))
-                        userRepeated = true;
-
-                if (!userRepeated)
+                try
                 {
                     await UserManager.CreateAsync(defaultManager, "Facil.123");
                     await UserManager.AddToRoleAsync(defaultManager, Roles.Manager.ToString());
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine("Error creating user: " + ex.Message);
                 }
 
                 var manager = await _userManager.FindByEmailAsync(defaultManager.Email);
@@ -252,21 +253,48 @@ namespace Rental4You.Controllers
             var currentUser = await _userManager.GetUserAsync(User);
             var foundAssociation = false;
 
-            foreach(var item in _context.CompanyApplicationUsers.ToList())
+            if (User.IsInRole("Admin"))
+                foundAssociation = true;
+
+            if(!foundAssociation)
             {
-                if (currentUser.Id.Equals(item.ApplicationUserId))
-                    if (company.Id == item.CompanyId)
-                    {
-                        foundAssociation = true;
-                        break;
-                    }
+                foreach (var item in _context.CompanyApplicationUsers.ToList())
+                {
+                    if (currentUser.Id.Equals(item.ApplicationUserId))
+                        if (company.Id == item.CompanyId)
+                        {
+                            foundAssociation = true;
+                            break;
+                        }
+                }
             }
 
             if (!foundAssociation)
                 return NotFound();
 
+            // find employees already associated to the company
+            var listOfEmployeesAssociated = new List<ApplicationUser>();
+            var newEmployeeTemp = new ApplicationUser();
+            newEmployeeTemp.Id = null;
+            listOfEmployeesAssociated.Add(newEmployeeTemp); // this "employee" will be used when the user doesn't choose anyone to be deleted
+
+            foreach (var item in _context.CompanyApplicationUsers.ToList())
+            {
+                if (item.CompanyId == company.Id)
+                    foreach (var item2 in _context.Users.ToList())
+                    {
+                        if (item2.Id == item.ApplicationUserId)
+                            listOfEmployeesAssociated.Add(item2);
+                    }
+            }
+
+            ViewData["ListOfEmployeesAssociated"] = new SelectList(listOfEmployeesAssociated, "Id", "FirstName", company.DeleteUserId);
+
             // find only employees
             var listOfEmployees = new List<ApplicationUser>();
+            var newEmployeeAddTemp = new ApplicationUser();
+            newEmployeeAddTemp.Id = null;
+            listOfEmployees.Add(newEmployeeAddTemp); // this "employee" will be used when the user doesn't choose anyone to be added
 
             foreach (var employee in _context.Users.ToList())
             {
@@ -291,7 +319,7 @@ namespace Rental4You.Controllers
         [Authorize(Roles = "Manager,Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Acronym,Available,NewUserId")] Company company)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Acronym,Available,NewUserId,DeleteUserId")] Company company)
         {
             if (id != company.Id)
             {
@@ -301,14 +329,20 @@ namespace Rental4You.Controllers
             var currentUser = await _userManager.GetUserAsync(User);
             var foundAssociation = false;
 
-            foreach (var item in _context.CompanyApplicationUsers.ToList())
+            if (User.IsInRole("Admin"))
+                foundAssociation = true;
+
+            if (!foundAssociation)
             {
-                if (currentUser.Id.Equals(item.ApplicationUserId))
-                    if (company.Id == item.CompanyId)
-                    {
-                        foundAssociation = true;
-                        break;
-                    }
+                foreach (var item in _context.CompanyApplicationUsers.ToList())
+                {
+                    if (currentUser.Id.Equals(item.ApplicationUserId))
+                        if (company.Id == item.CompanyId)
+                        {
+                            foundAssociation = true;
+                            break;
+                        }
+                }
             }
 
             if (!foundAssociation)
@@ -316,8 +350,29 @@ namespace Rental4You.Controllers
 
             ModelState.Remove(nameof(company.CompanyApplicationUsers));
 
+            // find employees already associated to the company
+            var listOfEmployeesAssociated = new List<ApplicationUser>();
+            var newEmployeeDeleteTemp = new ApplicationUser();
+            newEmployeeDeleteTemp.Id = null;
+            listOfEmployeesAssociated.Add(newEmployeeDeleteTemp); // this "employee" will be used when the user doesn't choose anyone to be deleted
+
+            foreach (var item in _context.CompanyApplicationUsers.ToList())
+            {
+                if (item.CompanyId == company.Id)
+                    foreach (var item2 in _context.Users.ToList())
+                    {
+                        if (item2.Id == item.ApplicationUserId)
+                            listOfEmployeesAssociated.Add(item2);
+                    }
+            }
+
+            ViewData["ListOfEmployeesAssociated"] = new SelectList(listOfEmployeesAssociated, "Id", "FirstName", company.DeleteUserId);
+
             // find only employees
             var listOfEmployees = new List<ApplicationUser>();
+            var newEmployeeAddTemp = new ApplicationUser();
+            newEmployeeAddTemp.Id = null;
+            listOfEmployees.Add(newEmployeeAddTemp); // this "employee" will be used when the user doesn't choose anyone to be added
 
             foreach (var employee in _context.Users.ToList())
             {
@@ -339,25 +394,39 @@ namespace Rental4You.Controllers
             foreach (var item in _context.CompanyApplicationUsers.ToList())
             {
 
-                if(item.CompanyId == company.Id && item.ApplicationUserId == company.NewUserId) // it means the this user is already associated
+                if(company.DeleteUserId != null)
                 {
-                    
-                    foreach(var item2 in _context.CompanyApplicationUsers.ToList())
+                    if (item.ApplicationUserId == company.DeleteUserId && item.CompanyId == company.Id)
                     {
-                        if (item2.CompanyId == company.Id && item2.ApplicationUserId == null)
-                        {
-                            _context.Remove(item2);
-                            await _context.SaveChangesAsync();
-                        }
+                        _context.Remove(item);
+                        await _context.SaveChangesAsync();
                     }
-                    break; // make sure that we don't add him and that we remove the temporary user that was created in the database
                 }
 
-                if (item.CompanyId == company.Id && item.ApplicationUserId == null) { // siiiiiiiiiiiiiiiiiiiiiiiiiiiiiiim!
-                    item.ApplicationUserId = company.NewUserId;
-                    _context.Update(item);
-                    await _context.SaveChangesAsync();
+                if(company.NewUserId != null)
+                {
+                    if (item.CompanyId == company.Id && item.ApplicationUserId == company.NewUserId) // it means the this user is already associated
+                    {
+
+                        foreach (var item2 in _context.CompanyApplicationUsers.ToList())
+                        {
+                            if (item2.CompanyId == company.Id && item2.ApplicationUserId == null)
+                            {
+                                _context.Remove(item2);
+                                await _context.SaveChangesAsync();
+                            }
+                        }
+                        break; // make sure that we don't add him and that we remove the temporary user that was created in the database
+                    }
+
+                    if (item.CompanyId == company.Id && item.ApplicationUserId == null)
+                    { 
+                        item.ApplicationUserId = company.NewUserId;
+                        _context.Update(item);
+                        await _context.SaveChangesAsync();
+                    }
                 }
+
             }
 
             if (ModelState.IsValid)
@@ -383,7 +452,6 @@ namespace Rental4You.Controllers
             return View(company);
         }
 
-        // GET: Companies/Delete/5
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
@@ -402,7 +470,6 @@ namespace Rental4You.Controllers
             return View(company);
         }
 
-        // POST: Companies/Delete/5
         [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -420,11 +487,6 @@ namespace Rental4You.Controllers
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool CompanyExists(int id)
-        {
-          return _context.Company.Any(e => e.Id == id);
         }
 
         [Authorize(Roles = "Manager,Admin")]
@@ -447,5 +509,23 @@ namespace Rental4You.Controllers
             return View(searchVM);
 
         }
+
+        private bool CompanyExists(int id)
+        {
+            return _context.Company.Any(e => e.Id == id);
+        }
+
+        public async Task clearNulls()
+        {
+            foreach (var item in _context.CompanyApplicationUsers.ToList())
+            {
+                if (item.ApplicationUserId == null)
+                {
+                    _context.Remove(item);
+                    await _context.SaveChangesAsync();
+                }
+            }
+        }
+
     }
 }

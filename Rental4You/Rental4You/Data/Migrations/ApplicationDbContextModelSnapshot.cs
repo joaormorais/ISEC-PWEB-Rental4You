@@ -283,6 +283,9 @@ namespace Rental4You.Data.Migrations
                     b.Property<bool>("Available")
                         .HasColumnType("bit");
 
+                    b.Property<string>("DeleteUserId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 

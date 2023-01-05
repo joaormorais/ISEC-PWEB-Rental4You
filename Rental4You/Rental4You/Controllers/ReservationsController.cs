@@ -115,8 +115,18 @@ namespace Rental4You.Controllers
         public async Task<IActionResult> Create([Bind("Id,VehicleId,StartDate,EndDate")] Reservation reservation)
         {
 
+            if (reservation.VehicleId == null)
+                ModelState.AddModelError("VehicleId", "Não é possível criar uma reserva sem um veículo associado!");
+
+            if (reservation.StartDate == null)
+                ModelState.AddModelError("StartDate", "Não é possível criar uma reserva sem uma data de levantamento!");
+
+            if (reservation.EndDate == null)
+                ModelState.AddModelError("EndDate", "Não é possível criar uma reserva sem uma data de entrega!");
+
+
             // Verify if the dates are correct
-            if(reservation.StartDate > reservation.EndDate)
+            if (reservation.StartDate > reservation.EndDate)
                 ModelState.AddModelError("StartDate", "A data de inicio não pode ser maior que a data de fim");
 
             // Verify if the user can make a reservation on those dates 
@@ -183,7 +193,6 @@ namespace Rental4You.Controllers
             return View(reservation);
         }
 
-        // GET: Reservations/Edit/5
         [Authorize(Roles = "Employee")]
         public async Task<IActionResult> Edit(int? id)
         {
@@ -230,9 +239,6 @@ namespace Rental4You.Controllers
             return View(reservation);
         }
 
-        // POST: Reservations/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Employee")]
@@ -281,7 +287,6 @@ namespace Rental4You.Controllers
             return View(reservation);
         }
 
-        // GET: Reservations/Delete/5
         [Authorize(Roles = "Employee")]
         public async Task<IActionResult> Delete(int? id)
         {
@@ -300,7 +305,6 @@ namespace Rental4You.Controllers
             return View(reservation);
         }
 
-        // POST: Reservations/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Employee")]
