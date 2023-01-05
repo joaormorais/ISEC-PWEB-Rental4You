@@ -3,18 +3,18 @@
 @{
     ViewData["Title"] = "Apagar";
 }
+<body style="background-image:url('/img/reservas.jpg'); ">
+    <h1 style="color:white;">A apagar uma reserva....</h1>
 
-<h1>A apagar uma reserva....</h1>
-
-<h3>Tem a certeza que quer apagar esta reserva?</h3>
+    <h3 style="color:white;">Tem a certeza que quer apagar esta reserva?</h3>
 <div>
-    <h4>Reserva:</h4>
+        <h4 style="color:white;">Reserva:</h4>
     <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
+        <dl class="row" style="width:600px; position:relative; left:34%; padding:0 20px;">
+            <dt class="col-sm-2" style="margin-top:10px;">
             @Html.DisplayNameFor(model => model.StartDate)
         </dt>
-        <dd class = "col-sm-10">
+            <dd class="col-sm-10" style="margin-top:10px;">
             @Html.DisplayFor(model => model.StartDate)
         </dd>
         <dt class = "col-sm-2">
@@ -72,10 +72,12 @@
             @Html.DisplayFor(model => model.DamageImages)
         </dd>
     </dl>
-    
-    <form asp-action="Delete">
+    <div style="position:relative; left:34%">
+    <form asp-action="Delete" >
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Voltar</a>
+        <a asp-action="Index" style="color:darkblue">Voltar</a>
     </form>
+    </div>
 </div>
+</body>

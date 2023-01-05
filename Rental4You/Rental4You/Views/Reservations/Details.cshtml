@@ -3,17 +3,17 @@
 @{
     ViewData["Title"] = "Detalhes";
 }
-
-<h1>A visualizar detalhes de uma reserva...</h1>
+<body style="background-image:url('/img/reservas.jpg'); ">
+<h1 style="color:white;">A visualizar detalhes de uma reserva...</h1>
 
 <div>
-    <h4>Reserva:</h4>
+        <h4 style="color:white;">Reserva:</h4>
     <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
+        <dl class="row" style="width:600px; position:relative; left:34%; padding:0 20px;">
+        <dt class="col-sm-2" style="margin-top:10px;">
             @Html.DisplayNameFor(model => model.Vehicle.Name)
         </dt>
-        <dd class="col-sm-10">
+            <dd class="col-sm-10" style="margin-top:10px;">
             @Html.DisplayFor(model => model.Vehicle.Name)
         </dd>
         <dt class = "col-sm-2">
@@ -67,7 +67,7 @@
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.ObservationsEnd)
         </dt>
-        <dd class = "col-sm-10">
+            <dd class="col-sm-10" style="padding-left: 50px">
             @Html.DisplayFor(model => model.ObservationsEnd)
         </dd>
         <dt class = "col-sm-2">
@@ -87,19 +87,27 @@
         <dt class="col-sm-2">
             <span class="badge bg-dark text-white">Funcionário no levantamento</span>
         </dt>
-        <dd class="col-sm-10">
+            <dd class="col-sm-10" style="padding-left: 150px">
             <span class="badge bg-dark text-white">@ViewBag.showDelieverEmployee</span>
         </dd>
 
         <dt class="col-sm-2">
             <span class="badge bg-dark text-white">Funcionário na entrega</span>
         </dt>
-        <dd class="col-sm-10">
+            <dd class="col-sm-10" style="padding-left: 150px">
             <span class="badge bg-dark text-white">@ViewBag.showReceiverEmployee</span>
         </dd>
+
     </dl>
+     
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Editar</a> |
-    <a asp-action="Index">Voltar</a>
-</div>
+    <div style="position:relative; left:34%">
+
+        @if (User.IsInRole("Employee"))
+        {
+            <a asp-action="Edit" asp-route-id="@Model?.Id">Editar</a>
+        }
+
+        <a asp-action="Index">Voltar</a>
+    </div>
+</body>

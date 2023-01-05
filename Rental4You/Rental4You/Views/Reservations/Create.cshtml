@@ -3,16 +3,16 @@
 @{
     ViewData["Title"] = "Criar";
 }
+<body style="background-image:url('/img/reservas.jpg'); ">
+    <h1 style="color:white;">A criar uma reserva...</h1>
 
-<h1>A criar uma reserva...</h1>
-
-<h4>Reserva:</h4>
+    <h4 style="color:white;">Reserva:</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+    <div class="row" style="background-color:transparent;">
+    <div class="col-md-4" style="height:300px;" >
+        <form asp-action="Create" >
+            <div asp-validation-summary="ModelOnly" class="text-danger" ></div>
+                <div class="form-group" style="margin-top:10px;">
                 <label asp-for="VehicleId" class="control-label"></label>
 
                 <select asp-for="VehicleId"
@@ -35,14 +35,15 @@
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
+                <div>
+                    <a asp-action="Index" style="color:darkblue">Voltar</a>
+                </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Voltar</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+</body>
