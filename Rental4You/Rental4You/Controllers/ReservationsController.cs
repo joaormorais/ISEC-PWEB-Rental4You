@@ -26,7 +26,6 @@ namespace Rental4You.Controllers
             _userManager = userManager;
         }
 
-        // GET: Reservations
         [Authorize(Roles = "Client,Employee")]
         public async Task<IActionResult> Index()
         {
@@ -36,8 +35,33 @@ namespace Rental4You.Controllers
 
             if (await _userManager.IsInRoleAsync(currentUser,"Employee"))
             {
-                var applicationDbContext = _context.Reservation.Include(a => a.Vehicle);
-                return View(await applicationDbContext.ToListAsync());
+                var listOfAsssociatedCompaniesIds = new List<int?>();
+                var currentEmployeeId = _userManager.GetUserId(User);
+                foreach(var item in _context.CompanyApplicationUsers.ToList())
+                {
+                    if (item.ApplicationUserId == currentEmployeeId)
+                        listOfAsssociatedCompaniesIds.Add(item.CompanyId);
+                }
+
+                var listOfReservationsFilteredIds = new List<int?>();
+                var listOfReservationsFiltered = new List<Reservation>();
+
+                foreach (var item in _context.Reservation.ToList())
+                {
+                    foreach(var item2 in _context.Vehicle.ToList())
+                    {
+                        if (item.VehicleId == item2.Id)
+                        {
+                            if (listOfAsssociatedCompaniesIds.Contains(item2.CompanyId))
+                            {
+                                listOfReservationsFiltered.Add(item);
+                            }
+                        }
+                    }
+                }
+
+                return View(listOfReservationsFiltered);
+
             }
             else
             {
@@ -51,7 +75,6 @@ namespace Rental4You.Controllers
 
         }
 
-        // GET: Reservations/Details/5
         [Authorize(Roles = "Client, Employee")]
         public async Task<IActionResult> Details(int? id)
         {
@@ -89,7 +112,6 @@ namespace Rental4You.Controllers
             return View(reservation);
         }
 
-        // GET: Reservations/Create
         [Authorize(Roles = "Client")]
         public IActionResult Create()
         {
@@ -106,9 +128,6 @@ namespace Rental4You.Controllers
             return View();
         }
 
-        // POST: Reservations/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Client")]
@@ -208,33 +227,13 @@ namespace Rental4You.Controllers
                 return NotFound();
             }
 
-            // find only clients
-            var listOfClients = new List<ApplicationUser>();
-
-            foreach (var client in _context.Users.ToList())
-            {
-                if (await _userManager.IsInRoleAsync(client, "Client"))
-                {
-                    listOfClients.Add(client);
-                }
-            }
-
-            // find only employees 
-            var listOfEmployees = new List<ApplicationUser>();
-
-            foreach(var employee in _context.Users.ToList())
-            {
-                if(await _userManager.IsInRoleAsync(employee, "Employee"))
-                {
-                    listOfEmployees.Add(employee);
-                }
-            }
+            // find the companie responsible for this reservation
             
 
             ViewData["ListOfVehicles"] = new SelectList(_context.Vehicle.ToList(), "Id", "Name", reservation.VehicleId);
-            ViewData["ListOfUsers1"] = new SelectList(listOfClients, "Id", "FirstName", reservation.ClientId);
-            ViewData["ListOfUsers2"] = new SelectList(listOfEmployees, "Id", "FirstName", reservation.DelieverEmployeeId);
-            ViewData["ListOfUsers3"] = new SelectList(listOfEmployees, "Id", "FirstName", reservation.RecieverEmployeeId);
+            ViewData["ListOfUsers1"] = new SelectList(await getClients(), "Id", "FirstName", reservation.ClientId);
+            ViewData["ListOfUsers2"] = new SelectList(await getEmployeesForThisReservation(id), "Id", "FirstName", reservation.DelieverEmployeeId);
+            ViewData["ListOfUsers3"] = new SelectList(await getEmployeesForThisReservation(id), "Id", "FirstName", reservation.RecieverEmployeeId);
 
             return View(reservation);
         }
@@ -259,9 +258,9 @@ namespace Rental4You.Controllers
             ModelState.Remove(nameof(reservation.RecieverEmployeeId));
 
             ViewData["ListOfVehicles"] = new SelectList(_context.Vehicle.ToList(), "Id", "Name", reservation.VehicleId);
-            ViewData["ListOfUsers1"] = new SelectList(_userManager.Users.ToList(), "Id", "FirstName", reservation.ClientId);
-            ViewData["ListOfUsers2"] = new SelectList(_userManager.Users.ToList(), "Id", "FirstName", reservation.DelieverEmployeeId);
-            ViewData["ListOfUsers3"] = new SelectList(_userManager.Users.ToList(), "Id", "FirstName", reservation.RecieverEmployeeId);
+            ViewData["ListOfUsers1"] = new SelectList(await getClients(), "Id", "FirstName", reservation.ClientId);
+            ViewData["ListOfUsers2"] = new SelectList(await getEmployeesForThisReservation(id), "Id", "FirstName", reservation.DelieverEmployeeId);
+            ViewData["ListOfUsers3"] = new SelectList(await getEmployeesForThisReservation(id), "Id", "FirstName", reservation.RecieverEmployeeId);
 
             if (ModelState.IsValid)
             {
@@ -328,5 +327,59 @@ namespace Rental4You.Controllers
         {
           return _context.Reservation.Any(e => e.Id == id);
         }
+
+        private async Task<List<ApplicationUser>> getEmployeesForThisReservation(int? id)
+        {
+
+            var reservation = await _context.Reservation.FindAsync(id);
+            int? companyIdOfVehicle = -1;
+
+            foreach (var item in _context.Vehicle.ToList())
+            {
+                if(reservation.VehicleId == item.Id)
+                {
+                    companyIdOfVehicle = item.CompanyId;
+                    break;
+                }
+
+            }
+
+            var listEmployeesForThisReservation = new List<String>();
+
+            foreach(var item in _context.CompanyApplicationUsers.ToList())
+            {
+                if (item.CompanyId == companyIdOfVehicle)
+                    listEmployeesForThisReservation.Add(item.ApplicationUserId);
+            }
+
+            var listOfEmployees = new List<ApplicationUser>();
+
+            foreach (var employee in _context.Users.ToList())
+            {
+                if (await _userManager.IsInRoleAsync(employee, "Employee"))
+                {
+                    if (listEmployeesForThisReservation.Contains(employee.Id))
+                        listOfEmployees.Add(employee);
+                }
+            }
+
+            return listOfEmployees;
+        }
+
+        private async Task<List<ApplicationUser>> getClients()
+        {
+            var listOfClients = new List<ApplicationUser>();
+
+            foreach (var client in _context.Users.ToList())
+            {
+                if (await _userManager.IsInRoleAsync(client, "Client"))
+                {
+                    listOfClients.Add(client);
+                }
+            }
+
+            return listOfClients;
+        }
+
     }
 }

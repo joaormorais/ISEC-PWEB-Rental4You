@@ -56,10 +56,48 @@ namespace Rental4You.Controllers
 
             if (currentUser != null)
             {
-                if (await _userManager.IsInRoleAsync(currentUser, "Client"))
-                {
+                if (!await _userManager.IsInRoleAsync(currentUser, "Client")){
 
-                    var listOfAvailableCars = new List<Vehicle>();
+                    ViewData["ListOfCompanies"] = new SelectList(_context.Company.ToList(), "Id", "Name");
+
+                    if (!string.IsNullOrWhiteSpace(filter))
+                    {
+                        var result = from c in _context.Vehicle
+                                     where c.Type.Contains(filter) || c.Company.Name.Contains(filter)
+                                     select c;
+
+                        return View(result.ToList());
+                    }
+                    else if (!string.IsNullOrEmpty(sortOrder))
+                    {
+
+                        var vehiclesList = from C in _context.Vehicle
+                                           select C;
+
+                        switch (sortOrder)
+                        {
+
+                            case "price_down":
+                                vehiclesList = vehiclesList.OrderByDescending(s => s.Price);
+                                break;
+
+                            case "price_up":
+                                vehiclesList = vehiclesList.OrderBy(s => s.Price);
+                                break;
+
+                        }
+
+                        return View(vehiclesList.ToList());
+
+                    }
+                    else
+                        return View(await _context.Vehicle.ToListAsync());
+
+                }
+            }
+
+
+            var listOfAvailableCars = new List<Vehicle>();
 
                     foreach (var item in _context.Vehicle.ToList())
                     {
@@ -104,45 +142,6 @@ namespace Rental4You.Controllers
                     else
                         return View(listOfAvailableCars.ToList());
 
-                }
-            }
-            
-            ViewData["ListOfCompanies"] = new SelectList(_context.Company.ToList(), "Id", "Name");
-
-            if (!string.IsNullOrWhiteSpace(filter))
-            {
-                var result = from c in _context.Vehicle
-                                where c.Type.Contains(filter) || c.Company.Name.Contains(filter)
-                                select c;
-
-                return View(result.ToList());
-            }
-            else if (!string.IsNullOrEmpty(sortOrder))
-            {
-
-                var vehiclesList = from C in _context.Vehicle
-                                    select C;
-
-                switch (sortOrder)
-                {
-
-                    case "price_down":
-                        vehiclesList = vehiclesList.OrderByDescending(s => s.Price);
-                        break;
-
-                    case "price_up":
-                        vehiclesList = vehiclesList.OrderBy(s => s.Price);
-                        break;
-
-                }
-
-                return View(vehiclesList.ToList());
-
-            }
-            else
-                return View(await _context.Vehicle.ToListAsync());
-            
-
         }
 
         public async Task<IActionResult> Details(int? id)
@@ -158,6 +157,17 @@ namespace Rental4You.Controllers
             if (vehicle == null)
             {
                 return NotFound();
+            }
+
+            if (await _userManager.GetUserAsync(User) != null)
+            {
+                if (vehicle.Available == false && User.IsInRole("Client"))
+                    return NotFound();
+            }
+            else
+            {
+                if(vehicle.Available == false)
+                    return NotFound();
             }
 
             if (_userManager.GetUserAsync(User).Result != null)
@@ -195,25 +205,6 @@ namespace Rental4You.Controllers
             ModelState.Remove(nameof(vehicle.CompanyId));
 
             var ListOfCompaniesAssociatedToEmployee = getListOfCompaniesAssociatedToEmployee();
-
-            /*var listOfCompaniesAssociatedToEmployee = new List<Company>();
-            var listOfAssociations = _context.CompanyApplicationUsers.ToList();
-            var listOfCompanies = _context.Company.ToList();
-            var currentUser = _userManager.GetUserAsync(User).Result;
-
-            foreach (var item in listOfAssociations)
-            {
-                if (item.ApplicationUserId.Equals(currentUser.Id))
-                {
-                    foreach (var item2 in listOfCompanies)
-                    {
-
-                        if (item2.Id == item.CompanyId)
-                            listOfCompaniesAssociatedToEmployee.Add(item2);
-
-                    }
-                }
-            }*/
 
             ViewData["ListOfCompanies"] = new SelectList(ListOfCompaniesAssociatedToEmployee, "Id", "Name");
 
