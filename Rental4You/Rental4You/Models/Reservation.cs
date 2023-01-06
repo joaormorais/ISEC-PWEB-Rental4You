@@ -6,6 +6,7 @@ namespace Rental4You.Models
     public class Reservation
     {
         public int Id { get; set; }
+        [Display(Name = "Veículo a reservar", Prompt = "Veículo associado à reserva")]
         public int? VehicleId { get; set; }
         public Vehicle? Vehicle { get; set; }
         [Display(Name = "Data de levantamento", Prompt = "Data de levantamento do veículo")]
