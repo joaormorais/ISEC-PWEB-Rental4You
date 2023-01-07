@@ -232,8 +232,8 @@ namespace Rental4You.Controllers
 
             ViewData["ListOfVehicles"] = new SelectList(_context.Vehicle.ToList(), "Id", "Name", reservation.VehicleId);
             ViewData["ListOfUsers1"] = new SelectList(await getClients(), "Id", "FirstName", reservation.ClientId);
-            ViewData["ListOfUsers2"] = new SelectList(await getEmployeesForThisReservation(id), "Id", "FirstName", reservation.DelieverEmployeeId);
-            ViewData["ListOfUsers3"] = new SelectList(await getEmployeesForThisReservation(id), "Id", "FirstName", reservation.RecieverEmployeeId);
+            ViewData["ListOfUsers2"] = new SelectList(await getEmployeesForThisReservation(reservation), "Id", "FirstName");
+            //ViewData["ListOfUsers3"] = new SelectList(await getEmployeesForThisReservation(id), "Id", "FirstName", reservation.RecieverEmployeeId);
 
             return View(reservation);
         }
@@ -259,8 +259,8 @@ namespace Rental4You.Controllers
 
             ViewData["ListOfVehicles"] = new SelectList(_context.Vehicle.ToList(), "Id", "Name", reservation.VehicleId);
             ViewData["ListOfUsers1"] = new SelectList(await getClients(), "Id", "FirstName", reservation.ClientId);
-            ViewData["ListOfUsers2"] = new SelectList(await getEmployeesForThisReservation(id), "Id", "FirstName", reservation.DelieverEmployeeId);
-            ViewData["ListOfUsers3"] = new SelectList(await getEmployeesForThisReservation(id), "Id", "FirstName", reservation.RecieverEmployeeId);
+            ViewData["ListOfUsers2"] = new SelectList(await getEmployeesForThisReservation(reservation), "Id", "FirstName");
+            //ViewData["ListOfUsers3"] = new SelectList(await getEmployeesForThisReservation(id), "Id", "FirstName", reservation.RecieverEmployeeId);
 
             if (ModelState.IsValid)
             {
@@ -328,10 +328,10 @@ namespace Rental4You.Controllers
           return _context.Reservation.Any(e => e.Id == id);
         }
 
-        private async Task<List<ApplicationUser>> getEmployeesForThisReservation(int? id)
+        private async Task<List<ApplicationUser>> getEmployeesForThisReservation(Reservation reservation)
         {
 
-            var reservation = await _context.Reservation.FindAsync(id);
+            //var reservation = await _context.Reservation.FindAsync(id);
             int? companyIdOfVehicle = -1;
 
             foreach (var item in _context.Vehicle.ToList())

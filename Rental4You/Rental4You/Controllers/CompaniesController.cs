@@ -23,7 +23,7 @@ namespace Rental4You.Controllers
     public class CompaniesController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private UserManager<ApplicationUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager; // acredito que tenha de ter or eadonly
         public UserManager<ApplicationUser> UserManager { get; set; }
 
         public CompaniesController(
@@ -209,9 +209,6 @@ namespace Rental4You.Controllers
                     EmailConfirmed = true,
                     PhoneNumberConfirmed = true
                 };
-
-               //await UserManager.CreateAsync(defaultManager, "Facil.123");
-               //await UserManager.AddToRoleAsync(defaultManager, Roles.Manager.ToString());
 
                 try
                 {
