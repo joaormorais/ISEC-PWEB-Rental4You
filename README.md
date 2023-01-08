@@ -4,7 +4,11 @@ I have been given a project to develop a web application using ASP.NET Core, C#,
 
 The purpose of this application is to create a SaaS (Software as a Service) platform that allows car rental companies to make their vehicles available for reservation through a common web platform in a convenient and efficient manner.
 
-# Features that were proposed to me to be implemented:
+# Features that were proposed to be implemented:
+
+![image](https://user-images.githubusercontent.com/72463113/211181217-8c0ac44f-3f76-471e-872a-8765b2c65f2b.png)
+![image](https://user-images.githubusercontent.com/72463113/211181233-c291f21f-b1fc-46b5-b603-4fb56767efcf.png)
+
 
 There are five types of users:
 
