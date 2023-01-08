@@ -9,11 +9,11 @@ The purpose of this application is to create a SaaS (Software as a Service) plat
 
 # Features that were proposed to be implemented:
 
-There are five types of users:
+Create five types of users:
 
 ● Unauthenticated user;
 
-● Customer;
+● Client;
 
 ● Employee;
 
@@ -24,11 +24,11 @@ There are five types of users:
 
 
 
-The platform is divided into five distinct areas:
+Divide the application into five distinct areas:
 
 ● Public area - unauthenticated users;
 
-● Customer area - registered users with a customer profile;
+● Client area - registered users with a client profile;
 
 ● Employee area of a rental company - registered users with an employee profile and associated to one or more companies;
 
@@ -37,10 +37,12 @@ The platform is divided into five distinct areas:
 ● Administrator area - administrator of the platform.
 
 
-The separation of the features per areas was implemented to accommodate the different types of users and their permissions within the application. Users with different profiles will have different levels of access and functionality within the platform.
+The separation of the features per areas has the objective of accommodating the different types of users and their permissions within the application. Users with different profiles will have different levels of access and functionality within the platform.
 
 ![image](https://user-images.githubusercontent.com/72463113/211181217-8c0ac44f-3f76-471e-872a-8765b2c65f2b.png)
 ![image](https://user-images.githubusercontent.com/72463113/211181233-c291f21f-b1fc-46b5-b603-4fb56767efcf.png)
+
+Image translator: https://translate.yandex.com/ocr
 
 
 
@@ -48,8 +50,12 @@ The separation of the features per areas was implemented to accommodate the diff
 # Features that weren't developed 
 
 ● It isn't possible to add images about the damages of the car to the details of a reservation
+
 ● It isn't possible to search vehicles filtered by dates
+
 ● It isn't possible to search for reservations with filters
+
+● As a manager, it isn't possible to activate/desactivate an employee
 
 
 
@@ -57,6 +63,25 @@ The separation of the features per areas was implemented to accommodate the diff
 # Known bugs
 
 ● None...
+
+
+
+
+# How to use the application 
+
+● The password for every default and already registered user is: Facil.123
+
+● Register 2 users that you intend to use as clients (or use the "cliente1@isec.pt" user and "cliente2@isec.pt" user already registered)
+
+● Register 2 users that you intend to use as employees (or use the "funcionario1@isec.pt" user and "funcionario2@isec.pt" user already registered)
+
+● Login as an admin ("admin@localhost.com") and create one or more companies (this will create a automatic user associated to the company with the email "managerCOMPANYNAME@isec.pt". There are already 2 default managers of 2 default companies "managerMoraisCompany@isec.pt" and managerZeCompany@isec.pt)
+
+● As an admin, go to the admin menu, select the permissions tab, and assign the permission to the clients that you have registered (the users registered by us already have the correct permissions)
+
+● Login as any user and explore the features of the application 
+
+
 
 
 
@@ -76,4 +101,6 @@ To be evaluated...
 
 
 
+# Authors
 
+João Morais and José Carvalho
