@@ -186,10 +186,11 @@ namespace Rental4You.Controllers
             reservation.DamageStart = false;
             reservation.DamageEnd = false;
             reservation.ActualDate = DateTime.Now;
+            //ModelState.Remove(nameof(reservation.ActualDate));
 
-            // the rest of the attributes of the class Reservation go empty because they are suppose to be changed in the edit settings
+                // the rest of the attributes of the class Reservation go empty because they are suppose to be changed in the edit settings
 
-            
+
                 _context.Add(reservation);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -233,21 +234,21 @@ namespace Rental4You.Controllers
             ViewData["ListOfVehicles"] = new SelectList(_context.Vehicle.ToList(), "Id", "Name", reservation.VehicleId);
             ViewData["ListOfUsers1"] = new SelectList(await getClients(), "Id", "FirstName", reservation.ClientId);
             ViewData["ListOfUsers2"] = new SelectList(await getEmployeesForThisReservation(reservation), "Id", "FirstName");
-            //ViewData["ListOfUsers3"] = new SelectList(await getEmployeesForThisReservation(id), "Id", "FirstName", reservation.RecieverEmployeeId);
-
+ 
             return View(reservation);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Employee")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ClientId,VehicleId,StartDate,EndDate,DelieverEmployeeId,Confirmed,KmsStart,DamageStart,ObservationsStart,RecieverEmployeeId,KmsEnd,DamageEnd,ObservationsEnd,DamageImages,Users")] Reservation reservation)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,ClientId,VehicleId,StartDate,EndDate,DelieverEmployeeId,Confirmed,KmsStart,DamageStart,ObservationsStart,RecieverEmployeeId,KmsEnd,DamageEnd,ObservationsEnd,DamageImages,Users,Ended")] Reservation reservation)
         {
             if (id != reservation.Id)
             {
                 return NotFound();
             }
 
+            //ModelState.Remove(nameof(reservation.ActualDate));
             ModelState.Remove(nameof(reservation.Vehicle));
             ModelState.Remove(nameof(reservation.VehicleId));
 
@@ -257,10 +258,11 @@ namespace Rental4You.Controllers
             ModelState.Remove(nameof(reservation.DelieverEmployeeId));
             ModelState.Remove(nameof(reservation.RecieverEmployeeId));
 
+            reservation.ActualDate = _context.Reservation.AsNoTracking().FirstOrDefault(r => r.Id == reservation.Id).ActualDate;
+
             ViewData["ListOfVehicles"] = new SelectList(_context.Vehicle.ToList(), "Id", "Name", reservation.VehicleId);
             ViewData["ListOfUsers1"] = new SelectList(await getClients(), "Id", "FirstName", reservation.ClientId);
             ViewData["ListOfUsers2"] = new SelectList(await getEmployeesForThisReservation(reservation), "Id", "FirstName");
-            //ViewData["ListOfUsers3"] = new SelectList(await getEmployeesForThisReservation(id), "Id", "FirstName", reservation.RecieverEmployeeId);
 
             if (ModelState.IsValid)
             {
@@ -353,6 +355,9 @@ namespace Rental4You.Controllers
             }
 
             var listOfEmployees = new List<ApplicationUser>();
+            var newEmployeeTemp = new ApplicationUser();
+            newEmployeeTemp.Id = null;
+            listOfEmployees.Add(newEmployeeTemp); // this "employee" will be used when the user doesn't choose anyone to be added
 
             foreach (var employee in _context.Users.ToList())
             {
