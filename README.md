@@ -42,7 +42,7 @@ The separation of the features per areas has the objective of accommodating the 
 ![image](https://user-images.githubusercontent.com/72463113/211181217-8c0ac44f-3f76-471e-872a-8765b2c65f2b.png)
 ![image](https://user-images.githubusercontent.com/72463113/211181233-c291f21f-b1fc-46b5-b603-4fb56767efcf.png)
 
-Picture translator: https://translate.yandex.com/ocr
+Image translator: https://translate.yandex.com/ocr
 
 
 
