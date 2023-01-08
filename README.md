@@ -13,7 +13,7 @@ There are five types of users:
 
 ● Unauthenticated user;
 
-● Customer;
+● Client;
 
 ● Employee;
 
@@ -28,7 +28,7 @@ The platform is divided into five distinct areas:
 
 ● Public area - unauthenticated users;
 
-● Customer area - registered users with a customer profile;
+● Client area - registered users with a client profile;
 
 ● Employee area of a rental company - registered users with an employee profile and associated to one or more companies;
 
