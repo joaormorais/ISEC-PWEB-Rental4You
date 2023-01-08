@@ -41,26 +41,22 @@ The separation of the features per areas was implemented to accommodate the diff
 
 ● Public area - (Anonymous user):
 
-○ Search for vehicles by location, vehicle type, and date (pick-up date and return date).
+○ Register as a Customer;
 
-○ The search result should be a list of available vehicles, indicating the cost and the rental company it belongs to, as well as the company's rating.
-
-○ It should be possible to filter the results by vehicle category and by company.
-
-○ It should be possible to sort the results by lowest/highest price and/or by company rating.
-
-○ Register as a Customer.
+○ Search for vehicles by location, vehicle type, and date (pick-up date and return date);
 
 
 
 
 ● Customer area (Customer):
 
-○ Perform a search (similar to anonymous user)
+○ Login and edit his account.
+
+○ Perform a search (similar to anonymous user);
 
 ○ Make a vehicle reservation;
 
-○ Consult the reservation history;
+○ Consult his reservations;
 
 ○ Consult the details of a reservation;
 
@@ -68,6 +64,8 @@ The separation of the features per areas was implemented to accommodate the diff
 
 
 ● Employee area of a rental company (Employee):
+
+○ Login and edit his account.
 
 ○ Manage the company's fleet of vehicles:
   ■ List vehicles - with filters (category, state) and with sorting.
@@ -79,35 +77,30 @@ The separation of the features per areas was implemented to accommodate the diff
 ○ Manage the company's reservations:
   ■ List reservations - with filters (pick-up date, return date, category,
 vehicle, customer);
-  ■ Confirm a reservation;
-  ■ Reject a reservation;
-  ■ Deliver a vehicle to the customer (customer vehicle pick-up)
+  ■ Edit a reservation
+  ■ Delete a reservation
+
+
+
+
+● Manager area of a car rental company (Manager):
+
+○ Employee management:
+  ■ Create users with the employee profile, associated with their company.
+  ■ Create users with the manager profile, associated with their company.
+  ■ List employees.
+  ■ Activate/deactivate employees.
+  ■ Cannot delete nor deactivate their own user.
   
-○ Mark the state in which the vehicle is delivered to the customer
+○ Reservation management (same as Employee profile).
 
-○ Number of vehicle kilometers
-
-○ Vehicle damage (Y/N)
-
-○ Notes
-
-○ Employee who made the delivery
-■ Receive a vehicle from the customer (customer vehicle return)
-● Mark the state in which the vehicle is delivered by the customer
-○ Number of vehicle kilometers
-○ Vehicle damage (Y/N)
-○ If "Yes" is marked, photographs must be attached
-that prove the damage.
-○ Employee who received the vehicle.
-○ Notes.
-
-
-Manager area:
+○ Fleet management (same as Employee profile).
 
 
 
 
-Administrator area:
+
+
 
 
 
