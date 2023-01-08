@@ -78,5 +78,4 @@ To be evaluated...
 
 # Authors
 
-João Morais 
-José Carvalho
+João Morais and José Carvalho
