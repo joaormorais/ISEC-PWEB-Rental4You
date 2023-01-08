@@ -9,7 +9,7 @@ The purpose of this application is to create a SaaS (Software as a Service) plat
 
 # Features that were proposed to be implemented:
 
-There are five types of users:
+Create five types of users:
 
 ● Unauthenticated user;
 
@@ -24,7 +24,7 @@ There are five types of users:
 
 
 
-The platform is divided into five distinct areas:
+Divide the application into five distinct areas:
 
 ● Public area - unauthenticated users;
 
