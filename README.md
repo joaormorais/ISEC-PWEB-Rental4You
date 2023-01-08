@@ -4,7 +4,7 @@ I have been given a project to develop a web application using ASP.NET Core, C#,
 
 The purpose of this application is to create a SaaS (Software as a Service) platform that allows car rental companies to make their vehicles available for reservation through a common web platform in a convenient and efficient manner.
 
-# Features:
+# Features that were proposed to me to be implemented:
 
 There are five types of users:
 
@@ -99,8 +99,48 @@ vehicle, customer);
 
 
 
+● Platform administrator area (Administrator)
 
+○ Company management:
+  ■ List companies - with filters (name, subscription state) and with sorting.
+  ■ Add companies - automatically creates a user with the manager profile, associated with
+the company.
+  ■ Edit companies;
+  ■ Delete companies (only if they do not have any vehicles yet)
+  ■ Activate/deactivate companies.
 
+○ Vehicle category management
+  ■ List, create, edit, delete categories
+
+○ User management
+  ■ List, edit, activate, deactivate users
+
+○ According to the previously mentioned Dashboards for Managers
+  ■ Dashboard with information on reservation performance
+
+○ Charts
+  ■ Number of daily reservations in the past 30 days
+  ■ Number of monthly reservations (last 12 months).
+  ■ Number of new customers per month (last 12 months).
+
+# Features that weren't developed :(
+
+● It isn't possible to add images about the damages of the car to the details of a reservation
+● It isn't possible to search vehicles filtered by dates
+● It isn't possible to search for reservations with filters
+
+# Known bugs
+
+● None...
+
+# My personal analysis of the project
+
+I enjoyed a lot working on this project, however, It could have been way better, by far, if I had more time to work on it. Since I had more subjects with more projects to be done, I couldn't focus on 100% on this project. Taking this in consideration, for what is done, I think it is very good.
+It couldn't have been done this good without the help of my team mate and teatchers.
+
+# Final grade
+
+To be evaluated...
 
 
 
