@@ -55,6 +55,8 @@ Image translator: https://translate.yandex.com/ocr
 
 ● It isn't possible to search for reservations with filters
 
+● As a manager, it isn't possible to activate/desactivate an employee
+
 
 
 
