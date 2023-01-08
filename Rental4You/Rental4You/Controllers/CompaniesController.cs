@@ -23,7 +23,7 @@ namespace Rental4You.Controllers
     public class CompaniesController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly UserManager<ApplicationUser> _userManager; // acredito que tenha de ter or eadonly
+        private readonly UserManager<ApplicationUser> _userManager;
         public UserManager<ApplicationUser> UserManager { get; set; }
 
         public CompaniesController(

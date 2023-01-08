@@ -17,7 +17,6 @@
     <form method="post">
         <input type="text" name="TextToSearchName" placeholder="Nome do veículo">
         <input type="text" name="TextToSearchLocation" placeholder="Localização do veículo">
-        @*<input type="text" name="TextToSearchCompany" placeholder="Empresa a alugar">*@
         <select name="TextToSearchCompany">
             <option>Empresa a alugar</option>
             @foreach (Company c in ViewBag.ListOfAllCompanies)
@@ -36,7 +35,6 @@
     </a>
     <ul class="dropdown-menu">
 
-        @*@foreach (var group in Model.GroupBy(i => i.Type))*@
         @foreach (String s in ViewBag.ListOfAllTypes)
         {
             <li>
@@ -54,7 +52,6 @@
     </a>
     <ul class="dropdown-menu">
 
-        @*@foreach (var group in Model.GroupBy(i => i.Company))*@
         @foreach (Company c in ViewBag.ListOfAllCompanies)
         {
             if (c.Available)

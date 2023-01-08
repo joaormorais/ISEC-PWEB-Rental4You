@@ -8,25 +8,22 @@ using Rental4You.Data;
 namespace Rental4You.Controllers
 {
     [Authorize(Roles = "Admin")]
-    public class RoleManagerController : Controller // adicionar uma view para este controller e colocar na nav bar para o admin
+    public class RoleManagerController : Controller 
     {
         private readonly RoleManager<IdentityRole> _roleManager;
         public RoleManagerController(RoleManager<IdentityRole> roleManager)
         {
-            //....
             _roleManager = roleManager;
         }
 
         public async Task<IActionResult> Index()
         {
-            //....
             var roles = await _roleManager.Roles.ToListAsync();
             return View(roles);
         }
         [HttpPost]
         public async Task<IActionResult> AddRole(string roleName)
         {
-            //....
             if (roleName != null)
             {
                 await _roleManager.CreateAsync(new IdentityRole(roleName.Trim()));

@@ -29,7 +29,6 @@ namespace Rental4You.Controllers
             if(_userManager.GetUserAsync(User).Result!=null)
                 ViewBag.ListOfCompaniesAssociatedToEmployee = getListOfCompaniesAssociatedToEmployee();
             
-            // send to the view a list of every company
             var listOfAllCompanies = new List<Company>();
 
             foreach (var item in _context.Company.ToList())
@@ -39,7 +38,6 @@ namespace Rental4You.Controllers
 
             ViewBag.ListOfAllCompanies = listOfAllCompanies;
 
-            // send every category of vehicle to the view to help filtering
             var listOfAllTypes = new List<String>();
 
             foreach (var item in _context.Vehicle.ToList())
@@ -49,8 +47,6 @@ namespace Rental4You.Controllers
             }
 
             ViewBag.ListOfAllTypes = listOfAllTypes;
-
-            // fazer uma condição caso o utilizador seja cliente e assim só vê o que é available (manter o que já está caso seja outra role qualquer)
 
             var currentUser = await _userManager.GetUserAsync(User);
 
@@ -312,7 +308,6 @@ namespace Rental4You.Controllers
 
             var vehicle = await _context.Vehicle.FindAsync(id);
 
-            // it isn't the best way to prevent a car from being deleted when it has a reservation associated... but it works
             foreach(var item in _context.Reservation.ToList())
             {
                 if (item.VehicleId == vehicle.Id)

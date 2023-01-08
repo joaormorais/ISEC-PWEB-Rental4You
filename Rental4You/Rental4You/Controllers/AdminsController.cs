@@ -25,25 +25,20 @@ namespace Rental4You.Controllers
             _context = context;
         }
 
-        // GET: Admins
         public async Task<IActionResult> Index()
         {
               return View(await _context.Admin.ToListAsync());
         }
 
-        // GET: Admins/Details/5
-            public async Task<IActionResult> GraficoVendas()
-            {
-                return View();           
+        public async Task<IActionResult> GraficoVendas()
+        {
+            return View();
         }
 
-
-
         [HttpPost]
-            // POST: Cursos/GraficoVendas/5
-            public async Task<IActionResult> GetDadosVendas()
+        public async Task<IActionResult> GetDadosVendas()
             {
-            //dados de exemplo
+
             DateTime currentdate= DateTime.Now;
             int count = _context.Reservation.Where(o => o.ActualDate >= currentdate.AddDays(-30)).Count();
             int countM = _context.Reservation.Where(o => o.ActualDate >= currentdate.AddMonths(-12)).Count();
@@ -74,7 +69,7 @@ namespace Rental4You.Controllers
             return Json(dados);
             }
 
-    public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Admin == null)
             {
@@ -91,15 +86,12 @@ namespace Rental4You.Controllers
             return View(admin);
         }
 
-        // GET: Admins/Create
+
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Admins/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id")] Admin admin)
@@ -113,7 +105,6 @@ namespace Rental4You.Controllers
             return View(admin);
         }
 
-        // GET: Admins/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Admin == null)
@@ -129,9 +120,6 @@ namespace Rental4You.Controllers
             return View(admin);
         }
 
-        // POST: Admins/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id")] Admin admin)
@@ -163,8 +151,6 @@ namespace Rental4You.Controllers
             }
             return View(admin);
         }
-
-        // GET: Admins/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Admin == null)
@@ -182,7 +168,6 @@ namespace Rental4You.Controllers
             return View(admin);
         }
 
-        // POST: Admins/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

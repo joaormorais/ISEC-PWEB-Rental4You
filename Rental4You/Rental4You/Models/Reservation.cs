@@ -29,7 +29,6 @@ namespace Rental4You.Models
         public string? ObservationsEnd { get; set; }
         [Display(Name = "Fotografia dos danos", Prompt = "Fotografia dos danos na entrega do veículo")]
         public byte[]? DamageImages { get; set; }
-        // de acordo com as posicoes --> 0: cliente 1: funcionario de levantamento 2: funcionario de entrega
         [Display(Name = "Cliente", Prompt = "Nome do cliente associado à reserva")]
         public string? ClientId { get; set; }
         [Display(Name = "Funcionário do levantamento", Prompt = "Nome do funcionário do levantamento do veículo associado à reserva")]

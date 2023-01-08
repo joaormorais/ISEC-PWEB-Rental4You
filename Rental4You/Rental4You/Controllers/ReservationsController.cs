@@ -92,8 +92,6 @@ namespace Rental4You.Controllers
                 return NotFound();
             }
 
-            // fazer o codigo aqui para procurar pelos users
-
             var client = await _userManager.FindByIdAsync(reservation.ClientId);
             ViewBag.showClient = client.FirstName;
 
@@ -169,26 +167,26 @@ namespace Rental4You.Controllers
             if (ModelState.IsValid)
             {
 
-            // remove from the ModelState the propreties about the Vehicle
+
             ModelState.Remove(nameof(reservation.Vehicle));
             ModelState.Remove(nameof(reservation.VehicleId));
 
-            // remove from the ModelState the propreties about the ApplicationUser
+
             ModelState.Remove(nameof(reservation.Users));
             ModelState.Remove(nameof(reservation.ClientId));
             ModelState.Remove(nameof(reservation.DelieverEmployeeId));
             ModelState.Remove(nameof(reservation.RecieverEmployeeId));
 
-            // the ApplicationUserId is the Id of the current user
+
             reservation.ClientId = _userManager.GetUserId(User);
             reservation.Ended = false;
             reservation.Confirmed = false;
             reservation.DamageStart = false;
             reservation.DamageEnd = false;
             reservation.ActualDate = DateTime.Now;
-            //ModelState.Remove(nameof(reservation.ActualDate));
 
-                // the rest of the attributes of the class Reservation go empty because they are suppose to be changed in the edit settings
+
+            // the rest of the attributes of the class Reservation go empty because they are suppose to be changed in the edit settings
 
 
                 _context.Add(reservation);
@@ -196,7 +194,6 @@ namespace Rental4You.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            // Adding cars to the ViewData
             var listOfAvailableCars = new List<Vehicle>();
 
             foreach (var item in _context.Vehicle.ToList())
@@ -248,11 +245,9 @@ namespace Rental4You.Controllers
                 return NotFound();
             }
 
-            //ModelState.Remove(nameof(reservation.ActualDate));
             ModelState.Remove(nameof(reservation.Vehicle));
             ModelState.Remove(nameof(reservation.VehicleId));
 
-            // remove from the ModelState the propreties about the ApplicationUser
             ModelState.Remove(nameof(reservation.Users));
             ModelState.Remove(nameof(reservation.ClientId));
             ModelState.Remove(nameof(reservation.DelieverEmployeeId));
