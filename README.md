@@ -37,12 +37,12 @@ Divide the application into five distinct areas:
 ● Administrator area - administrator of the platform.
 
 
-The separation of the features per areas was implemented to accommodate the different types of users and their permissions within the application. Users with different profiles will have different levels of access and functionality within the platform.
+The separation of the features per areas has the objective of accommodating the different types of users and their permissions within the application. Users with different profiles will have different levels of access and functionality within the platform.
 
 ![image](https://user-images.githubusercontent.com/72463113/211181217-8c0ac44f-3f76-471e-872a-8765b2c65f2b.png)
 ![image](https://user-images.githubusercontent.com/72463113/211181233-c291f21f-b1fc-46b5-b603-4fb56767efcf.png)
 
-
+https://translate.yandex.com/ocr
 
 
 # Features that weren't developed 
