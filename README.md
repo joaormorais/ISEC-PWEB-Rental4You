@@ -69,6 +69,8 @@ Image translator: https://translate.yandex.com/ocr
 
 # How to use the application 
 
+● The database has to be inside the users folder of your system (e.g. C:\Users\user)
+
 ● The password for every default and already registered user is: Facil.123
 
 ● Register 2 users that you intend to use as clients (or use the "cliente1@isec.pt" user and "cliente2@isec.pt" user already registered)
