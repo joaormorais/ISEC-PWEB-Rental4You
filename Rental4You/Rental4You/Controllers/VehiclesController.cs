@@ -297,15 +297,6 @@ namespace Rental4You.Controllers
                 return NotFound();
             }
 
-            if (!getListOfCompaniesAssociatedToEmployeeIds().Contains(vehicle.CompanyId))
-                return NotFound();
-
-            // verify if the vehicle has a reservation
-            if (vehicle.Reservations!=null)
-            {
-                return NotFound();
-            }
-
             return View(vehicle);
         }
 
@@ -318,14 +309,22 @@ namespace Rental4You.Controllers
             {
                 return Problem("Entity set 'ApplicationDbContext.Vehicle'  is null.");
             }
+
             var vehicle = await _context.Vehicle.FindAsync(id);
+
+            // it isn't the best way to prevent a car from being deleted when it has a reservation associated... but it works
+            foreach(var item in _context.Reservation.ToList())
+            {
+                if (item.VehicleId == vehicle.Id)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+
             if (vehicle != null)
             {
                 _context.Vehicle.Remove(vehicle);
             }
-
-            if (!getListOfCompaniesAssociatedToEmployeeIds().Contains(vehicle.CompanyId))
-                return NotFound();
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
