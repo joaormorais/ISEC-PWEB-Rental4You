@@ -62,7 +62,7 @@ Image translator: https://translate.yandex.com/ocr
 
 # Known bugs
 
-● None...
+● None
 
 
 
