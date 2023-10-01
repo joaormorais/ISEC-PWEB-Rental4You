@@ -101,7 +101,7 @@ It couldn't have been done this good without the help of my team mate and teatch
 
 # Final grade
 
-To be evaluated...
+55%
 
 
 
